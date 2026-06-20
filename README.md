@@ -1,11 +1,11 @@
 # 数仓 Agent 知识库
 
-> 面向 Data Agent / Cursor Agent 的投放、点位、MI ROI360、MaxCompute、ClickHouse 知识工作区。
+> 面向 Data Agent / 自研开源 DataAgent runtime 的投放、点位、MI ROI360、MaxCompute、ClickHouse 知识工作区。
 > 本目录沉淀的是 **agent 可用的语义、表卡、SQL、SOP、case、工具能力和路线图**，不是业务原始系统本身。
 
 <!-- 自动快照：开始 -->
 
-> 自动快照：2026-06-18；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`semantic_model/model.json`、`da_assets/index.yaml`。
+> 自动快照：2026-06-18；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
 
 | 项 | 当前值 |
 |---|---|
@@ -24,9 +24,9 @@
 
 ## 建设路线
 
-本工程当前采用自底向上的建设路线：先把数据资产、语义契约、verified SQL、SOP、freshness 和回归门禁做硬，再接上层 planner、Text2SQL、工具调用和 agent loop。
+本工程当前采用自底向上的建设路线：先把数据资产、语义契约、verified SQL、SOP、freshness 和回归门禁做硬，再接自研开源 DataAgent runtime 的 planner、Text2SQL、工具调用和 agent loop。
 
-上层 Agent 不缺想象力，缺的是别让它乱想的轨道和刹车。先把地基做硬，后面接 planner、Text2SQL、工具调用会自然很多；这也是为什么本工程没有从一开始研究 agent loop 编程。
+上层 Agent 不缺想象力，缺的是别让它乱想的轨道和刹车。先把地基做硬，后面自研 runtime 只负责把任务识别、检索路由、门禁、SQL 执行和资产回写串起来；不再把路线押在外部代码型 Agent 上。
 
 未来 DataAgent 的完整工作流见 `data_agent_plan/未来DataAgent工作流规划.md`；当前文件系统路由与默认召回边界见 `AGENT_RETRIEVAL_MAP.yaml`。
 
@@ -35,24 +35,24 @@
 | 任务 | 先读 |
 |---|---|
 | 判断自然语言问题该查哪些层、哪些目录不能默认召回 | `AGENT_RETRIEVAL_MAP.yaml`、`eval/Agent检索路线图报告.md` |
-| 查 MaxCompute / ODPS 表、写达成率 SQL | `knowledge/policies/SQL写作业务协议.md`、`knowledge/policies/SQL表路由协议.md`、`ai_hive/README.md`、`ai_hive/口径决策记录.md` |
-| 写游戏核心指标、留存、时长、局数、广告变现 SQL | `knowledge/policies/SQL写作业务协议.md`、`knowledge/policies/游戏核心指标口径语义.md`、`semantic_model/model.json` |
-| 查皇室麻将 / MB 解析表、AB 看板或看板指标口径 | `knowledge/policies/皇室麻将BI看板查询规则.md`、`knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
-| 查用户行为、留存、画像 / 标签快照 | `knowledge/policies/用户行为留存画像查询规则.md`、`knowledge/policies/SQL表路由协议.md`、`ai_hive/catalog.yaml` |
-| 查 Block Blast 局 / 轮 / 出块玩法细节 | `knowledge/policies/局轮出块粒度查询规则.md`、`knowledge/policies/SQL表路由协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
-| 查产品实验配置、实验方案效果或组别 | `knowledge/policies/实验配置与方案查询规则.md`、`knowledge/policies/SQL写作业务协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
-| 查白名单事件、商业化链路、广告单元或商业化实验 | `knowledge/policies/白名单事件表查询协议.md`、`knowledge/policies/商业化SQL协议.md`、`ai_hive/catalog.yaml` |
-| 查 BB GP / iOS 商业化埋点链路 | `knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/policies/白名单事件表查询协议.md`、`knowledge/policies/商业化SQL协议.md` |
-| 查 BB GP / iOS 大埋点事件、参数、端差异或 PII 风险 | `knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/policies/特征工程与埋点元数据查询规则.md` |
-| 查模型特征、模型输出标签、事件定义、参数定义或 Hudi 字段映射 | `knowledge/policies/特征工程与埋点元数据查询规则.md`、`knowledge/policies/白名单事件表查询协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
-| 查 AB3.0 实验 ID 或小包广告单元档位 | `knowledge/policies/AB3实验ID提取规则.md`、`knowledge/policies/小包广告单元映射.md`、`knowledge/policies/小包广告单元映射.csv` |
-| 查投放、AF 激活、成本、SDK 收入、ROAS / ROI 或 ROI 预估 | `knowledge/policies/投放与ROI预估SQL协议.md`、`knowledge/policies/投放ROI治理政策.md`、`ai_hive/catalog.yaml` |
+| 查 MaxCompute / ODPS 表、写达成率 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/README.md`、`ai_hive/agent_knowledge/口径决策记录.md` |
+| 写游戏核心指标、留存、时长、局数、广告变现 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`knowledge/agent_knowledge/semantic_contract/model.json` |
+| 查皇室麻将 / MB 解析表、AB 看板或看板指标口径 | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查用户行为、留存、画像 / 标签快照 | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/agent_knowledge/catalog.yaml` |
+| 查 Block Blast 局 / 轮 / 出块玩法细节 | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查产品实验配置、实验方案效果或组别 | `knowledge/agent_knowledge/policies/实验配置与方案查询规则.md`、`knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查白名单事件、商业化链路、广告单元或商业化实验 | `knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md`、`ai_hive/agent_knowledge/catalog.yaml` |
+| 查 BB GP / iOS 商业化埋点链路 | `knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md` |
+| 查 BB GP / iOS 大埋点事件、参数、端差异或 PII 风险 | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md` |
+| 查模型特征、模型输出标签、事件定义、参数定义或 Hudi 字段映射 | `knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md`、`knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查 AB3.0 实验 ID 或小包广告单元档位 | `knowledge/agent_knowledge/policies/AB3实验ID提取规则.md`、`knowledge/agent_knowledge/policies/小包广告单元映射.md`、`knowledge/agent_knowledge/policies/小包广告单元映射.csv` |
+| 查投放、AF 激活、成本、SDK 收入、ROAS / ROI 或 ROI 预估 | `knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md`、`knowledge/agent_knowledge/policies/投放ROI治理政策.md`、`ai_hive/agent_knowledge/catalog.yaml` |
 | 理解当前 Text2SQL 能力和检索链路 | `data_agent_plan/Text2SQL当前能力说明.md`、`data_agent_plan/Text2SQL保守建设计划.md` |
 | 写新的 Text2SQL candidate SQL | `data_agent_plan/Text2SQL保守建设计划.md`、`da_assets/Text2SQL字段证据模板.md`、`da_assets/SQL晋升治理.md` |
-| 查 MI / ROI360 / ClickHouse 口径 | `ai_ck/README.md`、`ai_ck/metrics/ROI360指标语义.md` |
-| 回答跨表指标、让 agent 拼 SQL | `semantic_model/model.json`、`semantic_model/README.md` |
-| 做投放、ROI、DNU、素材、点位、campaign 第一层分析 | `knowledge/policies/第一层分析Agent协议.md` |
-| 判断红线、黄线、冷启动、爬坡 | `knowledge/policies/投放ROI治理政策.md`、`knowledge/report_knowledge/包体ROI目标阈值.md` |
+| 查 MI / ROI360 / ClickHouse 口径 | `ai_ck/README.md`、`ai_ck/agent_knowledge/metrics/ROI360指标语义.md` |
+| 回答跨表指标、让 agent 拼 SQL | `knowledge/agent_knowledge/semantic_contract/model.json`、`knowledge/agent_knowledge/semantic_contract/README.md` |
+| 做投放、ROI、DNU、素材、点位、campaign 第一层分析 | `knowledge/agent_knowledge/policies/第一层分析Agent协议.md` |
+| 判断红线、黄线、冷启动、爬坡 | `knowledge/agent_knowledge/policies/投放ROI治理政策.md`、`knowledge/agent_knowledge/report_knowledge/包体ROI目标阈值.md` |
 | 投喂 docx 周报 / DA 报告 / 截图附件 | `skills/docx报告入库技能/SKILL.md`、`da_assets/报告投喂规范.md`、`da_assets/报告图片处理策略.md` |
 | 找可复用 SQL / SOP / 历史 case | `da_assets/README.md`、`da_assets/SQL晋升治理.md`、`da_assets/index.yaml`、`da_assets/报告证据结构.md` |
 | 看近期要补、要问、要拍板的事项 | `TODO/README.md` |
@@ -64,18 +64,21 @@
 |---|---|---:|---|
 | `ai_hive/` | MaxCompute / Hive 表知识库 | 是 | 一表一卡、口径决策、catalog、RAG bundle |
 | `ai_ck/` | ClickHouse / MI ROI360 知识库 | 是 | CK 表、MI 页面能力、ROI360 指标语义 |
-| `semantic_model/` | 跨表语义模型 | 是 | 机器可读契约；`model.json` 为产物勿手改 |
+| `knowledge/agent_knowledge/semantic_contract/` | 跨表语义契约 | 是 | 默认入口为 `model.json`，源 YAML 只在维护时读取 |
 | `da_assets/` | DA 报告沉淀资产 | 是，优先 verified | `raw`、`verified_sql`、`analysis_sop`、`decision_cases`、`index.yaml` |
 | `knowledge/` | 已审核业务知识和分析规则 | 是 | policy、protocol、问题分类、报告分析提示、历史阈值说明 |
+| `task_routes/` | 任务路由(一任务一文件) | 索引常驻/任务按需 | `INDEX.yaml` 路由器 + 各任务 `first_read`/`allowed_assets`/护栏 |
 | `TODO/` | 近期闭环事项 | 按需 | DA/UA 问题、语义层待补、工具建设、周报问题池、远期 TODO |
 | `关键问题记录/` | 工程级关键问题→整改→验证记录 | 按需 | 命名 `YYYYMMDD<主题>.md`；区别于 TODO 待办与 decision_cases 投放复盘 |
-| `skills/` | 仓库本地 agent skill | 按需 | docx 报告入库、MI ROI360 分析等可执行技能说明；SQL 写作规范已沉淀到 `knowledge/policies/` |
+| `skills/` | 仓库本地 agent skill | 按需 | docx 报告入库、MI ROI360 分析等可执行技能说明；SQL 写作规范已沉淀到 `knowledge/agent_knowledge/policies/` |
 | `tools/` | 维护脚本与运行手册 | 否/按需 | `tools/scripts` 放脚本，`tools/runbooks` 放可复跑命令说明 |
-| `eval/` | 跨资产回归 | 否/按需 | Agent R 系列回归；语义模型专属回归仍在 `semantic_model/eval` |
-| `data_agent_plan/` | 长远规划与阶段快照 | 否/按需 | roadmap、POC readiness、handoff、专题 gap 快照 |
-| `examples/` | 未验证样例 | 否 | 可参考但不能直接当正式口径；验证后晋升到 `da_assets/verified_sql` |
-| `case_studies/` | 历史专项治理案例 | 按需 | 如 `wide_hi` 血缘、审计、验证材料 |
+| `eval/` | 跨资产回归 | 否/按需 | Agent R 系列回归；语义模型专属回归在 `knowledge/engineering_artifacts/semantic_contract/eval` |
+| `data_agent_plan/` | 长远规划与阶段快照 | 否/按需 | roadmap、POC readiness、handoff、专题 gap 快照、三层结构规范 |
+| `showoff/` | 对外汇报材料 | 否 | DataAgent 基座汇报稿、架构图、能力总览 |
+| `术语解释/` | 术语与领域背景 | 按需 | 表卡 / 领域名词解释，不替代当前 schema |
 | `raw_exports/` | 原始输入 inbox（仅本地，不纳入 git） | 否 | 公司周报、DA 报告、导出 CSV/txt、待入库材料；不直接当事实 |
+
+> 目录分层、manifest 约定与跨库归属的 canonical 定义见 [`data_agent_plan/知识库三层结构规范.md`](data_agent_plan/知识库三层结构规范.md)。原顶层 examples、case_studies 目录已解散并入对应知识库的 `audit_archive` 与 `da_assets/candidate_sql`（详见三层结构规范）。
 
 > **`raw_exports/` 与 `da_assets/raw/` 仅本地归档**：已在 `.gitignore` 中排除、不纳入 git。文档、表卡、SOP、`index.yaml` 中指向这两个目录的路径均为**本地来源标注**（git 协作者需在本地查阅或重新获取），不是仓库内可达文件。
 
@@ -102,25 +105,25 @@
 - ROI360 蓝底是预估值，非蓝底才是已返回真实值。
 - campaign 级 MI ROI360 当前使用 `campaign_name`，不是 `campaign_id`。
 - 投放治理文档当前用于候选识别、观察名单和上会问题，不自动给最终停投/放量动作。
-- 包体 ROI 红线 / 达标线已从 2026-06-16 试运行文档结构化到 `knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv`；当前为 `trial_active`，按月 review，不作为永久 confirmed 阈值。
+- 包体 ROI 红线 / 达标线已从 2026-06-16 试运行文档结构化到 `knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv`；当前为 `trial_active`，按月 review，不作为永久 confirmed 阈值。
 
 ## 不要做什么
 
-- 不把 `raw_exports/`、`da_assets/raw/`、`knowledge/draft_knowledge/` 里的内容直接当正式事实。
+- 不把 `raw_exports/`、`da_assets/raw/`、`knowledge/audit_archive/draft_knowledge/` 里的内容直接当正式事实。
 - 不把蓝底 ROI360 当真实回收。
 - 不从热力图、复杂多指标图截图中反推精确数值。
 - 不在阈值未结构化或未确认前输出“必须停投/必须放量”。
 - 不保存或输出 AK/SK、MI token、SSO ticket、数据库密码、用户级明细。
-- 不用 wide 表作 安装/激活用户数分母；安装/激活用户数分母见 `ai_hive/口径决策记录.md`。
+- 不用 wide 表作 安装/激活用户数分母；安装/激活用户数分母见 `ai_hive/agent_knowledge/口径决策记录.md`。
 
 ## 维护方式
 
 | 材料 | 放到哪里 |
 |---|---|
 | Agent 检索路线、canonical owner、默认召回边界 | `AGENT_RETRIEVAL_MAP.yaml` |
-| 新表 schema / 表口径 | `ai_hive/tables/` 或 `ai_ck/tables/` |
-| MI / ROI 指标语义 | `ai_ck/metrics/` |
-| 跨表实体、指标、维度、join 契约 | `semantic_model/` |
+| 新表 schema / 表口径 | `ai_hive/agent_knowledge/tables/` 或 `ai_ck/agent_knowledge/tables/` |
+| MI / ROI 指标语义 | `ai_ck/agent_knowledge/metrics/` |
+| 跨表实体、指标、维度、join 契约 | `knowledge/agent_knowledge/semantic_contract/` |
 | 已审核业务规则 / 分析规程 | `knowledge/` |
 | 近期待办 / 待问 DA/UA / 待拍板 | `TODO/` |
 | 待晋升 SQL | `da_assets/candidate_sql/` |
@@ -130,6 +133,7 @@
 | 原始公司周报、DA 报告、导出件 | `raw_exports/`，入库后归档到 `da_assets/raw/` |
 | 仓库本地 agent skill | `skills/` |
 | 维护脚本 / 运行手册 | `tools/scripts/`、`tools/runbooks/` |
-| 非正式样例 SQL | `examples/` |
-| 历史专项审计 | `case_studies/` |
+| 非正式 / 未验证样例 SQL | `da_assets/candidate_sql/` |
+| 历史专项审计与血缘证据 | `ai_hive/audit_archive/evidence/`(MC 侧)、`ai_ck/audit_archive/`(CK 侧) |
+| 目录分层 / manifest 约定 / 跨库归属 | `data_agent_plan/知识库三层结构规范.md` |
 | 长远路线图 / POC / handoff | `data_agent_plan/` |

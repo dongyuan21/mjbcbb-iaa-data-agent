@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Data Agent Base Framework Showoff</title>
+  <title>Data Agent 数据基座汇报页</title>
   <style>
     :root {
       color-scheme: dark;
@@ -516,18 +516,18 @@
     <section class="hero">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">脱敏展示 · 基座层已成型</div>
-          <h1>Data Agent 数据基座：基层已就绪，上层闭环待建设。</h1>
+          <div class="eyebrow">对外汇报 · 只读分析基座</div>
+          <h1>让 Data Agent 先会靠谱分析，再讨论自动动作。</h1>
           <p>
-            当前基层把表卡、语义模型、verified SQL、分析 SOP、历史 case、freshness 和回归测试组织成一条可追溯链路。
-            中层可以启动只读分析 POC；上层还需要补人类决策、操作日志、动作后验和策略记忆。
+            当前基座把表说明、业务口径、可复用 SQL、分析流程、历史案例和质量门禁串成一条可追溯链路。
+            它先解决“查得准、讲得清、风险说得明白”，再把需要拍板的动作交给人。
           </p>
         </div>
         <aside class="status-card">
           <div class="label">当前阶段</div>
-          <div class="status">基层 Ready</div>
+          <div class="status">只读 POC 可启动</div>
           <div class="note">
-            可做事实拆解、SQL 复用、口径校验和风险提示；自动预算、停投、放量仍需上层闭环和人工确认。
+            可做事实拆解、SQL 复用、口径校验和风险提示；自动预算、停投、放量仍需要人工确认和后验闭环。
           </div>
         </aside>
       </div>
@@ -536,28 +536,28 @@
     <section class="section">
       <div class="section-title">
         <h2>资产盘点</h2>
-        <span>来自当前知识库索引、表卡、回归报告的脱敏聚合</span>
+        <span>脱敏聚合展示；实时数字以仓库自动快照为准</span>
       </div>
       <div class="metrics">
         <article class="metric">
-          <div class="num accent-blue">98</div>
-          <div class="name">MaxCompute 表卡</div>
-          <div class="desc">覆盖增长 Topic、S2S、素材、设备、预测、归因等主链路。</div>
+          <div class="num accent-blue">100+</div>
+          <div class="name">MaxCompute 表说明</div>
+          <div class="desc">覆盖投放、S2S、素材、设备、预测、归因等主链路。</div>
         </article>
         <article class="metric">
-          <div class="num accent-cyan">136</div>
-          <div class="name">ClickHouse 元数据对象</div>
-          <div class="desc">全库 metadata 已抽取，P0 ROI360 事实表与视图有业务 profile。</div>
+          <div class="num accent-cyan">20+</div>
+          <div class="name">ClickHouse 高频表</div>
+          <div class="desc">围绕 MI ROI360、消耗、回收、留存、campaign 映射建设。</div>
         </article>
         <article class="metric">
-          <div class="num accent-purple">23</div>
+          <div class="num accent-purple">50</div>
           <div class="name">语义指标</div>
-          <div class="desc">跨表指标由机器可读模型管理，禁止 CK 与 MC 直接 SQL join。</div>
+          <div class="desc">把 ROI、LTV、留存、CPI 等口径写成 Agent 可读取的合同。</div>
         </article>
         <article class="metric">
           <div class="num accent-green">8/8</div>
-          <div class="name">Agent 回归通过</div>
-          <div class="desc">R1-R8 覆盖 DNU、ARPU、点位、素材、回收、预测与闭环检查。</div>
+          <div class="name">问答回归通过</div>
+          <div class="desc">覆盖 DNU、ARPU、点位、素材、回收、预测与边界检查。</div>
         </article>
       </div>
     </section>
@@ -565,12 +565,12 @@
     <section class="section">
       <div class="section-title">
         <h2>架构图</h2>
-        <span>当前基层如何支撑只读 Agent，以及上层闭环如何反哺基座</span>
+        <span>从业务问题到可解释结论，中间每一步都有证据和边界</span>
       </div>
       <div class="blueprint">
         <div class="diagram-row single">
           <article class="diagram-card primary">
-            <div class="diagram-kicker">Input</div>
+            <div class="diagram-kicker">入口</div>
             <div class="diagram-title">业务问题</div>
             <div class="diagram-copy">ROI、DNU、素材、点位、Campaign、数据质量等投放分析问题。</div>
           </article>
@@ -580,54 +580,54 @@
 
         <div class="diagram-row single">
           <article class="diagram-card agent">
-            <div class="diagram-kicker">Middle Layer</div>
+            <div class="diagram-kicker">分析层</div>
             <div class="diagram-title">只读分析 Agent</div>
-            <div class="diagram-copy">识别问题类型，召回可信资产，复用或生成 SQL，检查 freshness，输出事实、拆解、风险和待确认项。</div>
+            <div class="diagram-copy">识别问题类型，召回可信资产，复用或生成 SQL，检查数据是否到齐，输出事实、拆解、风险和待确认项。</div>
           </article>
         </div>
 
         <div class="diagram-arrow">&darr; &uarr;</div>
 
-        <div class="diagram-label">当前基层：数据与知识基座</div>
+        <div class="diagram-label">当前已具备：数据与知识基座</div>
         <div class="diagram-row four">
           <article class="diagram-card">
-            <div class="diagram-kicker">Data</div>
-            <div class="diagram-title">表卡与元数据</div>
-            <div class="diagram-copy">MC / CK 表卡、字段、分区、grain、join key、pitfall 和 catalog。</div>
+            <div class="diagram-kicker">数据目录</div>
+            <div class="diagram-title">每张表的使用说明</div>
+            <div class="diagram-copy">告诉 Agent 这张表能解决什么问题、怎么安全查询、有哪些口径风险。</div>
           </article>
           <article class="diagram-card">
-            <div class="diagram-kicker">Semantic</div>
-            <div class="diagram-title">语义模型</div>
-            <div class="diagram-copy">实体、指标、维度、join、默认口径和跨源护栏的机器可读契约。</div>
+            <div class="diagram-kicker">业务口径</div>
+            <div class="diagram-title">统一指标合同</div>
+            <div class="diagram-copy">把 ROI、LTV、DNU、留存等概念写成统一规则，避免临场猜口径。</div>
           </article>
           <article class="diagram-card">
-            <div class="diagram-kicker">Evidence</div>
-            <div class="diagram-title">证据资产</div>
-            <div class="diagram-copy">verified SQL、analysis SOP、decision case、raw / draft 来源回链。</div>
+            <div class="diagram-kicker">可复用经验</div>
+            <div class="diagram-title">跑通过的分析资产</div>
+            <div class="diagram-copy">把已验证 SQL、分析流程和历史案例沉淀下来，下次可以直接复用。</div>
           </article>
           <article class="diagram-card">
-            <div class="diagram-kicker">Control</div>
+            <div class="diagram-kicker">质量保障</div>
             <div class="diagram-title">验证与护栏</div>
-            <div class="diagram-copy">freshness、分区过滤、PII 禁止、跨源 join 禁止、语义和场景回归。</div>
+            <div class="diagram-copy">先判断数据是否到齐、查询是否安全、口径是否可用，再输出结论。</div>
           </article>
         </div>
 
         <div class="diagram-arrow">&darr; &uarr;</div>
 
-        <div class="diagram-label">后续上层：决策与闭环建设</div>
+        <div class="diagram-label">后续要补：决策与后验闭环</div>
         <div class="diagram-row triple">
           <article class="diagram-card future">
-            <div class="diagram-kicker">Decision</div>
+            <div class="diagram-kicker">人工拍板</div>
             <div class="diagram-title">人类决策与阈值策略</div>
             <div class="diagram-copy">结构化放量、停投、冷启动、小样本、观察期、红线和达标线。</div>
           </article>
           <article class="diagram-card future">
-            <div class="diagram-kicker">Action Context</div>
+            <div class="diagram-kicker">动作背景</div>
             <div class="diagram-title">只读操作日志</div>
             <div class="diagram-copy">接入广告平台 change log，解释预算、bid、状态变化，不自动执行动作。</div>
           </article>
           <article class="diagram-card future">
-            <div class="diagram-kicker">Learning</div>
+            <div class="diagram-kicker">后验学习</div>
             <div class="diagram-title">后验与策略记忆</div>
             <div class="diagram-copy">沉淀 D+1 / D+3 / D+7 后验，让 case 反哺语义模型、SOP 和规则库。</div>
           </article>
@@ -638,23 +638,23 @@
     <section class="section">
       <div class="section-title">
         <h2>分层框架</h2>
-        <span>基层支撑问数，中层支撑分析，上层支撑闭环治理</span>
+        <span>从“能查清楚”逐步走向“能持续复盘”</span>
       </div>
       <div class="architecture">
         <article class="layer">
           <h3><span class="accent-blue">01</span> 基层：数据与知识基座</h3>
-          <p class="muted">沉淀表卡、字段、分区、业务口径、语义模型、verified SQL、SOP、case 和 freshness。</p>
+          <p class="muted">把表、口径、SQL、流程、案例和数据新鲜度组织成 Agent 可读取的知识底座。</p>
           <div class="pill-list">
             <span class="pill">MC / MaxCompute</span>
             <span class="pill">CK / ROI360</span>
             <span class="pill">表卡 YAML</span>
             <span class="pill">Semantic Model</span>
-            <span class="pill">verified SQL</span>
+            <span class="pill">已验证 SQL</span>
           </div>
         </article>
         <article class="layer">
           <h3><span class="accent-cyan">02</span> 中层：只读分析 Agent</h3>
-          <p class="muted">按问题类型召回资产，先验证数据成熟度，再输出事实、拆解、风险和待确认项。</p>
+          <p class="muted">按问题类型召回可信资产，先验证数据是否成熟，再输出事实、拆解、风险和待确认项。</p>
           <div class="pill-list">
             <span class="pill">Question Routing</span>
             <span class="pill">SQL 复用</span>
@@ -664,7 +664,7 @@
         </article>
         <article class="layer">
           <h3><span class="accent-purple">03</span> 上层：决策与闭环建设</h3>
-          <p class="muted">补齐人类决策、广告平台操作日志、动作后验、阈值策略和可审计工作台。</p>
+          <p class="muted">补齐人类决策、广告平台操作记录、动作后验和策略记忆。</p>
           <div class="pill-list">
             <span class="pill">Decision Case</span>
             <span class="pill">Change Log</span>
@@ -679,7 +679,7 @@
     <section class="section">
       <div class="section-title">
         <h2>只读分析工作流</h2>
-        <span>观察 -> 建模 -> 查询 -> 验证 -> 解释；动作仍由人确认</span>
+        <span>先解释清楚，再交给人决定是否行动</span>
       </div>
       <div class="flow">
         <article class="node">
@@ -690,17 +690,17 @@
         <article class="node">
           <div class="step">Route</div>
           <div class="title">召回资产</div>
-          <div class="copy">优先 verified SQL，其次语义模型、表卡、SOP、case。</div>
+          <div class="copy">优先复用跑通过的 SQL，其次读取语义层、表说明、流程和案例。</div>
         </article>
         <article class="node">
           <div class="step">Validate</div>
           <div class="title">检查口径</div>
-          <div class="copy">分区、成熟窗口、分母、SDK/AF、organic 两版都显式处理。</div>
+          <div class="copy">检查数据是否到齐、时间窗是否正确、分母和收入源是否一致。</div>
         </article>
         <article class="node">
           <div class="step">Explain</div>
           <div class="title">输出拆解</div>
-          <div class="copy">给事实、贡献、风险，不把 draft 或 delayed 数据当确定结论。</div>
+          <div class="copy">给事实、贡献和风险，不把草稿或延迟数据当确定结论。</div>
         </article>
         <article class="node">
           <div class="step">Handoff</div>
@@ -713,24 +713,24 @@
     <section class="section">
       <div class="section-title">
         <h2>质量判断</h2>
-        <span>强项与当前短板</span>
+        <span>已经能支撑只读分析，但还不是自动投放系统</span>
       </div>
       <div class="split">
         <article class="panel">
           <h3 class="accent-green">已经做对的部分</h3>
           <ul class="checklist">
-            <li><span class="mark"></span><span>知识分层清楚：raw、draft、verified、confirmed、needs_decision 有边界。</span></li>
-            <li><span class="mark"></span><span>机器可读程度高：表卡、catalog、manifest、semantic model、eval 都能被 Agent 消费。</span></li>
-            <li><span class="mark"></span><span>查询护栏明确：分区过滤、跨源 join 禁止、PII 禁止、freshness 先行。</span></li>
-            <li><span class="mark"></span><span>有验证闭环：语义模型 5/5、Agent 回归 8/8，已具备只读演练基础。</span></li>
+            <li><span class="mark"></span><span>知识分层清楚：原始材料、草稿、已验证、已确认、待拍板事项有边界。</span></li>
+            <li><span class="mark"></span><span>机器可读程度高：表说明、目录、语义合同和回归报告都能被 Agent 消费。</span></li>
+            <li><span class="mark"></span><span>查询护栏明确：分区过滤、跨源 join 禁止、PII 禁止、数据新鲜度先行。</span></li>
+            <li><span class="mark"></span><span>有验证闭环：语义模型和问答回归让变更后可以检查是否跑偏。</span></li>
           </ul>
         </article>
         <article class="panel">
           <h3 class="accent-amber">还缺的关键闭环</h3>
           <ul class="checklist">
-            <li><span class="mark warn"></span><span>decision case 缺人类动作与后验，经验还没有真正变成策略记忆。</span></li>
+            <li><span class="mark warn"></span><span>历史案例还缺人类动作与后验，经验还没有完全变成策略记忆。</span></li>
             <li><span class="mark warn"></span><span>UA 阈值、样本量、冷启动、停投/放量边界仍待拍板。</span></li>
-            <li><span class="mark warn"></span><span>部分 DA 口径和素材 / 点位 SQL 仍在 draft 或小窗口阶段。</span></li>
+            <li><span class="mark warn"></span><span>部分 DA 口径和素材 / 点位 SQL 仍在候选或小窗口阶段。</span></li>
             <li><span class="mark warn"></span><span>广告平台操作记录工具未接入，归因还不能自动连接到预算、bid、状态变更。</span></li>
           </ul>
         </article>
@@ -746,7 +746,7 @@
         <article class="milestone">
           <div class="phase">P0</div>
           <h3>跑稳只读 POC</h3>
-          <p>选择 DNU、ARPU、campaign 观察三类问题，完整走 freshness、SQL、解释、风险输出。</p>
+          <p>选择 DNU、ARPU、campaign 观察三类问题，完整走数据新鲜度、SQL、解释、风险输出。</p>
         </article>
         <article class="milestone">
           <div class="phase">P1</div>

@@ -1,5 +1,5 @@
 version: "0.1"
-updated: "2026-06-18"
+updated: "2026-06-20"
 status: active
 purpose: >
   Natural-language request routing map for this Data Agent knowledge workspace.
@@ -15,26 +15,38 @@ routing_principles:
   - Check freshness before giving current-window conclusions.
   - Mark owner-only business decisions as needs_decision instead of deciding them.
 
+# Slim control plane only. Heavy indexes (semantic model.json, da_assets/index.yaml,
+# knowledge catalog, per-task protocols) are NOT loaded here; they are pulled on
+# demand via task_routes/<id>.yaml first_read after the task type is picked.
+# Rationale and sizing: data_agent_plan/知识库三层结构规范.md.
 default_bootstrap:
   - README.md
   - AGENTS.md
   - AGENT_RETRIEVAL_MAP.yaml
-  - semantic_model/model.json
-  - da_assets/index.yaml
+  - task_routes/INDEX.yaml
   - ai_hive/agent_manifest.yaml
   - ai_ck/agent_manifest.yaml
-  - knowledge/manifest.yaml
-  - knowledge/policies/第一层分析Agent协议.md
+  - knowledge/agent_manifest.yaml
+  - knowledge/agent_knowledge/policies/默认召回边界与晋升规则.md
   - TODO/README.md
 
 never_default_recall:
   - raw_exports/
   - da_assets/raw/
-  - knowledge/draft_knowledge/
-  - ai_ck/table_profiles/_raw_dump/
-  - examples/
+  - knowledge/audit_archive/draft_knowledge/
+  - ai_ck/audit_archive/table_profiles_raw_dump/
+  - knowledge/audit_archive/semantic_contract/
   - data_agent_plan/MJ_DT与P3交接任务.md
   - data_agent_plan/*.json
+
+# Human-facing reference directories: kept on purpose, but not canonical fact
+# owners and not default-recall. Every top-level directory must be classified
+# as a canonical_owner, never_default_recall, or reference_only_dirs entry
+# (enforced by check_agent_retrieval_map.py top-level coverage check).
+reference_only_dirs:
+  - showoff/
+  - 关键问题记录/
+  - 术语解释/
 
 canonical_owners:
   - id: maxcompute_table_knowledge
@@ -46,8 +58,8 @@ canonical_owners:
     path: ai_hive/
     index:
       - ai_hive/agent_manifest.yaml
-      - ai_hive/catalog.yaml
-      - ai_hive/口径决策记录.md
+      - ai_hive/agent_knowledge/catalog.yaml
+      - ai_hive/agent_knowledge/口径决策记录.md
     notes:
       - Do not copy full table semantics into route or plan files.
 
@@ -59,8 +71,8 @@ canonical_owners:
     path: ai_ck/
     index:
       - ai_ck/agent_manifest.yaml
-      - ai_ck/catalog.yaml
-      - ai_ck/metrics/
+      - ai_ck/agent_knowledge/catalog.yaml
+      - ai_ck/agent_knowledge/metrics/
     notes:
       - CK is the reporting and OLAP layer; MC remains the training and label fact source.
 
@@ -72,10 +84,11 @@ canonical_owners:
       - joins
       - diagnostics
       - governance fields
-    path: semantic_model/
+    path: knowledge/agent_knowledge/semantic_contract/
     index:
-      - semantic_model/model.json
-      - semantic_model/README.md
+      - knowledge/agent_knowledge/semantic_contract/agent_manifest.yaml
+      - knowledge/agent_knowledge/semantic_contract/model.json
+      - knowledge/agent_knowledge/semantic_contract/README.md
     notes:
       - model.json is the machine-readable contract; do not hand-edit generated output.
 
@@ -87,25 +100,26 @@ canonical_owners:
       - current confirmed or trial policy documents
     path: knowledge/
     index:
-      - knowledge/manifest.yaml
-      - knowledge/policies/第一层分析Agent协议.md
-      - knowledge/policies/AB3实验ID提取规则.md
-      - knowledge/policies/BB大埋点字典使用规则.md
-      - knowledge/policies/BB商业化埋点查询规则.md
-      - knowledge/policies/商业化SQL协议.md
-      - knowledge/policies/游戏核心指标口径语义.md
-      - knowledge/policies/局轮出块粒度查询规则.md
-      - knowledge/policies/实验配置与方案查询规则.md
-      - knowledge/policies/特征工程与埋点元数据查询规则.md
-      - knowledge/policies/皇室麻将BI看板查询规则.md
-      - knowledge/policies/SQL表路由协议.md
-      - knowledge/policies/投放与ROI预估SQL协议.md
-      - knowledge/policies/白名单事件表查询协议.md
-      - knowledge/policies/用户行为留存画像查询规则.md
-      - knowledge/policies/小包广告单元映射.md
-      - knowledge/policies/小包广告单元映射.csv
-      - knowledge/policies/投放ROI治理政策.md
-      - knowledge/report_knowledge/包体ROI目标阈值.md
+      - knowledge/agent_knowledge/catalog.yaml
+      - knowledge/agent_knowledge/policies/默认召回边界与晋升规则.md
+      - knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+      - knowledge/agent_knowledge/policies/AB3实验ID提取规则.md
+      - knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md
+      - knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md
+      - knowledge/agent_knowledge/policies/商业化SQL协议.md
+      - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+      - knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md
+      - knowledge/agent_knowledge/policies/实验配置与方案查询规则.md
+      - knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md
+      - knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md
+      - knowledge/agent_knowledge/policies/SQL表路由协议.md
+      - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+      - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+      - knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md
+      - knowledge/agent_knowledge/policies/小包广告单元映射.md
+      - knowledge/agent_knowledge/policies/小包广告单元映射.csv
+      - knowledge/agent_knowledge/policies/投放ROI治理政策.md
+      - knowledge/agent_knowledge/report_knowledge/包体ROI目标阈值.md
     notes:
       - knowledge/draft_knowledge is explicitly excluded from default recall.
 
@@ -189,6 +203,17 @@ canonical_owners:
     notes:
       - Plan snapshots are not current facts unless refreshed by the snapshot script.
 
+  - id: task_routing
+    owns:
+      - per-task-type retrieval routing
+      - per-task first_read, allowed_assets, output_guardrails
+    path: task_routes/
+    index:
+      - task_routes/INDEX.yaml
+    notes:
+      - One task type per file (task_routes/<id>.yaml); INDEX.yaml is the lightweight router.
+      - Validated by tools/scripts/check_agent_retrieval_map.py.
+
 metadata_contract:
   required_for_default_recall:
     - status
@@ -230,298 +255,30 @@ promotion_paths:
   semantic_promotion:
     from:
       - da_assets/verified_sql/
-      - ai_hive/tables/
-      - ai_ck/tables/
-      - knowledge/policies/
-    to: semantic_model/
+      - ai_hive/agent_knowledge/tables/
+      - ai_ck/agent_knowledge/tables/
+      - knowledge/agent_knowledge/policies/
+    to: knowledge/agent_knowledge/semantic_contract/
     update:
-      - semantic_model/model.json
-      - semantic_model/eval/回归验证报告.md
+      - knowledge/agent_knowledge/semantic_contract/model.json
+      - knowledge/engineering_artifacts/semantic_contract/eval/回归验证报告.md
   owner_decision_promotion:
     from: TODO/
     to:
       - knowledge/
-      - semantic_model/
+      - knowledge/agent_knowledge/semantic_contract/
       - da_assets/decision_cases/
     rule: >
       Only promote after user, DA, UA, algorithm owner, or business owner decision.
 
-task_types:
-  table_question:
-    objective: "Answer whether a table or field can be used, and how safely."
-    trigger_examples:
-      - "这张表能不能用"
-      - "字段是什么意思"
-      - "分区新鲜吗"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - ai_hive/agent_manifest.yaml
-      - ai_ck/agent_manifest.yaml
-    allowed_assets:
-      - ai_hive/catalog.yaml
-      - ai_hive/tables/
-      - ai_ck/catalog.yaml
-      - ai_ck/tables/
-      - ai_hive/freshness_snapshot.json
-      - ai_ck/freshness_snapshot.json
-    output_guardrails:
-      - "区分实时探测、旧 snapshot 和表卡静态描述；未验证连通性时只能标 snapshot_only / connectivity_unverified。"
-      - "涉及当前分区可用性时必须给出 freshness_status，delayed/stale/unknown 不能支撑当前窗口结论。"
-      - "只返回表适用性、必需过滤条件、PII 风险和已知坑，不输出用户级明细。"
-    completion_boundary: "Return table suitability, required filters, freshness status, and known pitfalls."
-
-  text2sql_or_sql_planning:
-    objective: "Plan or generate SQL under semantic, table-card, and freshness constraints."
-    trigger_examples:
-      - "帮我写 SQL"
-      - "查一下"
-      - "自然语言转 SQL"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - knowledge/policies/SQL写作业务协议.md
-      - knowledge/policies/SQL表路由协议.md
-      - knowledge/policies/游戏核心指标口径语义.md
-      - data_agent_plan/Text2SQL保守建设计划.md
-      - da_assets/Text2SQL字段证据模板.md
-      - semantic_model/model.json
-      - da_assets/index.yaml
-      - ai_hive/agent_manifest.yaml
-      - ai_ck/agent_manifest.yaml
-    allowed_assets:
-      - da_assets/verified_sql/
-      - semantic_model/
-      - ai_hive/tables/
-      - ai_ck/tables/
-      - knowledge/policies/
-    output_guardrails:
-      - "优先复用 verified_sql；新 SQL 必须标明 draft / candidate，不能伪装为已验证口径。"
-      - "Text2SQL 新写 candidate SQL 前必须按 Text2SQL字段证据模板.md 形成字段证据；证据不足时只输出验证缺口。"
-      - "SQL 需求描述、场景标准化和输出说明遵循 SQL写作业务协议.md。"
-      - "选表路由、产品端过滤、主题粒度和候选表 intake 边界遵循 SQL表路由协议.md。"
-      - "游戏核心指标、留存、时长、局数、广告变现和 ECPM 口径遵循 游戏核心指标口径语义.md。"
-      - "产品实验配置、方案效果、BB / DT 实验表优先级和下线实验分区遵循 实验配置与方案查询规则.md。"
-      - "皇室麻将 / MB 解析表、AB 看板和看板核心指标遵循 皇室麻将BI看板查询规则.md；start_uv、install_game_join_uv、game_cnt、banner 和异常处理必须说明。"
-      - "用户行为、留存、画像 / 标签快照查询遵循 用户行为留存画像查询规则.md，区分业务日期、快照分区、用户粒度和设备粒度。"
-      - "Block Blast 局 / 轮 / 出块下钻遵循 局轮出块粒度查询规则.md；轮表累计字段不得二次累计，块表不得默认全量扫描。"
-      - "白名单事件表查询遵循 白名单事件表查询协议.md；商业化链路和商业化实验遵循 商业化SQL协议.md。"
-      - "AB3.0 fs/rv/ba 实验 ID 遵循 AB3实验ID提取规则.md；小包广告单元档位遵循 小包广告单元映射.md 和配套 CSV。"
-      - "BB GP / iOS 商业化埋点遵循 BB商业化埋点查询规则.md，旧 s_* 事件族、新 ad_* 事件族和收入回调不能无说明混算。"
-      - "BB GP / iOS 大埋点字典遵循 BB大埋点字典使用规则.md；字典事件和参数只作候选，必须用元数据、表卡或小窗口验证。"
-      - "模型特征表和埋点元数据查询遵循 特征工程与埋点元数据查询规则.md；特征 / 标签 / 元数据定义不得替代业务事实表。"
-      - "投放、AF 激活、成本、SDK 收入、ROAS / ROI 和 ROI 预估遵循 投放与ROI预估SQL协议.md。"
-      - "必须包含数据源、分区过滤、关键 join、freshness_status 和可能的口径风险。"
-      - "源包资料只作为蒸馏输入；默认召回只能使用已经进入本项目的 knowledge、semantic_model、表卡和 verified_sql。"
-      - "不得从 raw、draft、TODO 或历史 snapshot 直接生成当前事实结论。"
-    completion_boundary: "Prefer verified SQL; otherwise generate SQL with route, source, filters, and risks."
-
-  roi_or_campaign_analysis:
-    objective: "Analyze ROI, CPI, DNU, spend, campaign quality, scale candidates, or observation lists."
-    trigger_examples:
-      - "哪些 campaign 可以放量"
-      - "ROI 为什么掉"
-      - "DNU 下滑来自哪里"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - knowledge/policies/第一层分析Agent协议.md
-      - knowledge/policies/投放ROI治理政策.md
-      - knowledge/policies/ROI360_AF回收表新鲜度SLA.md
-      - knowledge/policies/ROI预测准确性表新鲜度SLA.md
-      - knowledge/report_knowledge/包体ROI目标阈值.md
-      - semantic_model/model.json
-      - da_assets/index.yaml
-    allowed_assets:
-      - da_assets/verified_sql/
-      - da_assets/analysis_sop/
-      - da_assets/decision_cases/
-      - ai_ck/
-      - ai_hive/
-      - knowledge/report_knowledge/
-    conditional_next_hops:
-      - condition: "DNU / ROI / CPI 下滑已经定位到 Google Ads campaign、ad_group 或 ad 层。"
-        route: google_ads_config_change_analysis
-        first_read:
-          - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
-          - da_assets/analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
-          - da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
-          - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
-          - ai_hive/tables/ods_market_google_ads_config_wide_hi.yaml
-        join_guidance: "优先用 customer_id + campaign_id 对齐；campaign_name 仅作展示或兜底线索。"
-        output_boundary: "只输出操作类型、对象类型、变更时间和 campaign 聚合摘要；不输出操作人邮箱或 raw resource JSON。"
-    freshness_required: true
-    owner_decision_required_for:
-      - stop campaign
-      - scale campaign
-      - lower budget
-      - final redline judgment outside confirmed or trial policy
-    output_guardrails:
-      - "ROI / DNU / campaign 结论必须带 freshness_status；freshness blocker 存在时只能给历史成熟窗口或候选分析。"
-      - "trial_active 阈值必须显式标注为试运行口径，未覆盖包体标 missing_threshold / needs_current_threshold。"
-      - "当下降已定位到 Google Ads campaign/ad_group/ad 层时，必须把 google_ads_config_change_analysis 作为下一跳，检查同窗口操作记录。"
-      - "停投、放量、降预算和最终红线判断必须输出 needs_decision，不能替业务拍板。"
-    completion_boundary: "Return evidence, SQL/source, freshness state, candidate judgment, and needs_decision where applicable."
-
-  google_ads_config_change_analysis:
-    objective: "Analyze Google Ads campaign, ad_group, ad, criterion, and budget configuration changes from MaxCompute change_event wide table."
-    trigger_examples:
-      - "Google Ads 哪些 campaign 被改了"
-      - "查 campaign 操作记录"
-      - "Google campaign 下滑前后有没有操作"
-      - "Google DNU 下滑是否有预算状态变更"
-      - "预算或状态有没有被改"
-      - "广告标题描述变更"
-      - "Google 配置变更"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - da_assets/index.yaml
-      - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
-      - da_assets/analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
-      - da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
-      - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
-      - ai_hive/tables/ods_market_google_ads_config_wide_hi.yaml
-      - ai_hive/freshness_snapshot.json
-    allowed_assets:
-      - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
-      - da_assets/analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
-      - da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
-      - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
-      - ai_hive/tables/ods_market_google_ads_config_wide_hi.yaml
-      - ai_hive/freshness_snapshot.json
-    freshness_required: true
-    output_guardrails:
-      - "当前窗口 Google Ads 配置变更结论必须带 freshness_status；freshness delayed/stale/unknown 时只输出历史成熟窗口或排查路径。"
-      - "DNU / campaign 下滑联查默认复用 verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md，并纳入 DNU T+1 分区护栏。"
-      - "必须同时过滤 dt 和 hour；默认复用 verified_sql/vsql_20260618_google_ads_config_change_monitoring.md。"
-      - "禁止输出 change_event_user_email、change_event_old_resource、change_event_new_resource；raw JSON 只能库内解析后聚合输出。"
-      - "本表是 change_event 驱动，不是 Google Ads 全量配置快照；COUNT(*) 解释为变更事件数。"
-      - "有 change log 命中只能说明同期存在操作记录；没有命中不能证明无人操作，最终原因判断仍需消耗/展示/点击/registers 或 owner 复盘。"
-    completion_boundary: "Return operation distribution, campaign-level change rollup, key field change counts, freshness state, and PII-safe caveats."
-
-  mi_roi360_analysis:
-    objective: "Analyze MI ROI360 page fields, SDK/AF revenue semantics, mature-window ROI, and forecast accuracy."
-    trigger_examples:
-      - "MI ROI360 页面怎么看"
-      - "SDK 回收和 AF 回收差异"
-      - "D3/D7 到 D60 预测偏差"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - skills/mi_skill/SKILL.md
-      - ai_ck/agent_manifest.yaml
-      - ai_ck/metrics/ROI360指标语义.md
-      - ai_ck/metrics/MI_ROI360页面字段字典.md
-      - semantic_model/model.json
-      - knowledge/policies/ROI360_AF回收表新鲜度SLA.md
-      - knowledge/policies/ROI预测准确性表新鲜度SLA.md
-      - knowledge/mi_analysis/README.md
-    allowed_assets:
-      - ai_ck/
-      - semantic_model/
-      - da_assets/verified_sql/
-      - knowledge/mi_analysis/
-    freshness_required: true
-    output_guardrails:
-      - "MI 页面分析必须区分 page field、CK 表卡、verified_sql 和 knowledge snapshot 的证据层级。"
-      - "knowledge/mi_analysis/ 只作为带日期和过滤条件的 snapshot，不能默认当最新 MI 当前事实。"
-      - "必须显式说明 revenue_source=sdk / af、成熟窗口、预测窗口和 freshness_status；不替业务决定官方默认。"
-    completion_boundary: "Return page-field semantics, source SQL/assets, revenue source choice, maturity window, and freshness limits."
-
-  point_s2s_analysis:
-    objective: "Analyze point mapping, ready vs push_log, S2S health, and event value."
-    trigger_examples:
-      - "点位为什么没数据"
-      - "应推实推是否一致"
-      - "事件渗透率"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - ai_hive/口径决策记录.md
-      - semantic_model/model.json
-      - da_assets/index.yaml
-    allowed_assets:
-      - ai_hive/tables/
-      - ai_ck/tables/dim_market_campaign_s2s_event_map_da.yaml
-      - da_assets/verified_sql/
-      - da_assets/analysis_sop/
-    freshness_required: true
-    output_guardrails:
-      - "ready 与 push_log 必须分开描述，不能把应推、实推和回收价值合并成一个事实。"
-      - "当前窗口点位结论必须带 freshness_status；延迟或缺失时只输出排查路径。"
-      - "热力图、复杂截图或密集矩阵不能反推精确数值，需标 charts_need_source_data / needs_better_source。"
-    completion_boundary: "Keep ready and push_log separate; report mapping, should-push, actually-pushed, and value evidence."
-
-  material_analysis:
-    objective: "Analyze creative/material front-end efficiency and ROI/LTV follow-up path."
-    trigger_examples:
-      - "素材冷启动"
-      - "IPM CPI"
-      - "素材 ROI"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - TODO/工具建设待办.md
-      - semantic_model/model.json
-      - da_assets/index.yaml
-    allowed_assets:
-      - da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md
-      - ai_hive/tables/ads_market_material_metric_di.yaml
-      - ai_ck/
-      - knowledge/policies/
-    freshness_required: true
-    output_guardrails:
-      - "素材前端指标只覆盖 CTR / CVR / IPM / CPI；ROI / LTV 必须说明需要 join 回收表。"
-      - "当前素材结论必须带 freshness_status；缺 freshness 时只能给分析框架或历史快照。"
-      - "不得用素材前端表直接下 ROI 治理结论，也不得替业务决定放量或停投。"
-    completion_boundary: "Separate front-end efficiency from ROI/LTV; mark MI material capability gaps explicitly."
-
-  report_intake:
-    objective: "Ingest DOCX, weekly reports, DA reports, screenshots, and source SQL into structured assets."
-    trigger_examples:
-      - "入库"
-      - "处理报告"
-      - "抽取知识"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - skills/docx报告入库技能/SKILL.md
-      - da_assets/报告投喂规范.md
-      - da_assets/报告图片处理策略.md
-      - da_assets/报告证据结构.md
-    allowed_assets:
-      - raw_exports/
-      - da_assets/raw/
-      - da_assets/analysis_sop/
-      - da_assets/verified_sql/
-      - da_assets/decision_cases/
-      - da_assets/index.yaml
-    allow_blocked_evidence: true
-    output_guardrails:
-      - "raw_exports/ 和 da_assets/raw/ 只能作为原始证据归档，不能直接进入默认事实或默认召回。"
-      - "每个抽取结论必须保留来源、周期、提取方式、图片状态、置信度和回链。"
-      - "图片中的复杂图、热力图、密集矩阵或模糊截图不能反推精确数值，需标 charts_need_source_data / needs_better_source。"
-    completion_boundary: "Archive raw, extract tables/images, review confidence, update index, and run asset gates."
-
-  knowledge_or_filesystem_governance:
-    objective: "Improve routing, recall boundaries, status metadata, and duplicate governance without changing business facts."
-    trigger_examples:
-      - "文件系统太冗杂"
-      - "怎么精简"
-      - "Agent 路线"
-    first_read:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - README.md
-      - knowledge/manifest.yaml
-      - da_assets/index.yaml
-      - tools/scripts/README.md
-      - eval/README.md
-    allowed_assets:
-      - AGENT_RETRIEVAL_MAP.yaml
-      - README.md
-      - knowledge/manifest.yaml
-      - da_assets/index.yaml
-      - tools/scripts/
-      - eval/
-      - data_agent_plan/
-    output_guardrails:
-      - "只新增或加固路由、manifest、门禁和 runbook，不新增业务事实。"
-      - "修改 knowledge 后必须同步 manifest 并运行 check_knowledge_consistency.py。"
-      - "修改任务路由后必须运行 check_agent_retrieval_map.py 和完整 agent regression；freshness blocker 只归档为数据工程问题。"
-    completion_boundary: "Add routing or validation; do not delete facts or decide business owners' questions."
+task_routing:
+  index: task_routes/INDEX.yaml
+  dir: task_routes/
+  rule: >
+    Read task_routes/INDEX.yaml to route by trigger, then load only the matched
+    task_routes/<id>.yaml. Per-task first_read / allowed_assets / output_guardrails /
+    completion_boundary live in that file and are validated by
+    tools/scripts/check_agent_retrieval_map.py.
 
 output_contract:
   always_include_when_relevant:
