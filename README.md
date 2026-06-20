@@ -3,9 +3,6 @@
 > 面向 Data Agent / 自研开源 DataAgent runtime 的投放、点位、MI ROI360、MaxCompute、ClickHouse 知识工作区。
 > 本目录沉淀的是 **agent 可用的语义、表卡、SQL、SOP、case、工具能力和路线图**，不是业务原始系统本身。
 
-<!-- 自动快照：开始 -->
-
-> 自动快照：2026-06-18；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
 
 | 项 | 当前值 |
 |---|---|
@@ -37,13 +34,13 @@
 | 判断自然语言问题该查哪些层、哪些目录不能默认召回 | `AGENT_RETRIEVAL_MAP.yaml`、`eval/Agent检索路线图报告.md` |
 | 查 MaxCompute / ODPS 表、写达成率 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/README.md`、`ai_hive/agent_knowledge/口径决策记录.md` |
 | 写游戏核心指标、留存、时长、局数、广告变现 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`knowledge/agent_knowledge/semantic_contract/model.json` |
-| 查皇室麻将 / MB 解析表、AB 看板或看板指标口径 | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查麻将 / MB 解析表、AB 看板或看板指标口径 | `knowledge/agent_knowledge/policies/麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查用户行为、留存、画像 / 标签快照 | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/agent_knowledge/catalog.yaml` |
-| 查 Block Blast 局 / 轮 / 出块玩法细节 | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查 BiBi 局 / 轮 / 出块玩法细节 | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查产品实验配置、实验方案效果或组别 | `knowledge/agent_knowledge/policies/实验配置与方案查询规则.md`、`knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查白名单事件、商业化链路、广告单元或商业化实验 | `knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md`、`ai_hive/agent_knowledge/catalog.yaml` |
-| 查 BB GP / iOS 商业化埋点链路 | `knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md` |
-| 查 BB GP / iOS 大埋点事件、参数、端差异或 PII 风险 | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md` |
+| 查 BiBi GP / iOS 商业化埋点链路 | `knowledge/agent_knowledge/policies/BiBi商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md` |
+| 查 BiBi GP / iOS 大埋点事件、参数、端差异或 PII 风险 | `knowledge/agent_knowledge/policies/BiBi大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BiBi商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md` |
 | 查模型特征、模型输出标签、事件定义、参数定义或 Hudi 字段映射 | `knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md`、`knowledge/agent_knowledge/policies/白名单事件表查询协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查 AB3.0 实验 ID 或小包广告单元档位 | `knowledge/agent_knowledge/policies/AB3实验ID提取规则.md`、`knowledge/agent_knowledge/policies/小包广告单元映射.md`、`knowledge/agent_knowledge/policies/小包广告单元映射.csv` |
 | 查投放、AF 激活、成本、SDK 收入、ROAS / ROI 或 ROI 预估 | `knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md`、`knowledge/agent_knowledge/policies/投放ROI治理政策.md`、`ai_hive/agent_knowledge/catalog.yaml` |
