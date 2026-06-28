@@ -3,13 +3,13 @@
 > 状态：framework_confirmed
 > 创建：2026-06-20
 > 更新：2026-06-20
-> 上下文：基于数仓知识库工程现状 + 公司基建（山海 K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
+> 上下文：基于数仓知识库工程现状 + 公司基建（shai K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
 
 ## 已确认决策
 
 | 决策项 | 结论 | 确认时间 |
 |---|---|---|
-| 部署形态 | 中心化 Web 服务（山海 K8s） | 2026-06-20 |
+| 部署形态 | 中心化 Web 服务（shai K8s） | 2026-06-20 |
 | Agent 框架 | **PI Framework + 自定义数据工具/护栏层** | 2026-06-21 |
 | 后端语言 | Python（FastAPI） | 2026-06-20 |
 | 持久化 | MySQL（公司实例），**不用 SQLite** | 2026-06-20 |
@@ -64,7 +64,7 @@ Runtime：   ████░░░░░░  40%
 
 | 基建 | Data Agent 用法 | 参考 |
 |---|---|---|
-| 山海 DeployerV2 | 构建 Docker → ACR → K8s 部署 | pgp-platform |
+| shai DeployerV2 | 构建 Docker → ACR → K8s 部署 | pgp-platform |
 | SSO | 用户认证，ticket 换 session | pgp-platform `sso.go` |
 | MySQL | session / 报告元数据 / 查询记录 | pgp-platform GORM |
 | OSS (PVS) | markdown 报告 / 查询结果文件 | pgp-platform HtmlReport |
@@ -147,7 +147,7 @@ pgp-platform 用 Go，creative-video-agent 用 Python。Data Agent Web/API 层�
 - 知识库工具链全是 Python（33 个脚本）
 - MC/CK helper 当前是 Python（PyODPS / clickhouse-driver）
 - PI 是 TypeScript/Node Agent 框架，通过 RPC 与 Python Web 层集成
-- creative-video-agent 已验证 Python + FastAPI + 山海 K8s 可行
+- creative-video-agent 已验证 Python + FastAPI + shai K8s 可行
 
 ### 连接稳定性方案
 
@@ -530,7 +530,7 @@ Phase 0 ~ Phase 1 完全零额外部署，用 structlog + MySQL trace 表就能�
 ## 十、K8s 部署拓扑
 
 ```
-山海 DeployerV2
+shai DeployerV2
   → Docker Build（Python 3.12 + FastAPI + 依赖）
   → ACR 镜像推送
   → K8s namespace: data-agent
@@ -600,7 +600,7 @@ WORKDIR /app
 - Markdown 报告生成 + OSS 存储
 - 钉钉通知（长查询完成 / 断线恢复）
 - Langfuse trace 接入
-- Docker 镜像 + 山海部署
+- Docker 镜像 + shai部署
 - 断线重连 + 会话恢复
 - E2E 回归测试
 - **验收**：DA/UA 组 5+ 人日常使用
@@ -631,7 +631,7 @@ WORKDIR /app
 | 通知 | 钉钉 webhook | creative-video-agent `dingtalk.py` |
 | 日志 | structlog → SLS | creative-video-agent |
 | Trace | Langfuse 自部署（Phase 1） | - |
-| 部署 | 山海 DeployerV2 → K8s | pgp-platform / creative-video-agent |
+| 部署 | shai DeployerV2 → K8s | pgp-platform / creative-video-agent |
 
 ---
 
