@@ -111,7 +111,7 @@ canonical_owners:
       - knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md
       - knowledge/agent_knowledge/policies/实验配置与方案查询规则.md
       - knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md
-      - knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md
+      - knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md
       - knowledge/agent_knowledge/policies/SQL表路由协议.md
       - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
       - knowledge/agent_knowledge/policies/白名单事件表查询协议.md

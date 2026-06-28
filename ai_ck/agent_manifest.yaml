@@ -1,0 +1,114 @@
+version: "0.2"
+updated: "2026-06-20"
+knowledge_root: .
+
+asset_layers:
+  agent_runtime_knowledge:
+    description: 日常问答、选表、SQL 生成和指标解释使用的知识层。
+    default_read:
+      - README.md
+      - agent_knowledge/catalog.yaml
+      - agent_knowledge/数据地图.md
+    on_demand_read:
+      - agent_knowledge/tables/<matched_table>.yaml
+      - agent_knowledge/metrics/<matched_metric_or_page>.md
+      - agent_knowledge/table_profiles/INDEX.md
+      - agent_knowledge/table_profiles/<matched_table>.md
+      - agent_knowledge/MI_ROI360平台能力说明.md
+    recall_rule: >
+      先用 agent_knowledge/catalog.yaml / agent_knowledge/table_profiles/INDEX.md 命中对象,
+      再读取对应完整表卡或指标文档;agent_knowledge/tables/*.yaml 是口径层,
+      agent_knowledge/table_profiles/*.md 只作字段发现。
+  engineering_artifacts:
+    description: 建设 ai_ck 时生成或维护的脚本产物、验证证据和门禁输入。
+    paths:
+      - engineering_artifacts/CK维护流程.md
+      - engineering_artifacts/ClickHouse表准入标准.md
+      - engineering_artifacts/queries/example_verification.json
+      - engineering_artifacts/queries/示例查询验证报告.md
+      - engineering_artifacts/queries/metric_sanity.json
+      - engineering_artifacts/queries/verified/
+      - engineering_artifacts/schema_exports/
+      - engineering_artifacts/business_profiles/
+      - engineering_artifacts/table_card_schema/
+      - engineering_artifacts/freshness_snapshot.json
+      - engineering_artifacts/table_version_registry.yaml
+    recall_rule: 不进默认召回;只在验证、排障、表卡维护、新鲜度判断时读取。
+  audit_archive:
+    description: 历史导出、废弃/低价值表画像、同步过程和来源追溯。
+    paths:
+      - audit_archive/table_profiles_raw_dump/
+      - audit_archive/同步报告.md
+      - audit_archive/来源索引.md
+      - audit_archive/数仓市场全库表清单.md
+      - ../术语解释/数仓市场领域知识总结.md
+    recall_rule: 不进默认召回;不能作为当前事实,只用于审计和追溯。
+
+bootstrap_read_order:
+  - README.md
+  - agent_knowledge/catalog.yaml
+  - agent_knowledge/数据地图.md
+  - agent_knowledge/table_profiles/INDEX.md
+
+maintenance_read_order:
+  - README.md
+  - engineering_artifacts/CK维护流程.md
+  - agent_knowledge/catalog.yaml
+  - engineering_artifacts/ClickHouse表准入标准.md
+
+on_demand_read:
+  - agent_knowledge/tables/<matched_table>.yaml
+  - agent_knowledge/table_profiles/<matched_table>.md
+  - agent_knowledge/metrics/<matched_metric_or_page>.md
+  - engineering_artifacts/queries/verified/<matched_diagnostic>.sql
+
+profile_recall:
+  index: agent_knowledge/table_profiles/INDEX.md
+  rule: >
+    P0 表口径以 agent_knowledge/tables/*.yaml 完整表卡为准;非 P0 表先在
+    agent_knowledge/catalog.yaml/profile_index 或 agent_knowledge/table_profiles/INDEX.md
+    命中表名,再按需读对应 agent_knowledge/table_profiles/<name>.md。
+  do_not_recall:
+    - audit_archive/table_profiles_raw_dump/   # _local 物理分片 / temp / test / staging / dist / replica
+  business_profiles: engineering_artifacts/business_profiles/  # 业务样例,按需读,不进 bootstrap
+
+query_execution:
+  datasource: ClickHouse
+  default_database: shucang_market
+  connection_source:
+    - /Users/sere/yrgnuhstudio/coding/pgp-platform/server/configs/config.toml
+    - /app/configs/config.toml
+  notes:
+    - pgp-platform uses clickhouse-go/v2 native protocol.
+    - Real credentials are injected by deployment and must not be stored here.
+
+priority_tables:
+  source_of_truth: agent_knowledge/catalog.yaml#tiers.tier0_production_mainline
+  P0:
+    - shucang_market.dim_market_campaign_s2s_event_map_da
+    - shucang_market.tj_ad_spend_active_v2
+    - shucang_market.tj_ad_spend_active_v2_view
+    - shucang_market.tj_ad_sdk_revenue
+    - shucang_market.tj_ad_sdk_revenue_view
+    - shucang_market.tj_ad_revenue_v2
+    - shucang_market.tj_ad_revenue_v2_view
+    - shucang_market.af_cohort_user_acquisition_v2
+    - shucang_market.af_cohort_user_acquisition_v2_view
+    - shucang_market.market_roi_obs_correction_coef_media
+    - shucang_market.campaign_convert_type_config
+
+hard_rules:
+  - Do not print or persist ClickHouse, MI, SSO, AK, SK, or token values.
+  - CK is an OLAP/reporting layer; ODPS/MaxCompute remains the training and label fact source.
+  - Spend and revenue queries must filter by active_date or an equivalent date field.
+  - Retention queries must filter dt/date range and date_diff.
+  - Preserve raw campaign_name/adset_name strings for MI filters; do not trim values before exact matching.
+  - Prefer campaign_name for MI-compatible joins today; record campaign_id as stable fallback until MI campaign_id filter is proven.
+  - For point mapping diagnostics, first query mapping table, then validate spend, SDK revenue, AF revenue, and retention coverage.
+
+source_priority:
+  - Online ClickHouse DESCRIBE or SHOW CREATE TABLE
+  - pgp-platform CK validation docs and client code
+  - nexus ROI handler field configs and table routing
+  - GORM structs and comments
+  - DA verified SQL

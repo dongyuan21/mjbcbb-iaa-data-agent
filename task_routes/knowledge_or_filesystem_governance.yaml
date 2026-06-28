@@ -1,0 +1,32 @@
+id: knowledge_or_filesystem_governance
+objective: "Improve routing, recall boundaries, status metadata, and duplicate governance without changing business facts."
+trigger_examples:
+  - "文件系统太冗杂"
+  - "怎么精简"
+  - "Agent 路线"
+first_read:
+  - AGENT_RETRIEVAL_MAP.yaml
+  - task_routes/INDEX.yaml
+  - data_agent_plan/知识库三层结构规范.md
+  - README.md
+  - knowledge/agent_knowledge/catalog.yaml
+  - knowledge/agent_knowledge/policies/默认召回边界与晋升规则.md
+  - da_assets/index.yaml
+  - tools/scripts/README.md
+  - eval/README.md
+allowed_assets:
+  - AGENT_RETRIEVAL_MAP.yaml
+  - task_routes/
+  - data_agent_plan/知识库三层结构规范.md
+  - README.md
+  - knowledge/agent_knowledge/catalog.yaml
+  - knowledge/agent_knowledge/policies/默认召回边界与晋升规则.md
+  - da_assets/index.yaml
+  - tools/scripts/
+  - eval/
+  - data_agent_plan/
+output_guardrails:
+  - "只新增或加固路由、manifest、门禁和 runbook，不新增业务事实。"
+  - "修改 knowledge 后必须同步 catalog 并运行 check_knowledge_consistency.py。"
+  - "修改任务路由(task_routes/)后必须运行 check_agent_retrieval_map.py 和完整 agent regression；freshness blocker 只归档为数据工程问题。"
+completion_boundary: "Add routing or validation; do not delete facts or decide business owners' questions."

@@ -1,0 +1,54 @@
+version: "0.1"
+updated: "2026-06-20"
+knowledge_root: .
+
+asset_layers:
+  agent_runtime_knowledge:
+    description: 已审核业务规则、分析协议、报告知识、提示词、对账证据和跨表语义契约。
+    default_read:
+      - README.md
+      - agent_knowledge/catalog.yaml
+      - agent_knowledge/数据地图.md
+    on_demand_read:
+      - agent_knowledge/policies/<matched_policy>.md
+      - agent_knowledge/report_knowledge/<matched_report_knowledge>.md
+      - agent_knowledge/semantic_contract/model.json
+      - agent_knowledge/prompts/<matched_prompt>.md
+      - agent_knowledge/reconciliations/<matched_reconciliation>.md
+    recall_rule: >
+      先读 agent_knowledge/catalog.yaml 判断 status、default_recall、applies_to_current 和 confidence；
+      default_recall=false 的文件只能作为线索、快照或待审核材料。
+  engineering_artifacts:
+    description: knowledge 一致性门禁、维护说明和可复跑检查入口。
+    paths:
+      - engineering_artifacts/知识一致性门禁.md
+      - engineering_artifacts/semantic_contract/
+    recall_rule: 不进默认召回；只在维护 knowledge 目录和排查门禁失败时读取。
+  audit_archive:
+    description: 草稿、快照、一次性分析和来源索引。
+    paths:
+      - audit_archive/draft_knowledge/
+      - audit_archive/mi_analysis/
+      - audit_archive/semantic_contract/
+      - audit_archive/来源索引.md
+    recall_rule: 不进默认召回；不能作为当前事实，只用于线索、追溯和候选治理。
+
+bootstrap_read_order:
+  - README.md
+  - agent_knowledge/catalog.yaml
+  - agent_knowledge/数据地图.md
+  - agent_knowledge/semantic_contract/model.json
+
+maintenance_read_order:
+  - README.md
+  - engineering_artifacts/知识一致性门禁.md
+  - engineering_artifacts/semantic_contract/build_model.py
+  - agent_knowledge/catalog.yaml
+
+hard_rules:
+  - 修改 knowledge/ 下任意 .md/.csv/.json/.yaml 文件后，必须同步 agent_knowledge/catalog.yaml。
+  - default_recall=true 只能用于 active、active_backlog、confirmed_evidence、trial_active。
+  - draft_only、snapshot、snapshot_data、source_manifest、review_log 不得默认召回。
+  - trial_active 只能用于当前候选判断，不替业务 owner 下最终动作。
+  - audit_archive/ 只作追溯和线索，不作为当前事实。
+  - agent_knowledge/semantic_contract/model.json 是跨表语义契约运行时入口；源 YAML 只在维护时读取。

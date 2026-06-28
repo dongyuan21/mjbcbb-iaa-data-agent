@@ -1,0 +1,108 @@
+version: "0.1"
+updated: "2026-06-20"
+status: active
+purpose: >
+  Lightweight task router. An agent reads this index first to pick a task type by
+  trigger, then loads only that single task file under task_routes/<id>.yaml.
+  This keeps the control-plane bootstrap small: full per-task first_read /
+  allowed_assets / guardrails are loaded on demand, not eagerly.
+contract:
+  - Each task has exactly one file: task_routes/<id>.yaml.
+  - Each task file id must equal its filename stem and appear in this index.
+  - Validation lives in tools/scripts/check_agent_retrieval_map.py.
+  - Global agent role: read-only analysis and alerting; 必须输出预警，禁止输出最终投放动作.
+  - Missing auto-placement is intentional design, not a capability gap.
+
+tasks:
+  - id: table_question
+    file: table_question.yaml
+    objective: "Answer whether a table or field can be used, and how safely."
+    trigger_examples:
+      - "这张表能不能用"
+      - "字段是什么意思"
+      - "分区新鲜吗"
+
+  - id: text2sql_or_sql_planning
+    file: text2sql_or_sql_planning.yaml
+    objective: "Plan or generate SQL under semantic, table-card, and freshness constraints."
+    trigger_examples:
+      - "帮我写 SQL"
+      - "查一下"
+      - "自然语言转 SQL"
+
+  - id: roi_or_campaign_analysis
+    file: roi_or_campaign_analysis.yaml
+    objective: "Analyze ROI, CPI, DNU, spend, campaign quality, scale candidates, or observation lists."
+    trigger_examples:
+      - "哪些 campaign 可以放量"
+      - "ROI 为什么掉"
+      - "DNU 下滑来自哪里"
+      - "Campaign 面板投放状态"
+      - "ASA 品牌词 ROI"
+      - "花费同步对账"
+
+  - id: redline_bidaily_review
+    file: redline_bidaily_review.yaml
+    objective: "Run or read redline bi-daily ROI screen report (early-ROI threshold); alert-only."
+    trigger_examples:
+      - "跑红黄线双日 review"
+      - "生成双日 ROI 筛选报表"
+      - "红黄线双日review"
+      - "红黄线筛选"
+      - "达红线门槛法"
+
+  - id: google_ads_config_change_analysis
+    file: google_ads_config_change_analysis.yaml
+    objective: "Analyze Google Ads campaign, ad_group, ad, criterion, and budget configuration changes from MaxCompute change_event wide table."
+    trigger_examples:
+      - "Google Ads 哪些 campaign 被改了"
+      - "查 campaign 操作记录"
+      - "Google campaign 下滑前后有没有操作"
+      - "Google DNU 下滑是否有预算状态变更"
+      - "预算或状态有没有被改"
+      - "广告标题描述变更"
+      - "Google 配置变更"
+
+  - id: mi_roi360_analysis
+    file: mi_roi360_analysis.yaml
+    objective: "Analyze MI ROI360 page fields, SDK/AF revenue semantics, mature-window ROI, and forecast accuracy."
+    trigger_examples:
+      - "MI ROI360 页面怎么看"
+      - "SDK 回收和 AF 回收差异"
+      - "D3/D7 到 D60 预测偏差"
+      - "MI 日报 Dashboard"
+      - "ASA 日报"
+
+  - id: point_s2s_analysis
+    file: point_s2s_analysis.yaml
+    objective: "Analyze point mapping, ready vs push_log, S2S health, and event value."
+    trigger_examples:
+      - "点位为什么没数据"
+      - "应推实推是否一致"
+      - "事件渗透率"
+
+  - id: material_analysis
+    file: material_analysis.yaml
+    objective: "Analyze creative/material front-end efficiency and ROI/LTV follow-up path."
+    trigger_examples:
+      - "素材冷启动"
+      - "IPM CPI"
+      - "素材 ROI"
+      - "素材效果 benchmark"
+      - "设计师素材效果"
+
+  - id: report_intake
+    file: report_intake.yaml
+    objective: "Ingest DOCX, weekly reports, DA reports, screenshots, and source SQL into structured assets."
+    trigger_examples:
+      - "入库"
+      - "处理报告"
+      - "抽取知识"
+
+  - id: knowledge_or_filesystem_governance
+    file: knowledge_or_filesystem_governance.yaml
+    objective: "Improve routing, recall boundaries, status metadata, and duplicate governance without changing business facts."
+    trigger_examples:
+      - "文件系统太冗杂"
+      - "怎么精简"
+      - "Agent 路线"

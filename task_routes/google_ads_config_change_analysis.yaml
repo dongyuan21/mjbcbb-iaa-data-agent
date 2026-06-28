@@ -1,0 +1,38 @@
+id: google_ads_config_change_analysis
+objective: "Analyze Google Ads campaign, ad_group, ad, criterion, and budget configuration changes from MaxCompute change_event wide table."
+evidence:
+  require_sql_in_answer: true
+  require_executed_sql_match: true
+trigger_examples:
+  - "Google Ads 哪些 campaign 被改了"
+  - "查 campaign 操作记录"
+  - "Google campaign 下滑前后有没有操作"
+  - "Google DNU 下滑是否有预算状态变更"
+  - "预算或状态有没有被改"
+  - "广告标题描述变更"
+  - "Google 配置变更"
+first_read:
+  - AGENT_RETRIEVAL_MAP.yaml
+  - da_assets/index.yaml
+  - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - da_assets/analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
+  - da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  - ai_hive/engineering_artifacts/freshness_snapshot.json
+allowed_assets:
+  - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - da_assets/analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
+  - da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  - ai_hive/engineering_artifacts/freshness_snapshot.json
+freshness_required: true
+output_guardrails:
+  - "当前窗口 Google Ads 配置变更结论必须带 freshness_status；freshness delayed/stale/unknown 时只输出历史成熟窗口或排查路径。"
+  - "DNU / campaign 下滑联查默认复用 verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md，并纳入 DNU T+1 分区护栏。"
+  - "必须同时过滤 dt 和 hour；默认复用 verified_sql/vsql_20260618_google_ads_config_change_monitoring.md。"
+  - "禁止输出 change_event_user_email、change_event_old_resource、change_event_new_resource；raw JSON 只能库内解析后聚合输出。"
+  - "本表是 change_event 驱动，不是 Google Ads 全量配置快照；COUNT(*) 解释为变更事件数。"
+  - "有 change log 命中只能说明同期存在操作记录；没有命中不能证明无人操作，最终原因判断仍需消耗/展示/点击/registers 或 owner 复盘。"
+completion_boundary: "Return operation distribution, campaign-level change rollup, key field change counts, freshness state, and PII-safe caveats."

@@ -34,7 +34,7 @@
 | 判断自然语言问题该查哪些层、哪些目录不能默认召回 | `AGENT_RETRIEVAL_MAP.yaml`、`eval/Agent检索路线图报告.md` |
 | 查 MaxCompute / ODPS 表、写达成率 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/README.md`、`ai_hive/agent_knowledge/口径决策记录.md` |
 | 写游戏核心指标、留存、时长、局数、广告变现 SQL | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`knowledge/agent_knowledge/semantic_contract/model.json` |
-| 查麻将 / MB 解析表、AB 看板或看板指标口径 | `knowledge/agent_knowledge/policies/麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
+| 查搓麻 / MB 解析表、AB 看板或看板指标口径 | `knowledge/agent_knowledge/policies/搓麻BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查用户行为、留存、画像 / 标签快照 | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`ai_hive/agent_knowledge/catalog.yaml` |
 | 查 BiBi 局 / 轮 / 出块玩法细节 | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`knowledge/agent_knowledge/policies/SQL表路由协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |
 | 查产品实验配置、实验方案效果或组别 | `knowledge/agent_knowledge/policies/实验配置与方案查询规则.md`、`knowledge/agent_knowledge/policies/SQL写作业务协议.md`、`TODO/SQL写作链候选表准入积压清单.md` |

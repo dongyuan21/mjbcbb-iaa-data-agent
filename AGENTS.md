@@ -88,9 +88,9 @@ knowledge/agent_knowledge/policies/SQL写作业务协议.md
 - `SQL写作业务协议.md` 是从 DA 认证知识中抽出的业务认知和写作规范，可作为 SQL 写作当前协议。
 - 涉及选表、产品端过滤、主题表粒度时，同时读取 `knowledge/agent_knowledge/policies/SQL表路由协议.md`。
 - 涉及游戏核心指标、留存、时长、局数、广告收入、ECPM、广告密度时，同时读取 `knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`。
-- 涉及皇室麻将 / Mahjong Blast / MB 解析表、AB 看板、`start_uv`、`install_game_join_uv`、`game_cnt`、banner 或 BI 01 / 02 / 03 层时，同时读取 `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`。
+- 涉及皇家搓麻 / ma0j blest / MB 解析表、AB 看板、`start_uv`、`install_game_join_uv`、`game_cnt`、banner 或 BI 01 / 02 / 03 层时，同时读取 `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`。
 - 涉及产品实验配置、实验方案效果、方案号组别、下线实验分区或 BB / DT 实验表优先级时，同时读取 `knowledge/agent_knowledge/policies/实验配置与方案查询规则.md`。
-- 涉及 Block Blast 局 / 轮 / 出块玩法明细时，同时读取 `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`。
+- 涉及 b-b 局 / 轮 / 出块玩法明细时，同时读取 `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`。
 - 涉及用户行为聚合、留存、用户画像 / 标签快照时，同时读取 `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`。
 - 涉及白名单事件表、`properties` JSON、商业化链路、广告单元或商业化实验时，同时读取 `knowledge/agent_knowledge/policies/白名单事件表查询协议.md` 和 `knowledge/agent_knowledge/policies/商业化SQL协议.md`。
 - 涉及 BB GP / iOS 商业化埋点事件族、端差异、收入回调或 ADX / MAX 字段时，同时读取 `knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`。

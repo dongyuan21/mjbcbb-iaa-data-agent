@@ -1,0 +1,101 @@
+version: "1.1"
+updated: "2026-06-19"
+knowledge_root: .
+
+asset_layers:
+  agent_runtime_knowledge:
+    description: 日常问答、选表、SQL 生成和表口径风险解释使用的知识层。
+    default_read:
+      - README.md
+      - agent_knowledge/catalog.yaml
+      - agent_knowledge/数据地图.md
+      - agent_knowledge/PII_POLICY.yaml
+    on_demand_read:
+      - agent_knowledge/tables/<matched_table>.yaml
+      - agent_knowledge/口径决策记录.md
+    recall_rule: >
+      先用 agent_knowledge/catalog.yaml 命中表名和优先级，再读取对应 agent_knowledge/tables/*.yaml；
+      ROI、设备资产、MC/CK 对齐等跨源问题回到 ai_ck/agent_knowledge/metrics、knowledge/agent_knowledge/semantic_contract 和 da_assets/verified_sql。
+  engineering_artifacts:
+    description: 建设 ai_hive 时需要的脚本输入、准入模板、门禁快照和可复跑产物。
+    paths:
+      - engineering_artifacts/Hive表准入标准.md
+      - engineering_artifacts/Hive维护流程.md
+      - engineering_artifacts/table_card_schema/TABLE_TEMPLATE.yaml
+      - engineering_artifacts/discovered_tables.yaml
+      - engineering_artifacts/freshness_snapshot.json
+    recall_rule: 不进普通问答默认召回；只在表卡维护、准入、刷新和排障时读取。
+  audit_archive:
+    description: 表卡来源证据、smoke test、历史口径探索证据和归档材料。
+    paths:
+      - audit_archive/evidence/
+      - audit_archive/来源索引.md
+    recall_rule: 不作为当前事实入口；只用于支撑对应表卡或口径记录。
+
+bootstrap_read_order:
+  - README.md
+  - agent_knowledge/catalog.yaml
+  - agent_knowledge/数据地图.md
+  - agent_knowledge/PII_POLICY.yaml
+
+maintenance_read_order:
+  - README.md
+  - engineering_artifacts/Hive维护流程.md
+  - engineering_artifacts/Hive表准入标准.md
+  - agent_knowledge/catalog.yaml
+  - agent_knowledge/PII_POLICY.yaml
+
+on_demand_read:
+  - agent_knowledge/tables/<matched_table>.yaml
+  - agent_knowledge/口径决策记录.md
+
+decision_sources:
+  - file: agent_knowledge/口径决策记录.md
+    topics:
+      - install_cohort_denominator
+      - campaign_mapping
+      - achievement_rate_A_B
+  - file: audit_archive/evidence/open_decisions_2026-06-13.json
+    topics:
+      - exploration_evidence
+
+query_execution:
+  datasource: MaxCompute
+  primary: maxcompute-dataworks
+  project: yrgnuh_studio
+  endpoint: https://service.us-east-1.maxcompute.aliyun.com/api
+  quota: ua_event
+  helper: ~/.maxcompute-dataworks/bin/maxcompute_sql.py
+
+priority_tables:
+  source_of_truth: agent_knowledge/catalog.yaml
+  P0:
+    - yrgnuh_studio.ods_appsflyer_all_in_app_events_report_di
+    - yrgnuh_studio.dws_market_capi_user_hourly_metrics_wide_ha
+    - yrgnuh_studio.dws_market_capi_user_hourly_metrics_wide_hi
+    - yrgnuh_studio.dwd_market_s2s_platform_ready_hi
+    - yrgnuh_studio.dwd_market_s2s_platform_push_log_hi
+    - yrgnuh_studio.dwd_market_appsflyer_activation_push_data_di
+    - yrgnuh_studio.dim_market_campaign_s2s_event_map_da
+
+pii_policy: agent_knowledge/PII_POLICY.yaml
+
+hard_rules:
+  - 大表必须带 dt 或等价分区过滤。
+  - 安装/激活用户数分母、达成率和 campaign 映射口径以 agent_knowledge/口径决策记录.md 为准。
+  - 安装/激活用户数分母禁止用 wide_ha；wide_ha 只作 A 口径分子和归因。
+  - PII 以 agent_knowledge/PII_POLICY.yaml 为准；forbidden_output 禁止 SELECT、输出、日志和落盘。
+  - aggregation_only 字段只允许 JOIN 或 COUNT(DISTINCT) 等聚合，禁止输出明细。
+  - join_keys 必须有 lineage、verified SQL、smoke test 或 owner 确认证据；证据不足写 TODO/待确认。
+  - B 口径 s2s_ready 禁止用于跨渠道对比。
+  - engineering_artifacts/freshness_snapshot.json 是快照；评估当前数据状态前必须刷新。
+
+source_priority:
+  - verified_sql / confirmed policy
+  - knowledge/agent_knowledge/semantic_contract/model.json
+  - ai_hive/agent_knowledge/tables/*.yaml
+  - ai_hive/agent_knowledge/口径决策记录.md
+  - ai_ck/agent_knowledge/metrics/*.md
+  - da_assets/verified_sql/*.md
+  - reviewed evidence in ai_hive/audit_archive/evidence
+  - raw / draft / historical notes

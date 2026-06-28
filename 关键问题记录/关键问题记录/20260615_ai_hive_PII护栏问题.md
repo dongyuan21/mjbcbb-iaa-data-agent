@@ -89,7 +89,7 @@ COUNT(DISTINCT COALESCE(customer_user_id, appsflyer_id))
 - 100 卡盖章命中：forbidden_output 46 卡 / aggregation_only 66 卡。
 - 一致性校验：100 卡 `pii_columns_do_not_log` == `PII_POLICY ∩ 该卡实际列`，**全部一致**。
 - 幂等性：重复跑 `stamp_ai_hive_pii.py` 无额外 diff。
-- 典型修复：`dwd_block_blast_ios_white_event_realtime_hi` 从仅标 `[ip]` → `[account_id, device_id, distinct_id, ip, latwgs, lngwgs, uuid]`（此前 latwgs/lngwgs/account_id 全漏）。
+- 典型修复：`dwd_b-b_ios_white_event_realtime_hi` 从仅标 `[ip]` → `[account_id, device_id, distinct_id, ip, latwgs, lngwgs, uuid]`（此前 latwgs/lngwgs/account_id 全漏）。
 - YAML 全合法；catalog/rag_bundle 重生成；两脚本 `py_compile` 通过。
 
 ## 八、遗留观察项
