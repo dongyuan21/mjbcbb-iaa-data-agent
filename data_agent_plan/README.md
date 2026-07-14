@@ -12,6 +12,7 @@
 | `Text2SQL保守建设计划.md` | active_plan | Text2SQL 保守建设路线：字段证据、候选表 intake、candidate SQL 和验证边界 |
 | `上下文工程与Runtime上下文规划_已完成基线_20260628.md` | completion_archive | 上下文压缩与 Runtime 上下文工程的阶段性基线、PI 角色边界与已完成压缩清单 |
 | `Text2SQL当前能力说明.md` | beginner_guide | 面向小白解释当前 Text2SQL 能力、材料落点、检索流程、数据链路和上下文加载 |
+| `开源项目对标与演进建议_20260714.md` | architecture_benchmark | 对标 WrenAI、MetricFlow、Vanna、OpenMetadata、LangGraph、Cube，明确语义执行化、路由评测和 Runtime 生产化顺序 |
 | `POC01_BB美国UA_DNU拆解路线.md` | route_poc | 第一条只读 DataAgent POC 路线：BB 美国 UA DNU 下滑 media_source 贡献拆解 |
 | `PI_Runtime_P0本地实现记录_20260628.md` | implementation_record | PI Runtime P0 本地实现与验收记录；test 环境 replay 仍需另行通过 |
 | `语义层已完成资产入口_20260628.md` | completion_archive | 语义层已完成资产入口清单与归档指针 |
