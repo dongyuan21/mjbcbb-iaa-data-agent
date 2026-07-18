@@ -17,7 +17,7 @@ asset_layers:
       - agent_knowledge/reconciliations/<matched_reconciliation>.md
     recall_rule: >
       先读 agent_knowledge/catalog.yaml 判断 status、default_recall、applies_to_current 和 confidence；
-      default_recall=false 的文件只能作为线索、快照或待审核材料。
+      default_recall 为 false 的文件只能作为线索、快照或待审核材料。
   engineering_artifacts:
     description: knowledge 一致性门禁、维护说明和可复跑检查入口。
     paths:

@@ -37,7 +37,7 @@
 表名：
 
 ```text
-hungry_studio.ods_appsflyer_kcolb_collection_in_app_events_report_di
+h-s.ods_appsflyer_kcolb_collection_in_app_events_report_di
 ```
 
 已通过 MaxCompute 查到：
@@ -108,7 +108,7 @@ ai_hive/agent_knowledge/tables/ods_appsflyer_kcolb_collection_in_app_events_repo
 
 ```text
 产品：DT Android
-bundle_id: com.hungrystudio.mahjong
+bundle_id: com.HS.mahjong
 国家：US
 安装日期窗口：2026-03-01 ~ 2026-03-03
 行为观察截止：2026-03-10

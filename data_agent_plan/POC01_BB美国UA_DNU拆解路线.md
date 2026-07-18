@@ -71,7 +71,7 @@ freshness_required: true
 | anomaly_window | `2026-05-24 ~ 2026-05-30` | 来自历史 verified SQL |
 | organic | 排除 | 该 SQL 只看 UA media_source |
 | preinstall | 排除 | 该 SQL 排除预装媒体名单 |
-| 数据源 | MaxCompute | `hungry_studio.dwd_market_appsflyer_activation_push_data_di` |
+| 数据源 | MaxCompute | `h-s.dwd_market_appsflyer_activation_push_data_di` |
 
 如果用户问“当前最新窗口”，必须补 `active_date_range` / `compare_window`，并重跑 freshness。
 
@@ -144,7 +144,7 @@ da_assets/verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
 目标表：
 
 ```text
-hungry_studio.dwd_market_appsflyer_activation_push_data_di
+h-s.dwd_market_appsflyer_activation_push_data_di
 ```
 
 正式执行当前窗口前必须做：
@@ -187,7 +187,7 @@ route_validation_allowed: true
 
 ```text
 本 SQL 只能证明 media_source 贡献拆解。
-若下降定位到 Google Ads campaign/ad_group/ad，可查 hungry_studio.ods_market_google_ads_config_wide_hi 的操作记录辅助判断。
+若下降定位到 Google Ads campaign/ad_group/ad，可查 h-s.ods_market_google_ads_config_wide_hi 的操作记录辅助判断。
 Meta / AppLovin 等其他媒体仍需平台 change log 或 UA owner 补操作记录。
 ```
 
@@ -273,7 +273,7 @@ execution_date: "2026-06-18"
 execution_type: historical_window_rerun
 live_connectivity_check: pass
 target_table_probe: pass
-target_table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+target_table: h-s.dwd_market_appsflyer_activation_push_data_di
 target_table_latest_dt: "2026-06-18"
 sql_source: da_assets/verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
 baseline_window: "2026-05-17 ~ 2026-05-23"
@@ -285,7 +285,7 @@ current_window_conclusion: false
 
 ```text
 SELECT 1 AS ok -> ok
-SELECT max(dt) FROM hungry_studio.dwd_market_appsflyer_activation_push_data_di WHERE dt >= '2026-05-01' -> 2026-06-18
+SELECT max(dt) FROM h-s.dwd_market_appsflyer_activation_push_data_di WHERE dt >= '2026-05-01' -> 2026-06-18
 ```
 
 复跑结果：
@@ -318,7 +318,7 @@ execution_date: "2026-06-18"
 execution_type: current_window_yesterday_vs_7d_avg
 live_connectivity_check: pass
 target_table_probe: pass
-target_table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+target_table: h-s.dwd_market_appsflyer_activation_push_data_di
 target_table_latest_dt: "2026-06-18"
 anomaly_day: "2026-06-17"
 baseline_window: "2026-06-10 ~ 2026-06-16"
@@ -330,7 +330,7 @@ current_window_conclusion: true
 
 ```text
 SELECT 1 AS ok -> ok
-SELECT max(dt) FROM hungry_studio.dwd_market_appsflyer_activation_push_data_di WHERE dt >= '2026-06-01' -> 2026-06-18
+SELECT max(dt) FROM h-s.dwd_market_appsflyer_activation_push_data_di WHERE dt >= '2026-06-01' -> 2026-06-18
 ```
 
 查询口径：
@@ -375,7 +375,7 @@ execution_date: "2026-06-18"
 execution_type: campaign_drilldown_yesterday_vs_7d_avg
 live_connectivity_check: pass
 target_table_probe: pass
-target_table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+target_table: h-s.dwd_market_appsflyer_activation_push_data_di
 target_table_latest_dt: "2026-06-18"
 media_sources:
   - googleadwords_int
@@ -448,7 +448,7 @@ execution_date: "2026-06-18"
 execution_type: top_campaign_daily_trend_and_adset_drilldown
 live_connectivity_check: pass
 target_table_probe: pass
-target_table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+target_table: h-s.dwd_market_appsflyer_activation_push_data_di
 target_table_latest_dt: "2026-06-18"
 date_window: "2026-06-10 ~ 2026-06-17"
 top_campaigns:
@@ -534,9 +534,9 @@ AppLovin 主因 campaign：
 ```yaml
 execution_date: "2026-06-18"
 execution_type: corrected_current_window_yesterday_vs_7d_avg
-target_table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+target_table: h-s.dwd_market_appsflyer_activation_push_data_di
 target_table_latest_dt: "2026-06-18"
-spend_check_table: hungry_studio.ads_market_tj_ad_spend_active_v2
+spend_check_table: h-s.ads_market_tj_ad_spend_active_v2
 spend_check_table_latest_dt: "2026-06-17"
 install_time_window: "2026-06-10 ~ 2026-06-17"
 dt_scan_window: "2026-06-10 ~ 2026-06-18"

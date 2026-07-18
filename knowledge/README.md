@@ -78,3 +78,15 @@ python3 tools/scripts/check_knowledge_consistency.py
 ```
 
 硬错误和 warning 都应清零；报告写入 `eval/知识一致性报告.md`。
+
+修改 `agent_knowledge/semantic_contract/metrics.yaml` 或 `ai_ck/agent_knowledge/metrics/` 后，另需运行：
+
+```bash
+python3 tools/scripts/check_metric_layer_boundary.py
+```
+
+该门禁校验跨表机器指标只归 `semantic_contract/metrics.yaml`、CK / MI 页面指标解释只归 `ai_ck/agent_knowledge/metrics/`，二者不得复制同一公式或 join 定义。
+
+## 与 da_assets 的边界
+
+本目录放业务规则、分析协议、跨表语义契约和带时间属性的报告知识，**不放 verified SQL 正文**。规则产出的可复用已验证 SQL 沉淀到 `da_assets/verified_sql/`；候选 / 未验证 SQL 放 `da_assets/candidate_sql/`。本目录的 policies 可以引用 `da_assets/` 下的 SQL 路径和口径结论，但不复制 SQL 正文。

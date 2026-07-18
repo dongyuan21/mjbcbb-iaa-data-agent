@@ -242,7 +242,7 @@ Agent 找候选表：
 field_evidence:
   - requirement_item: 插屏收入
     item_type: metric
-    source_table: hungry_studio.xxx
+    source_table: h-s.xxx
     source_field: inter_revenue
     evidence_source:
       type: table_card

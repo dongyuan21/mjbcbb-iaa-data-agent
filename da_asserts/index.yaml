@@ -1,0 +1,2113 @@
+version: '0.1'
+updated: '2026-07-16'
+status: active
+asset_types:
+  raw:
+    path: raw/
+    description: 原始 DA 文档、钉钉导出、HTML、截图与源 SQL。较大原始文件统一归档到 raw/ 并在 .gitignore 中排除；提取后的知识落到 verified_sql / analysis_sop / decision_cases。
+  candidate_sql:
+    path: candidate_sql/
+    description: 尚未通过已验 SQL 晋级门禁的 SQL 备选项。
+  verified_sql:
+    path: verified_sql/
+    description: 包含指标定义、表依赖与验证说明的可复用 SQL。
+  analysis_sop:
+    path: analysis_sop/
+    description: 从 DA 报告提炼出的可复用分析工作流（SOP）。
+  decision_cases:
+    path: decision_cases/
+    description: 人工决策、执行动作与复盘（aftereffect）记录。
+  report_policy:
+    path: ./
+    description: DA 资产的报告入库、图片处理与证据规则定义。
+entries:
+- id: sop_202604_iaa_event_point_testing
+  type: analysis_sop
+  path: analysis_sop/202604_IAA事件点位测试分层评估SOP.md
+  title: IAA 事件点位测试与分层评估
+  status: draft
+  sql_status: verified
+  tags:
+  - iaa
+  - event_points
+  - ltv
+  - roi360
+  linked_verified_sql: vsql_20260715_iaa_event_point_roi_ltv_trend
+- id: sop_20260423_ltv_multiplier_drop_diagnosis
+  type: analysis_sop
+  path: analysis_sop/20260423_LTV倍率下降归因SOP.md
+  title: LTV 倍率下降归因
+  status: draft
+  sql_status: verified
+  tags:
+  - ltv_multiplier
+  - anomaly_diagnosis
+  - retention
+  - arpdau
+  linked_verified_sql: vsql_20260715_ltv_multiplier_drop_diagnosis
+- id: vsql_20260613_ad_impression_metrics
+  type: verified_sql
+  path: verified_sql/vsql_20260613_ad_impression_metrics.md
+  title: 广告展示相关数据口径
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_nova_collection_all_white_event_unique_data_hi
+  - h-s.dwd_kcolb_tsalb_ios_white_event_unique_data_hi
+  - h-s.dwd_kcolb_tsalb_gp_white_event_unique_data_hi
+  tags:
+  - maxcompute
+  - ad_impression
+  - ad_close
+  - ad_escape
+  - ad_revenue
+  - ad_domain
+  - ad_material
+- id: sop_20260610_growth_biweekly_review
+  type: analysis_sop
+  path: analysis_sop/20260610_发行增长双周会复盘SOP.md
+  title: 发行增长双周会复盘 SOP
+  status: draft
+  sql_status: candidate_sql
+  tags:
+  - biweekly_meeting
+  - growth
+  - roi360
+  - dnu
+  - point_testing
+  - push
+  - adx
+  linked_candidate_sql: csql_multi_product_roi360_summary
+- id: case_20260610_growth_biweekly_roi_dnu_risk
+  type: decision_cases
+  path: decision_cases/20260610_发行增长双周会ROI_DNU风险案例.md
+  title: 0610 发行增长双周会 ROI / DNU 风险快照
+  status: draft_pending_sql_validation
+  source_assets:
+  - analysis_sop/20260610_发行增长双周会复盘SOP.md
+  sql_status: draft_sql_needed
+  tags:
+  - biweekly_meeting
+  - roi360
+  - dnu
+  - redline
+  - kcolb_tsalb
+  - double_tile
+  - word_solitaire_go
+- id: case_20260610_growth_experiment_knowledge
+  type: decision_cases
+  path: decision_cases/20260610_发行增长双周会实验知识案例.md
+  title: 0610 发行增长双周会实验知识
+  status: draft_pending_aftereffect
+  source_assets:
+  - analysis_sop/20260610_发行增长双周会复盘SOP.md
+  sql_status: draft_sql_needed
+  tags:
+  - point_testing
+  - creative
+  - self_campaign
+  - applovin
+  - adx
+  - push
+  - experiment
+- id: raw_20260615_growth_weekly_docx
+  type: raw
+  path: raw/2026-06-15_发行增长周会_docx.md
+  title: 0615 发行增长周会 docx 入库
+  status: reviewed
+  source_type: docx_export
+  report_period: '2026-06-15'
+  mcp_read_status: not_applicable
+  image_status: reviewed_image_extracts
+  extraction_method: docx_xml_text_table_image_review
+  related_assets:
+  - raw/2026-06-15_发行增长周会_docx.docx
+  - raw/2026-06-15_发行增长周会_docx_attachments/metadata.yaml
+  - raw/2026-06-15_发行增长周会_docx_attachments/image_manifest.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/image_extracts.md
+  - raw/2026-06-15_发行增长周会_docx_attachments/image_extracts.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_roi_status_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_dau_dnu_wow_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/forecast_bias_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/material_hot_creative_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/material_cold_start_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/point_campaign_test_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/adx_traffic_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/push_experiment_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/risk_control_chargeback_summary.csv
+  - analysis_sop/20260615_发行增长周会复盘SOP.md
+  - decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  - decision_cases/20260615_发行增长周会实验平台风控进展案例.md
+  - decision_cases/case_20260615_growth_weekly_roi_threshold_status.csv
+  - decision_cases/case_20260615_growth_weekly_mi_roi360_api_validation.csv
+  - analysis_sop/20260618_ROI360周报阈值与预测验证SOP.md
+  - verified_sql/vsql_20260618_growth_weekly_actual_roi_media_split.md
+  - verified_sql/vsql_20260618_growth_weekly_dnu_channel_country_wow.md
+  tags:
+  - weekly_report
+  - growth
+  - roi360
+  - dnu
+  - material
+  - push
+  - adx
+  - reviewed_image_extracts
+- id: sop_20260615_growth_weekly_review
+  type: analysis_sop
+  path: analysis_sop/20260615_发行增长周会复盘SOP.md
+  title: 0615 发行增长周会复盘 SOP
+  status: draft
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  related_assets:
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_roi_status_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_dau_dnu_wow_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/forecast_bias_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/adx_traffic_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/push_experiment_summary.csv
+  - analysis_sop/20260618_ROI360周报阈值与预测验证SOP.md
+  sql_status: candidate_sql
+  tags:
+  - weekly_report
+  - growth
+  - roi360
+  - dnu
+  - forecast_bias
+  - point_testing
+  - material
+  - adx
+  - push
+  - risk_control
+  linked_candidate_sql: csql_multi_product_roi360_summary
+- id: case_20260615_growth_weekly_roi_dnu_risk
+  type: decision_cases
+  path: decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  title: 0615 发行增长周会 ROI / DNU 风险快照
+  status: partial_verified
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  - analysis_sop/20260615_发行增长周会复盘SOP.md
+  related_assets:
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_roi_status_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/weekly_dau_dnu_wow_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/roi_target_thresholds_from_report.csv
+  - decision_cases/case_20260615_growth_weekly_roi_threshold_status.csv
+  - decision_cases/case_20260615_growth_weekly_mi_roi360_api_validation.csv
+  - analysis_sop/20260618_ROI360周报阈值与预测验证SOP.md
+  - verified_sql/vsql_20260618_growth_weekly_actual_roi_media_split.md
+  - verified_sql/vsql_20260618_growth_weekly_dnu_channel_country_wow.md
+  sql_status: verified
+  tags:
+  - weekly_report
+  - roi360
+  - dnu
+  - redline
+  - kcolb_tsalb
+  - double_tile
+  - sudoku_master
+  - solitaire_master
+  - word_solitaire_go
+  - arrows_blast
+- id: case_20260615_growth_weekly_mi_roi360_api_validation
+  type: decision_cases
+  path: decision_cases/case_20260615_growth_weekly_mi_roi360_api_validation.csv
+  title: 0615 发行增长周会 MI ROI360 API 对账
+  status: mi_api_verified_partial
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  - decision_cases/case_20260615_growth_weekly_roi_threshold_status.csv
+  - ../ai_ck/agent_knowledge/metrics/MI_ROI360页面字段字典.md
+  - ../ai_ck/agent_knowledge/metrics/ROI360指标语义.md
+  related_assets:
+  - decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  - analysis_sop/20260618_ROI360周报阈值与预测验证SOP.md
+  sql_status: not_applicable
+  tags:
+  - weekly_report
+  - roi360
+  - mi_api
+  - forecast_blue
+  - redline
+  - sdk_revenue
+- id: sop_20260618_roi360_trial_threshold_and_forecast_validation
+  type: analysis_sop
+  path: analysis_sop/20260618_ROI360周报阈值与预测验证SOP.md
+  title: ROI360 周报红线分类与蓝底预测验证
+  status: verified
+  source_assets:
+  - ../knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - ../knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  - ../ai_ck/agent_knowledge/metrics/ROI预估实现说明.md
+  - ../ai_ck/agent_knowledge/MI_ROI360平台能力说明.md
+  related_assets:
+  - decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  - decision_cases/case_20260615_growth_weekly_roi_threshold_status.csv
+  - decision_cases/case_20260615_growth_weekly_mi_roi360_api_validation.csv
+  sql_status: not_applicable
+  tags:
+  - weekly_report
+  - roi360
+  - redline
+  - target_line
+  - forecast_blue
+  - trial_active
+  - governance
+- id: case_20260615_growth_experiment_and_platform_progress
+  type: decision_cases
+  path: decision_cases/20260615_发行增长周会实验平台风控进展案例.md
+  title: 0615 发行增长周会实验、平台与风控进展
+  status: draft_pending_aftereffect
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  - analysis_sop/20260615_发行增长周会复盘SOP.md
+  related_assets:
+  - raw/2026-06-15_发行增长周会_docx_attachments/material_hot_creative_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/material_cold_start_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/point_campaign_test_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/adx_traffic_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/push_experiment_summary.csv
+  - raw/2026-06-15_发行增长周会_docx_attachments/risk_control_chargeback_summary.csv
+  sql_status: draft_sql_needed
+  tags:
+  - weekly_report
+  - point_testing
+  - material
+  - applovin
+  - adx
+  - push
+  - risk_control
+  - experiment
+- id: vsql_20260618_growth_weekly_actual_roi_media_split
+  type: verified_sql
+  path: verified_sql/vsql_20260618_growth_weekly_actual_roi_media_split.md
+  title: 0615 周报高风险产品实际 ROI / 媒体拆解
+  status: verified
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  - decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  related_assets:
+  - verified_sql/vsql_20260616_mi_roi360_campaign_board_recon.md
+  - verified_sql/vsql_20260618_growth_weekly_dnu_channel_country_wow.md
+  - ../ai_ck/agent_knowledge/tables/tj_ad_spend_active_v2.yaml
+  - ../ai_ck/agent_knowledge/tables/tj_ad_sdk_revenue.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: live_ck_window_validation
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  tags:
+  - clickhouse
+  - weekly_report
+  - growth
+  - roi
+  - roi7
+  - media_split
+  - media_source
+  - cpi
+  - spend
+  - double_tile
+  - sudoku_master
+  - solitaire_master
+  - word_solitaire_go
+  - arrows_blast
+- id: vsql_20260618_growth_weekly_dnu_channel_country_wow
+  type: verified_sql
+  path: verified_sql/vsql_20260618_growth_weekly_dnu_channel_country_wow.md
+  title: 0615 周报 DNU / 渠道 / 国家 WoW 验证
+  status: verified
+  source_assets:
+  - raw/2026-06-15_发行增长周会_docx.md
+  - decision_cases/20260615_发行增长周会ROI_DNU风险案例.md
+  related_assets:
+  - verified_sql/vsql_20260617_device_dau_dnu_wow.md
+  - verified_sql/vsql_20260617_bb_country_dau_dnu_wow.md
+  - verified_sql/vsql_20260618_growth_weekly_actual_roi_media_split.md
+  - ../ai_hive/agent_knowledge/tables/ads_market_device_dau_behavior_di.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: live_mc_window_validation
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_device_dau_behavior_di
+  tags:
+  - maxcompute
+  - weekly_report
+  - growth
+  - dnu
+  - dau
+  - channel_split
+  - country_split
+  - channel_category
+  - country
+  - wow
+  - kcolb_tsalb
+  - double_tile
+  - sudoku_master
+  - solitaire_master
+  - word_solitaire_go
+  - arrows_blast
+- id: sop_20260616_report_data_recon
+  type: analysis_sop
+  path: analysis_sop/20260616_报告看板数据可信度反查SOP.md
+  title: 报告/看板数据可信度反查
+  status: verified
+  source_assets:
+  - ../../ai_ck/audit_archive/mi_roi360_board_recon/README.md
+  related_assets:
+  - verified_sql/vsql_20260616_mi_roi360_campaign_board_recon.md
+  - verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+  tags:
+  - methodology
+  - data_recon
+  - report_validation
+  - clickhouse
+  - maxcompute
+  sql_status: not_applicable
+- id: sop_20260611_day0_arpu_anomaly_attribution
+  type: analysis_sop
+  path: analysis_sop/20260611_首日ARPU异动归因SOP.md
+  title: 首日 ARPU 异动归因
+  status: verified_sql_available
+  sql_status: verified
+  tags:
+  - day0_arpu
+  - anomaly_attribution
+  - arpu
+  - ecpm
+  - ad_source
+  - user_bucket
+- id: sop_20260620_day0_arpu_mi_output_template
+  type: analysis_sop
+  path: analysis_sop/20260620_Day0_ARPU_MI查询输出模板.md
+  title: Day0 ARPU MI 查询输出模板
+  status: active
+  source_assets:
+  - ../ai_ck/agent_knowledge/metrics/ROI360指标语义.md
+  - ../ai_ck/agent_knowledge/metrics/MI_ROI360页面字段字典.md
+  - ../skills/mi_skill/SKILL.md
+  - ../tools/scripts/query_mi_roi360.py
+  related_assets:
+  - analysis_sop/20260611_首日ARPU异动归因SOP.md
+  - verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+  sql_status: not_sql
+  owner: Cursor Agent
+  tags:
+  - mi_roi360
+  - day0_arpu
+  - af_arpu
+  - media_arpu
+  - revenue_0
+  - sdk_revenue
+  - query_template
+- id: vsql_20260613_day0_arpu_anomaly_attribution
+  type: verified_sql
+  path: verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+  title: 首日 ARPU 异动归因模板
+  status: verified
+  source_assets:
+  - analysis_sop/20260611_首日ARPU异动归因SOP.md
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: online_template_rerun_with_t_plus_1_guardrail
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.dws_kcolb_tsalb_all_user_multi_dim_hi
+  tags:
+  - maxcompute
+  - kcolb_tsalb
+  - day0_arpu
+  - anomaly_attribution
+  - preinstall
+  - rewarded_ecpm
+  - media_source
+  - query_template
+  - partition_guardrail
+  - t_plus_1
+- id: vsql_20260630_d30_top20_user_concentration_channel_country
+  type: verified_sql
+  path: verified_sql/vsql_20260630_d30_top20_user_concentration_channel_country.md
+  title: BB GP 渠道×国家内用户 Top20% D30 DA 收入集中度
+  status: verified
+  source_assets:
+  - ../bugfix_doc/20260630_PI同题稳定性_D30渠道国家Top20集中度.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-30'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.dws_kcolb_tsalb_all_user_multi_dim_hi
+  tags:
+  - maxcompute
+  - kcolb_tsalb_gp
+  - d30_arpu
+  - top20_concentration
+  - media_source
+  - country
+  - da_behavior_revenue
+  - query_template
+- id: vsql_20260715_bb_gp_google_country_d7_cumulative_arpu
+  type: verified_sql
+  path: verified_sql/vsql_20260715_bb_gp_google_country_d7_cumulative_arpu.md
+  title: BB GP Google 分国家 D0 / D7 累计 ARPU
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: maxcompute_live_historical_window_rerun
+  owner: Codex
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.dws_kcolb_tsalb_all_user_multi_dim_hi
+  tags:
+  - maxcompute
+  - kcolb_tsalb_gp
+  - googleadwords_int
+  - country
+  - d0_arpu
+  - d7_cumulative_arpu
+  - da_behavior_revenue
+  - historical_replay
+- id: vsql_20260613_bb_us_ua_media_source_dnu_delta
+  type: verified_sql
+  path: verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
+  title: BB 美国 UA DNU 下滑 media_source（媒体来源） 贡献拆解模板
+  status: verified
+  source_assets:
+  - ../../eval/真实问题验收集/  # 原 TODO/周报问题积压清单.md 已于 2026-07-14 归档
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - ../data_agent_plan/POC01_BB美国UA_DNU拆解路线.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: online_template_rerun_with_t_plus_1_guardrail
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  tags:
+  - maxcompute
+  - kcolb_tsalb
+  - dnu
+  - ua
+  - media_source
+  - weekly_report
+  - query_template
+  - partition_guardrail
+  - t_plus_1
+- id: sop_20260618_dnu_install_time_dt_lag_guardrail
+  type: analysis_sop
+  path: analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  title: DNU install_time 与 dt 迟到分区护栏
+  status: verified
+  source_assets:
+  - ../data_agent_plan/POC01_BB美国UA_DNU拆解路线.md
+  related_assets:
+  - verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
+  sql_status: not_applicable
+  tags:
+  - dnu
+  - activation
+  - maxcompute
+  - freshness
+  - partition
+  - t_plus_1
+  - guardrail
+- id: sop_20260618_google_campaign_dnu_changelog_triage
+  type: analysis_sop
+  path: analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
+  title: Google campaign（广告系列） DNU 异动与变更日志排查
+  status: verified_sql_available
+  source_assets:
+  - ../data_agent_plan/POC01_BB美国UA_DNU拆解路线.md
+  - verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - ../../ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  sql_status: verified
+  tags:
+  - dnu
+  - google_ads
+  - campaign
+  - change_event
+  - changelog
+  - anomaly_triage
+- id: case_20260618_google_campaign_dnu_changelog_triage
+  type: decision_cases
+  path: decision_cases/20260618_GoogleCampaignDNU异动与变更记录案例.md
+  title: Google campaign（广告系列） DNU 异动与变更日志证据案例
+  status: verified_evidence_needs_owner_decision
+  source_assets:
+  - ../data_agent_plan/POC01_BB美国UA_DNU拆解路线.md
+  - analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
+  - verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  related_assets:
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - ../../ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  - ../../ai_hive/agent_knowledge/tables/ods_market_google_campaign_da.yaml
+  sql_status: verified
+  tags:
+  - dnu
+  - google_ads
+  - campaign
+  - change_event
+  - decision_case
+  - needs_decision
+- id: case_20260625_redline_bidaily_review_da_confirmation
+  type: decision_cases
+  path: decision_cases/20260625_红黄线双日review规则DA确认.md
+  title: 红黄线双日 review 规则 DA 确认纪要
+  status: trial_active
+  source_assets:
+  - ../../raw_exports/screen.py
+  - ../../knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  - ../../knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  related_assets:
+  - ../../raw_exports/anomaly.py
+  - analysis_sop/红黄线ROI双日review筛选SOP.md
+  - ../../tools/runbooks/红黄线ROI双日review.md
+  tags:
+  - roi
+  - redline
+  - bidaily_review
+  - early_roi
+  - trial_active
+  - decision_case
+- id: vsql_20260617_device_dau_dnu_wow
+  type: verified_sql
+  path: verified_sql/vsql_20260617_device_dau_dnu_wow.md
+  title: 大盘 DAU / DNU WoW 周均拆解
+  status: verified
+  source_assets:
+  - ../../eval/真实问题验收集/  # 原 TODO/周报问题积压清单.md 已于 2026-07-14 归档
+  - ../../knowledge/agent_knowledge/semantic_contract/metrics.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-17'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_device_dau_behavior_di
+  tags:
+  - maxcompute
+  - dau
+  - dnu
+  - wow
+  - device
+  - weekly_report
+- id: vsql_20260617_bb_country_dau_dnu_wow
+  type: verified_sql
+  path: verified_sql/vsql_20260617_bb_country_dau_dnu_wow.md
+  title: BB 国家 DAU / DNU WoW 拆解
+  status: verified
+  source_assets:
+  - ../../eval/真实问题验收集/  # 原 TODO/周报问题积压清单.md 已于 2026-07-14 归档
+  - ../../knowledge/agent_knowledge/semantic_contract/metrics.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-17'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_device_dau_behavior_di
+  tags:
+  - maxcompute
+  - kcolb_tsalb
+  - country
+  - dau
+  - dnu
+  - wow
+  - weekly_report
+- id: vsql_20260617_bb_dnu_source_channel_delta
+  type: verified_sql
+  path: verified_sql/vsql_20260617_bb_dnu_source_channel_delta.md
+  title: BB DNU 来源/渠道贡献拆解
+  status: verified
+  source_assets:
+  - ../../eval/真实问题验收集/  # 原 TODO/周报问题积压清单.md 已于 2026-07-14 归档
+  - ../../ai_hive/agent_knowledge/tables/dwd_market_appsflyer_activation_push_data_di.yaml
+  - ../../ai_hive/agent_knowledge/tables/dim_market_channel_mapping_da.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-17'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.dim_market_channel_mapping_da
+  tags:
+  - maxcompute
+  - kcolb_tsalb
+  - dnu
+  - activation
+  - channel_category
+  - media_source
+  - weekly_report
+- id: vsql_20260618_google_ads_config_change_monitoring
+  type: verified_sql
+  path: verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  title: Google Ads 配置变更监控
+  status: verified
+  source_assets:
+  - ../../ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  - ../../ai_hive/audit_archive/evidence/ods_market_google_ads_config_wide_hi/冒烟测试.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: manual_small_window
+  owner: Codex
+  supersedes: []
+  tables:
+  - h-s.ods_market_google_ads_config_wide_hi
+  tags:
+  - maxcompute
+  - google_ads
+  - campaign
+  - config_change
+  - change_event
+  - budget
+  - ad_group
+  - creative_text
+- id: vsql_20260618_google_campaign_dnu_changelog_triage
+  type: verified_sql
+  path: verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  title: Google campaign（广告系列） DNU 异动与变更日志联查
+  status: verified
+  source_assets:
+  - analysis_sop/20260618_GoogleCampaignDNU异动排查SOP.md
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - ../../ai_hive/agent_knowledge/tables/dwd_market_appsflyer_activation_push_data_di.yaml
+  - ../../ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - ../data_agent_plan/POC01_BB美国UA_DNU拆解路线.md
+  - decision_cases/20260618_GoogleCampaignDNU异动与变更记录案例.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: manual_small_window
+  owner: Codex
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.ods_market_google_ads_config_wide_hi
+  tags:
+  - maxcompute
+  - dnu
+  - google_ads
+  - campaign
+  - change_event
+  - changelog
+  - anomaly_triage
+  - partition_guardrail
+- id: vsql_20260613_material_ipm_cpi_snapshot
+  type: verified_sql
+  path: verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md
+  title: 素材 IPM / CPI / CTR / CVR 快照
+  status: verified
+  source_assets:
+  - ../../eval/真实问题验收集/  # 原 TODO/周报问题积压清单.md 已于 2026-07-14 归档
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_material_metric_di
+  tags:
+  - maxcompute
+  - material
+  - creative
+  - ipm
+  - cpi
+  - ctr
+  - cvr
+- id: case_20260613_bb_preinstall_day0_arpu_drop
+  type: decision_cases
+  path: decision_cases/20260613_BB预装首日ARPU下降归因案例.md
+  title: BB 预装首日 ARPU 下降归因
+  status: closed_verified_aftereffect
+  source_assets:
+  - analysis_sop/20260611_首日ARPU异动归因SOP.md
+  - verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+  sql_status: verified
+  last_validated_at: '2026-06-17'
+  validation_method: manual_aftereffect_window
+  tags:
+  - decision_case
+  - kcolb_tsalb
+  - day0_arpu
+  - preinstall
+  - rewarded_ecpm
+  - closed_aftereffect
+  - operation_log_missing
+- id: vsql_mi_spend_activation_by_campaign
+  type: verified_sql
+  path: verified_sql/mi_spend_activation_by_campaign.md
+  title: MI 消耗 + 激活按 Campaign 聚合
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-24'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_tj_ad_spend_active_v2
+  tags:
+  - maxcompute
+  - mi
+  - spend
+  - activation
+  - campaign
+- id: csql_material_ipm_with_sdk_revenue_join
+  type: candidate_sql
+  path: candidate_sql/material_ipm_with_sdk_revenue_join.md
+  title: 素材 IPM 与 SDK 回收 join 草案
+  status: candidate
+  sql_status: draft_sql_needed
+  promotion_status: candidate_sql
+  field_evidence_status: structured_markdown
+  documentation_status: complete
+  last_validated_at: '2026-06-24'
+  validation_method: ck_schema_probe
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_material_metric_di
+  - shucang_market.tj_ad_sdk_revenue
+  tags:
+  - material
+  - roi
+  - clickhouse
+  - maxcompute
+- id: csql_audience_us_xh_uac25_incremental
+  type: candidate_sql
+  path: candidate_sql/audience/sql/audience_us_xh_uac25_incremental.sql
+  title: US-XH-UAC2.5 人群包日常增量 SQL
+  status: candidate
+  asset_disposition: archived_excluded
+  exclusion_reason: 历史人群包投放写入模板，当前只读分析 Agent 不召回
+  sql_status: copied_unverified
+  promotion_status: candidate_sql
+  field_evidence_status: inline_source_table_comments
+  documentation_status: complete
+  last_validated_at: null
+  validation_method: not_validated
+  owner: Codex
+  supersedes: []
+  tables:
+  - h-s.ods_appsflyer_all_in_app_events_report_di
+  - h-s.dim_kcolb_tsalb_gp_user_ha
+  - h-s.dim_kcolb_tsalb_gp_user_first_start_da
+  - h-s.hs_market.push_user_package_sync_v2_di
+  tags:
+  - maxcompute
+  - audience
+  - incremental
+  - candidate_sql
+- id: csql_audience_us_xh_uac25_relaxed
+  type: candidate_sql
+  path: candidate_sql/audience/sql/audience_us_xh_uac25_relaxed.sql
+  title: US-XH-UAC2.5 人群包放宽版 SQL
+  status: candidate
+  asset_disposition: archived_excluded
+  exclusion_reason: 历史人群包投放写入模板，当前只读分析 Agent 不召回
+  sql_status: copied_unverified
+  promotion_status: candidate_sql
+  field_evidence_status: inline_source_table_comments
+  documentation_status: complete
+  last_validated_at: null
+  validation_method: not_validated
+  owner: Codex
+  supersedes: []
+  related_assets:
+  - verified_sql/vsql_20260715_audience_us_xh_uac25_funnel.md
+  tables:
+  - h-s.ods_appsflyer_all_in_app_events_report_di
+  - h-s.dim_kcolb_tsalb_gp_user_ha
+  - h-s.dim_kcolb_tsalb_gp_user_first_start_da
+  - h-s.hs_market.push_user_package_sync_v2_di
+  tags:
+  - maxcompute
+  - audience
+  - relaxed_join
+  - candidate_sql
+- id: csql_ods_market_google_ads_config_wide_hi_insert_overwrite
+  type: candidate_sql
+  path: candidate_sql/ods_market_google_ads_config_wide_hi_insert_overwrite.sql
+  title: Google Ads 配置变更宽表写入 SQL 草案
+  status: candidate
+  asset_disposition: archived_excluded
+  exclusion_reason: 含 INSERT OVERWRITE 写入动作，超出只读分析 Agent 边界
+  sql_status: copied_unverified
+  promotion_status: candidate_sql
+  field_evidence_status: inline_source_table_comments
+  documentation_status: complete
+  last_validated_at: null
+  validation_method: not_validated
+  owner: Codex
+  supersedes: []
+  source_assets:
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  tables:
+  - h-s.ods_market_google_change_event_hi
+  - h-s.ods_market_google_ads_config_wide_hi
+  tags:
+  - maxcompute
+  - google_ads
+  - change_log
+  - candidate_sql
+- id: vsql_20260616_mi_roi360_campaign_board_recon
+  type: verified_sql
+  path: verified_sql/vsql_20260616_mi_roi360_campaign_board_recon.md
+  title: MI ROI360 看板逐行复现 (campaign（广告系列） × country × active_date)
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-16'
+  validation_method: manual_reconciliation
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  - shucang_market.af_cohort_user_acquisition_v2_view
+  tags:
+  - clickhouse
+  - mi_roi360
+  - campaign
+  - roi
+  - retention
+  - board_recon
+- id: vsql_20260616_af_mi_register_timezone_recon
+  type: verified_sql
+  path: verified_sql/vsql_20260616_af_mi_register_timezone_recon.md
+  title: AF 激活 vs MI 注册设备 时区对齐对账 (UTC0/UTC8)
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-16'
+  validation_method: manual_reconciliation
+  owner: Cursor Agent
+  supersedes: []
+  source_assets:
+  - ../../ai_hive/agent_knowledge/tables/dwd_market_appsflyer_activation_push_data_di.yaml
+  - ../../ai_ck/agent_knowledge/metrics/MI安装激活口径说明.md
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_hi
+  - h-s.ads_market_tj_ad_spend_active_v2
+  - shucang_market.tj_ad_spend_active_v2
+  tags:
+  - maxcompute
+  - clickhouse
+  - appsflyer
+  - activation
+  - register
+  - timezone
+  - data_recon
+  - mi_roi360
+- id: vsql_20260616_point_s2s_roi_review
+  type: verified_sql
+  path: verified_sql/vsql_20260616_point_s2s_roi_review.md
+  title: 点位 S2S → campaign（广告系列） → ROI360 复盘
+  status: verified
+  source_assets:
+  - ../../ai_ck/agent_knowledge/tables/dim_market_campaign_s2s_event_map_da.yaml
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-16'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.dim_market_campaign_s2s_event_map_da
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  tags:
+  - clickhouse
+  - point
+  - s2s_event
+  - roi
+  - campaign_governance
+- id: vsql_20260616_point_event_penetration_value
+  type: verified_sql
+  path: verified_sql/vsql_20260616_point_event_penetration_value.md
+  title: 点位事件触发渗透与触发用户价值模板
+  status: verified
+  source_assets:
+  - ../../ai_hive/agent_knowledge/tables/ods_appsflyer_all_in_app_events_report_di.yaml
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: online_template_rerun_with_t_plus_1_guardrail
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ods_appsflyer_all_in_app_events_report_di
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.dws_kcolb_tsalb_all_user_multi_dim_hi
+  tags:
+  - maxcompute
+  - point
+  - s2s_event
+  - penetration
+  - retention
+  - query_template
+  - partition_guardrail
+  - t_plus_1
+- id: vsql_sdk_vs_af_revenue_by_cohort
+  type: verified_sql
+  path: verified_sql/sdk_vs_af_revenue_by_cohort.md
+  title: SDK 回收 vs AF 回收对比
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_tj_ad_sdk_revenue_attributed_di
+  - h-s.ads_market_tj_ad_revenue_v2
+  tags:
+  - maxcompute
+  - mi
+  - revenue
+  - sdk
+  - appsflyer
+- id: vsql_roi_prediction_accuracy_snapshot
+  type: verified_sql
+  path: verified_sql/roi_prediction_accuracy_snapshot.md
+  title: ROI 预测准确性快照
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_roi_pred_accuracy_da
+  tags:
+  - maxcompute
+  - roi
+  - forecast
+  - prediction_accuracy
+- id: vsql_af_cohort_retention_by_media
+  type: verified_sql
+  path: verified_sql/af_cohort_retention_by_media.md
+  title: AF Cohort 留存按媒体聚合
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_af_cohort_user_acquisition_v2
+  tags:
+  - maxcompute
+  - retention
+  - cohort
+  - media_source
+- id: vsql_mc_ck_spend_reconciliation
+  type: verified_sql
+  path: verified_sql/mc_ck_spend_reconciliation.md
+  title: MC vs CK Spend 对账
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_reconciliation
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ads_market_tj_ad_spend_active_v2
+  - shucang_market.tj_ad_spend_active_v2
+  tags:
+  - maxcompute
+  - clickhouse
+  - reconciliation
+  - spend
+- id: vsql_mc_ck_revenue_cohort_reconciliation
+  type: verified_sql
+  path: verified_sql/mc_ck_revenue_cohort_reconciliation.md
+  title: MC vs CK Revenue / Cohort 对账
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-16'
+  validation_method: manual_reconciliation
+  owner: Cursor Agent
+  supersedes: []
+  related_assets:
+  - verified_sql/mc_ck_spend_reconciliation.md
+  - ../ai_ck/agent_knowledge/数据地图.md
+  tables:
+  - h-s.ads_market_tj_ad_sdk_revenue_attributed_di
+  - h-s.ads_market_tj_ad_revenue_v2
+  - h-s.ads_market_af_cohort_user_acquisition_v2
+  - shucang_market.tj_ad_sdk_revenue
+  - shucang_market.tj_ad_revenue_v2
+  - shucang_market.af_cohort_user_acquisition_v2
+  tags:
+  - maxcompute
+  - clickhouse
+  - reconciliation
+  - revenue
+  - cohort
+  - date_diff
+- id: vsql_device_asset_scale_by_app
+  type: verified_sql
+  path: verified_sql/device_asset_scale_by_app.md
+  title: 设备资产规模按产品聚合
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dim_kcolb_tsalb_all_device_da
+  tags:
+  - maxcompute
+  - device
+  - user_growth
+  - new_return_device
+- id: vsql_af_attribution_coverage_by_device
+  type: verified_sql
+  path: verified_sql/af_attribution_coverage_by_device.md
+  title: AF 归因覆盖按设备聚合
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dim_market_appsflyer_attribution_by_device_id_da
+  tags:
+  - maxcompute
+  - appsflyer
+  - attribution
+  - device
+- id: vsql_device_sdk_revenue_new_return
+  type: verified_sql
+  path: verified_sql/device_sdk_revenue_new_return.md
+  title: 设备 SDK 收入新回流聚合
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-13'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_new_return_device_sdk_revenue_di
+  tags:
+  - maxcompute
+  - device
+  - sdk_revenue
+  - new_return_device
+- id: vsql_20260616_sdk_revenue_dwd_dws_boundary_validation
+  type: verified_sql
+  path: verified_sql/vsql_20260616_sdk_revenue_dwd_dws_boundary_validation.md
+  title: 新/回流设备 SDK 收入 dwd / dws 边界验证
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-16'
+  validation_method: online_desc_and_common_partition_reconciliation
+  owner: Cursor Agent
+  supersedes: []
+  related_assets:
+  - ../ai_hive/agent_knowledge/tables/dws_market_new_return_device_sdk_revenue_di.yaml
+  - ../ai_hive/agent_knowledge/tables/dwd_market_new_return_device_sdk_revenue_di.yaml
+  tables:
+  - h-s.dws_market_new_return_device_sdk_revenue_di
+  - h-s.dwd_market_new_return_device_sdk_revenue_di
+  tags:
+  - maxcompute
+  - device
+  - sdk_revenue
+  - dwd_dws_boundary
+  - device_cnt
+  - date_diff
+- id: sop_event_value_matrix_point_testing
+  type: analysis_sop
+  path: analysis_sop/用户价值点位事件矩阵分析SOP.md
+  title: 用户价值 × 点位事件矩阵分析 SOP
+  status: draft
+  sql_status: verified
+  tags:
+  - event_matrix
+  - point_testing
+  - user_value
+  - ltv
+  - arpu
+  - retention
+  linked_verified_sql: vsql_20260716_event_overlap_matrix
+- id: sop_mj_dt_historical_point_review
+  type: analysis_sop
+  path: analysis_sop/MJ_DT历史点位复盘SOP.md
+  title: MJ / DT 历史点位复盘 SOP
+  status: verified_sql_available
+  sql_status: verified
+  tags:
+  - mj
+  - dt
+  - point_review
+  - arpu
+  - retention
+  - pareto
+  - robust_events
+- id: vsql_20260613_mj_dt_historical_point_review_small_window
+  type: verified_sql
+  path: verified_sql/vsql_20260613_mj_dt_historical_point_review_small_window.md
+  title: MJ / DT 历史点位复盘小窗口模板
+  status: verified
+  source_assets:
+  - analysis_sop/MJ_DT历史点位复盘SOP.md
+  related_assets:
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-18'
+  validation_method: online_template_rerun_with_t_plus_1_guardrail
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  - h-s.ods_appsflyer_block_collection_in_app_events_report_di
+  - h-s.dws_block_collection_all_user_multi_dim_hi
+  tags:
+  - maxcompute
+  - mj
+  - dt
+  - historical_point_review
+  - event_penetration
+  - arpu
+  - retention
+  - query_template
+  - partition_guardrail
+  - t_plus_1
+- id: analysis_20260613_mi_roi360_practical
+  type: raw
+  path: ../knowledge/audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
+  title: MI ROI360 实战分析：BB 美国、回收源、Campaign、预测版本
+  source_type: mi_roi360_browser_api
+  source_url: https://mi.youxi123.com/web/campaigns/reports/roi360
+  status: draft
+  mcp_read_status: browser_page_and_api_read
+  image_status: no_image
+  sql_status: not_applicable
+  extracted_at: '2026-06-13'
+  related_assets:
+  - analysis_sop/MI_ROI360实战分析SOP.md
+  tags:
+  - mi
+  - roi360
+  - campaign
+  - sdk_vs_af
+  - forecast_version
+- id: sop_mi_roi360_practical_analysis
+  type: analysis_sop
+  path: analysis_sop/MI_ROI360实战分析SOP.md
+  title: MI ROI360 实战分析 SOP
+  status: draft
+  source_assets:
+  - ../knowledge/audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
+  sql_status: not_applicable
+  tags:
+  - mi
+  - roi360
+  - analysis_sop
+- id: case_20260613_bb_us_ua_drop_mi_roi360
+  type: decision_cases
+  path: decision_cases/20260613_BB美国UA下滑归因案例.md
+  title: BB 美国 UA 下滑归因
+  status: draft
+  source_assets:
+  - ../knowledge/audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
+  - ../knowledge/audit_archive/mi_analysis/MI_ROI360成熟窗口复盘_20260613.md
+  sql_status: not_applicable
+  tags:
+  - mi
+  - roi360
+  - kcolb_tsalb
+  - us
+  - ua_drop
+  - campaign_review
+- id: report_input_spec
+  type: report_policy
+  path: 报告投喂规范.md
+  title: DA 报告投喂规范
+  status: active
+  tags:
+  - report_ingestion
+  - dingtalk
+  - weekly_report
+  - evidence
+- id: sql_promotion_governance
+  type: report_policy
+  path: SQL晋升治理.md
+  title: 稳定 SQL 晋升治理
+  status: active
+  tags:
+  - sql_promotion
+  - verified_sql
+  - audit
+  - data_agent
+- id: image_handling_policy
+  type: report_policy
+  path: 报告图片处理策略.md
+  title: 报告图片处理策略
+  status: active
+  tags:
+  - image_handling
+  - ocr
+  - screenshot
+  - heatmap
+- id: evidence_schema
+  type: report_policy
+  path: 报告证据结构.md
+  title: 报告证据结构
+  status: active
+  tags:
+  - evidence
+  - confidence
+  - report_ingestion
+- id: sop_20260615_channel_quality_antifraud
+  type: analysis_sop
+  path: analysis_sop/20260615_渠道质量与归因异常分析SOP.md
+  title: 渠道质量与归因异常分析 SOP
+  status: draft_partial_validated
+  sql_status: verified
+  tags:
+  - channel_quality
+  - antifraud
+  - ctit
+  - gp_referrer
+  - moloco
+  - needs_decision
+  linked_verified_sql: vsql_20260716_channel_quality_ctit_matchtype
+- id: sop_20260615_analysis_report_templates
+  type: analysis_sop
+  path: analysis_sop/20260615_分析报告HTML模板使用SOP.md
+  title: 分析报告 HTML 模板使用 SOP
+  status: draft
+  sql_status: missing_source_sql
+  tags:
+  - report_template
+  - html
+  - roi
+  - retention
+  - channel_dashboard
+  - needs_decision
+- id: vsql_20260620_new_return_device_attribution_aggregation
+  type: verified_sql
+  path: verified_sql/vsql_20260620_new_return_device_attribution_aggregation.md
+  title: 新/回流设备 AF 归因聚合验证 SQL
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-06-20'
+  validation_method: manual_small_window
+  owner: Codex
+  supersedes: []
+  tables:
+  - h-s.dim_market_new_return_device_attribution_da
+  tags:
+  - maxcompute
+  - appsflyer
+  - new_device
+  - return_device
+  - attribution
+  - aggregation_only
+  - pii_do_not_log
+- id: sop_ai_routine_dashboard_material_v2_validation_sql
+  type: analysis_sop
+  path: analysis_sop/AI例行看板_素材效能_v2_验数SQL.md
+  title: AI 例行看板 · 素材效能 v2 DA 验数手册
+  status: draft_pending_sql_validation
+  related_assets:
+  - ../dashboard/AI例行看板_素材效能/AI例行看板_素材效能_v2_验数SQL.md
+  - ../dashboard/AI例行看板_素材效能/AI例行看板_素材效能_方案.md
+  - ../dashboard/AI例行看板_素材效能/素材效能看板_v2.html
+  - ../dashboard/AI例行看板_素材效能/server.py
+  - ../dashboard/AI例行看板_素材效能/README.md
+  sql_status: candidate_sql
+  tags:
+  - material_dashboard
+  - clickhouse
+  - routine_dashboard
+  - validation_sql
+  - v2
+- id: sop_20260705_ad_dashboard_module_knowledge_distillation
+  type: analysis_sop
+  path: analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  title: 投放看板模块知识蒸馏：素材效能与 Campaign Overview
+  status: live_validated_partial
+  source_assets:
+  - ../task_routes/material_analysis.yaml
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  - ../ai_ck/agent_knowledge/metrics/MI_ROI360页面字段字典.md
+  - ../ai_ck/agent_knowledge/metrics/ROI360指标语义.md
+  - ../ai_ck/agent_knowledge/metrics/素材效果指标语义.md
+  related_assets:
+  - ../TODO/投放看板知识蒸馏待补问题.md
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - analysis_sop/AI例行看板_素材效能_v2_验数SQL.md
+  - ../knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+  - ../knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+  sql_status: not_applicable
+  tags:
+  - material_dashboard
+  - campaign_overview
+  - mi_roi360
+  - dashboard_module_knowledge
+  - optimizer_workbench
+  - reviewed_code
+  - live_validated_partial
+- id: sop_20260707_campaign_anomaly_ua_operation_linkage
+  type: analysis_sop
+  path: analysis_sop/20260707_Campaign异动与UA操作联动SOP.md
+  title: Campaign 异动与 UA 操作联动 SOP
+  status: active
+  source_assets:
+  - ../knowledge/agent_knowledge/policies/Campaign全览分析协议.md
+  - analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  - ../task_routes/google_ads_config_change_analysis.yaml
+  related_assets:
+  - ../knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+  - ../knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - analysis_sop/20260706_投放问题线上答题模板.md
+  - verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  sql_status: not_applicable
+  tags:
+  - campaign_overview
+  - campaign_anomaly
+  - ua_operation_history
+  - operation_impact
+  - pre_post_window
+  - candidate_correlation
+  - google_change_log
+- id: sop_20260706_ad_dashboard_live_validation
+  type: analysis_sop
+  path: analysis_sop/20260706_投放看板live验证记录.md
+  title: 投放看板 live 验证记录
+  status: live_validated_partial
+  source_assets:
+  - analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  - ../ai_ck/engineering_artifacts/freshness_snapshot.json
+  - ../ai_hive/engineering_artifacts/freshness_snapshot.json
+  - ../eval/agent_regression/Agent回归报告.md
+  related_assets:
+  - ../TODO/投放看板知识蒸馏待补问题.md
+  - ../task_routes/material_analysis.yaml
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  sql_status: not_applicable
+  tags:
+  - material_dashboard
+  - campaign_overview
+  - mi_roi360
+  - live_validation
+  - freshness
+  - ck
+  - maxcompute
+- id: sop_20260706_ad_question_online_answer_templates
+  type: analysis_sop
+  path: analysis_sop/20260706_投放问题线上答题模板.md
+  title: 投放问题线上答题模板
+  status: live_validated_partial
+  source_assets:
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  - analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - analysis_sop/20260620_Day0_ARPU_MI查询输出模板.md
+  - verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  related_assets:
+  - ../eval/真实问题验收集/cases.yaml
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  - ../task_routes/mi_roi360_analysis.yaml
+  - ../task_routes/google_ads_config_change_analysis.yaml
+  sql_status: not_applicable
+  tags:
+  - answer_contract
+  - roi360
+  - dnu
+  - day0_arpu
+  - google_change_log
+  - online_agent
+- id: sop_20260706_mi_backend_readonly_probe_index
+  type: analysis_sop
+  path: analysis_sop/20260706_MI后端只读接口探针索引.md
+  title: MI 后端只读接口探针索引
+  status: live_validated_partial
+  source_assets:
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  - ../ai_ck/agent_knowledge/MI_ROI360平台能力说明.md
+  - ../ai_ck/agent_knowledge/metrics/MI_ROI360页面字段字典.md
+  - ../ai_ck/agent_knowledge/policies/MI素材能力说明_20260628.md
+  related_assets:
+  - ../skills/mi_skill/SKILL.md
+  - ../tools/scripts/mi_auth.py
+  - ../tools/scripts/query_mi_roi360.py
+  - ../tools/scripts/probe_mi_material_report_dryrun.py
+  - ../tools/scripts/probe_mi_backend_modules.py
+  - ../task_routes/mi_roi360_analysis.yaml
+  - ../task_routes/material_analysis.yaml
+  sql_status: not_applicable
+  tags:
+  - mi_backend
+  - mi_roi360
+  - asset_report
+  - campaign_govern
+  - readonly_probe
+  - forecast_version
+  - live_validated_partial
+- id: sop_20260706_mi_module_distillation_v2
+  type: analysis_sop
+  path: analysis_sop/20260706_MI模块级知识蒸馏v2.md
+  title: MI 模块级知识蒸馏 v2
+  status: live_validated_partial
+  source_assets:
+  - analysis_sop/20260706_MI后端只读接口探针索引.md
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - ../ai_ck/agent_knowledge/MI_ROI360平台能力说明.md
+  - ../ai_ck/agent_knowledge/metrics/ROI360指标语义.md
+  - ../ai_ck/agent_knowledge/metrics/ROI预估实现说明.md
+  - ../ai_ck/agent_knowledge/policies/MI素材能力说明_20260628.md
+  related_assets:
+  - ../tools/scripts/mi_auth.py
+  - ../tools/scripts/query_mi_roi360.py
+  - ../tools/scripts/probe_mi_material_report_dryrun.py
+  - ../tools/scripts/probe_mi_backend_modules.py
+  - ../task_routes/mi_roi360_analysis.yaml
+  - ../task_routes/material_analysis.yaml
+  - ../eval/agent_regression/regression_cases.yaml
+  sql_status: not_applicable
+  tags:
+  - mi_backend
+  - mi_roi360
+  - asset_report
+  - media_asset_report
+  - asset_benchmark
+  - campaign_govern
+  - campaign_history
+  - forecast_version
+  - pgp_campaign_overview
+  - module_distillation
+  - live_validated_partial
+- id: sop_20260706_mi_forecast_algorithm_chain_v3
+  type: analysis_sop
+  path: analysis_sop/20260706_MI预测算法链路蒸馏v3.md
+  title: MI 预测算法链路蒸馏 v3
+  status: code_reviewed_live_options
+  source_assets:
+  - analysis_sop/20260706_MI后端只读接口探针索引.md
+  - analysis_sop/20260706_MI模块级知识蒸馏v2.md
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  - ../ai_ck/agent_knowledge/metrics/ROI预估实现说明.md
+  - ../ai_ck/agent_knowledge/metrics/MI_ROI360页面字段字典.md
+  related_assets:
+  - ../tools/scripts/probe_mi_backend_modules.py
+  - ../task_routes/mi_roi360_analysis.yaml
+  - ../eval/agent_regression/regression_cases.yaml
+  sql_status: not_applicable
+  tags:
+  - mi_backend
+  - mi_roi360
+  - forecast_algorithm
+  - forecast_version
+  - roi360_blue
+  - v6_sdk
+  - xy_forecast
+  - correction
+  - code_reviewed_live_options
+- id: sop_20260706_mi_forecast_service_engineering_v4
+  type: analysis_sop
+  path: analysis_sop/20260706_MI预测服务工程侧蒸馏v4.md
+  title: MI 预测服务工程侧蒸馏 v4
+  status: interface_live_probed_pipeline_code_reviewed
+  source_assets:
+  - analysis_sop/20260706_MI预测算法链路蒸馏v3.md
+  - analysis_sop/20260706_MI后端只读接口探针索引.md
+  - ../ai_ck/agent_knowledge/metrics/ROI预估实现说明.md
+  related_assets:
+  - ../task_routes/mi_roi360_analysis.yaml
+  - ../eval/agent_regression/regression_cases.yaml
+  sql_status: not_applicable
+  tags:
+  - mi_backend
+  - mi_roi360
+  - forecast_service
+  - ltv_pred
+  - roi_forecast
+  - fastapi
+  - market_data_collector
+  - interface_live_probed
+  - pipeline_code_reviewed
+- id: sop_20260706_pgp_campaign_overview_page_api_regression_sample
+  type: analysis_sop
+  path: analysis_sop/20260706_PGP_CampaignOverview页面接口回归样例.md
+  title: PGP Campaign Overview 页面接口回归样例
+  status: live_validated_partial
+  source_assets:
+  - analysis_sop/20260706_投放看板live验证记录.md
+  - analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  related_assets:
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  - ../eval/agent_regression/regression_cases.yaml
+  - ../tools/scripts/probe_pgp_agent_endpoints.py
+  - ../tools/scripts/probe_pgp_campaign_overview_api.py
+  sql_status: not_applicable
+  tags:
+  - campaign_overview
+  - pgp_platform
+  - page_api_regression
+  - chrome_login_state
+  - live_validation
+- id: sop_20260623_pi_call_log_review_and_online_rerun
+  type: analysis_sop
+  path: analysis_sop/20260623_PI调用日志复核与线上回归SOP.md
+  title: PI 调用日志复核与线上回归 SOP
+  status: verified
+  source_assets:
+  - ../eval/PI调用日志复核_20260623/20260623_复核总报告.md
+  - ../eval/PI调用日志复核_20260623/20260623_MC_CK补充复核.md
+  - ../bugfix_doc/20260623_PI路由误判与空结果掩盖重大问题.md
+  related_assets:
+  - ../eval/PI调用日志复核_20260623/20260623_逐条复核记录.md
+  - ../eval/PI调用日志复核_20260623/20260623_回归候选清单.md
+  - ../eval/PI调用日志复核_20260623/20260623_PI_E2E复跑记录.md
+  - ../eval/PI调用日志复核_20260623/20260623_PI_二次开发修订总结.md
+  sql_status: not_applicable
+  tags:
+  - pi_review
+  - data_agent_runtime
+  - mysql_trace
+  - maxcompute
+  - clickhouse
+  - online_rerun
+  - query_records
+  - goal_mode
+- id: sop_pi_query_execution_review_guardrails
+  type: analysis_sop
+  path: analysis_sop/PI查询执行复核护栏.md
+  title: PI 查询执行复核护栏
+  status: verified
+  source_assets:
+  - ../bugfix_doc/20260623_PI路由误判与空结果掩盖重大问题.md
+  related_assets:
+  - ../da_assets/analysis_sop/20260623_PI调用日志复核与线上回归SOP.md
+  sql_status: not_applicable
+  tags:
+  - pi_review
+  - runtime_guardrail
+  - text2sql
+  - cohort
+  - query_records
+- id: sop_pi_review_goal_template
+  type: analysis_sop
+  path: analysis_sop/PI复核Goal模板.md
+  title: PI 复核 Goal 模板
+  status: verified
+  source_assets:
+  - ../da_assets/analysis_sop/20260623_PI调用日志复核与线上回归SOP.md
+  related_assets:
+  - ../skills/pi-reviewer/SKILL.md
+  sql_status: not_applicable
+  tags:
+  - pi_review
+  - goal_mode
+  - codex5.3-spark
+- id: sop_20260702_mi_roi360_media_export_d360_zero_diagnosis
+  type: analysis_sop
+  path: analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  title: MI ROI360 分媒体导出与 D360 零值排查 SOP
+  status: draft
+  source_assets:
+  - candidate_sql/roi/roi360_media_export_d360_zero_diagnosis.sql
+  sql_status: verified
+  tags:
+  - mi_roi360
+  - media_export
+  - ltv0
+  - ltv360
+  - cost_zhe_share
+  - d360_zero_diagnosis
+  - organic_allocation
+  - two_stage_aggregation
+  - candidate_sql
+  linked_verified_sql: vsql_20260715_roi360_media_export_d360_zero_diagnosis
+- id: csql_roi360_media_export_d360_zero_diagnosis
+  type: candidate_sql
+  path: candidate_sql/roi/roi360_media_export_d360_zero_diagnosis.sql
+  title: MI ROI360 分媒体导出与 D360 零值排查 SQL 模板（CK）
+  status: candidate
+  sql_status: copied_unverified
+  promotion_status: candidate_sql
+  field_evidence_status: inline_source_table_comments
+  documentation_status: complete
+  last_validated_at: null
+  validation_method: not_validated
+  owner: Codex
+  supersedes: []
+  source_assets:
+  - ../ai_ck/agent_knowledge/tables/ads_market_roi_cohort_sdk_multidim.yaml
+  related_assets:
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  tags:
+  - clickhouse
+  - mi_roi360
+  - media_export
+  - ltv0
+  - ltv360
+  - d360_zero
+  - organic_allocation
+  - two_stage_aggregation
+  - candidate_sql
+- id: csql_bb_gp_20260626_media_spend_sdk_actual
+  type: candidate_sql
+  path: candidate_sql/roi/bb_gp_20260626_media_spend_sdk_actual.sql
+  title: BB GP 2026-06-26 分媒体消耗与 SDK 实际回收固定回放 SQL（CK）
+  status: candidate
+  sql_status: live_validated_candidate
+  promotion_status: candidate_sql
+  field_evidence_status: table_cards_and_verified_roi_semantics
+  documentation_status: complete
+  last_validated_at: '2026-07-15'
+  validation_method: live_ck_window_validation
+  owner: Codex
+  supersedes: []
+  source_assets:
+  - ../ai_ck/agent_knowledge/tables/tj_ad_spend_active_v2.yaml
+  - ../ai_ck/agent_knowledge/tables/tj_ad_sdk_revenue.yaml
+  - verified_sql/vsql_20260616_mi_roi360_campaign_board_recon.md
+  related_assets:
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  - ../eval/pi_replay_regression/cases.yaml
+- id: vsql_20260716_bb_gp_product_experiment_retention_monetization
+  type: verified_sql
+  path: verified_sql/vsql_20260716_bb_gp_product_experiment_retention_monetization.md
+  title: BB GP 商业化方案 fs217631 vs fs217632 D0/RR1/时长/局数/广告收入对比
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  field_evidence_status: table_cards_and_verified_experiment_semantics
+  documentation_status: complete
+  last_validated_at: '2026-07-16'
+  validation_method: automated_regression
+  owner: Data Agent Runtime
+  supersedes: []
+  source_assets:
+  - ../ai_hive/agent_knowledge/tables/dws_kcolb_tsalb_all_ad_realization_active_user_ab_life_orthogonal_retention_hi.yaml
+  related_assets:
+  - ../task_routes/product_behavior_or_experiment_analysis.yaml
+  - ../eval/pi_replay_regression/cases.yaml
+  tables:
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  tags:
+  - clickhouse
+  - roi360
+  - kcolb_tsalb_gp
+  - media_spend_share
+  - sdk_actual_revenue
+  - bounded_date_diff
+  - pi_replay
+  - candidate_sql
+- id: csql_bb_gp_latest_7d_media_roi360_distribution
+  type: candidate_sql
+  path: candidate_sql/roi/bb_gp_latest_7d_media_roi360_distribution.sql
+  title: kcolb tsalb GP latest 7 天分媒体 ROI360 分布候选 SQL（CK）
+  status: candidate
+  sql_status: live_validated_candidate
+  promotion_status: candidate_sql
+  field_evidence_status: table_card_backed
+  documentation_status: complete
+  last_validated_at: '2026-07-15'
+  validation_method: live_ck_window_validation
+  owner: Codex
+  supersedes: []
+  source_assets:
+  - ../ai_ck/agent_knowledge/tables/ads_market_roi_cohort_sdk_multidim.yaml
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  related_assets:
+  - candidate_sql/roi/roi360_media_export_d360_zero_diagnosis.sql
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  tags:
+  - clickhouse
+  - mi_roi360
+  - bb_gp
+  - media_distribution
+  - ltv0
+  - ltv360
+  - two_stage_aggregation
+  - candidate_sql
+- id: case_20260704_bb_gp_roi360_saturday_spend_drop_attachment_review
+  type: decision_cases
+  path: decision_cases/20260704_BB_GP_ROI360周六消耗下降附件分析案例.md
+  title: BB GP ROI360 周六消耗下降附件分析案例
+  status: reviewed_pending_live_validation
+  source_assets:
+  - ../raw_exports/yangchenshu-roi360-2026-07-05T19_37_19.xls
+  - ../raw_exports/yangchenshu-roi360-2026-07-05T19_38_32.xls
+  related_assets:
+  - decision_cases/case_20260704_bb_gp_roi360_saturday_spend_drop_evidence.csv
+  - analysis_sop/20260706_PI吸收ROI360附件GoodCase建设方案.md
+  - analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+  - analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  - ../task_routes/roi_or_campaign_analysis.yaml
+  source_type: roi360_excel_export
+  output_doc_url: https://alidocs.dingtalk.com/i/nodes/2Amq4vjg89eGR6QRUmkpOegl83kdP0wQ
+  evidence_level: attachment_reviewed
+  live_query_status: not_run
+  sql_status: not_applicable
+  validation_method: not_applicable
+  owner: Codex
+  tags:
+  - roi360
+  - mi_roi360
+  - kcolb_tsalb
+  - campaign
+  - country
+  - spend_drop
+  - attachment_reviewed
+  - evidence_grading
+  - needs_live_probe
+  - operation_log_pending
+  - dingtalk_delivery
+- id: sop_20260706_pi_absorb_roi360_attachment_good_case
+  type: analysis_sop
+  path: analysis_sop/20260706_PI吸收ROI360附件GoodCase建设方案.md
+  title: PI 吸收 ROI360 附件 Good Case 建设方案
+  status: draft_for_runtime_absorption
+  source_assets:
+  - decision_cases/20260704_BB_GP_ROI360周六消耗下降附件分析案例.md
+  - decision_cases/case_20260704_bb_gp_roi360_saturday_spend_drop_evidence.csv
+  related_assets:
+  - ../eval/真实问题验收集/cases.yaml
+  - analysis_sop/PI查询执行复核护栏.md
+  - analysis_sop/20260623_PI调用日志复核与线上回归SOP.md
+  sql_status: not_applicable
+  validation_method: not_applicable
+  owner: Codex
+  tags:
+  - pi_absorption
+  - roi360
+  - attachment_analysis
+  - answer_contract
+  - reasoning_trace
+  - evidence_grading
+  - runtime_plan
+- id: case_20260704_bb_gp_roi360_saturday_spend_drop_evidence
+  type: decision_cases
+  path: decision_cases/case_20260704_bb_gp_roi360_saturday_spend_drop_evidence.csv
+  title: BB GP ROI360 周六消耗下降附件分析结构化证据
+  status: reviewed
+  source_assets:
+  - decision_cases/20260704_BB_GP_ROI360周六消耗下降附件分析案例.md
+  - ../raw_exports/yangchenshu-roi360-2026-07-05T19_37_19.xls
+  - ../raw_exports/yangchenshu-roi360-2026-07-05T19_38_32.xls
+  sql_status: not_applicable
+  validation_method: manual_reconciliation
+  owner: Codex
+  tags:
+  - roi360
+  - campaign
+  - country
+  - structured_evidence
+  - attachment_reviewed
+  - regression_sample
+- id: vsql_20260716_channel_quality_ctit_matchtype
+  type: verified_sql
+  path: verified_sql/vsql_20260716_channel_quality_ctit_matchtype.md
+  title: 渠道质量与归因异常 - CTIT 分布 + match_type 分层
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-16'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  tags:
+  - channel_quality
+  - antifraud
+  - ctit
+  - gp_referrer
+  - match_type
+  - maxcompute
+- id: vsql_20260716_event_overlap_matrix
+  type: verified_sql
+  path: verified_sql/vsql_20260716_event_overlap_matrix.md
+  title: 用户价值×点位事件矩阵 - 事件间用户重叠率
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-16'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ods_appsflyer_all_in_app_events_report_di
+  - h-s.dwd_market_appsflyer_activation_push_data_di
+  tags:
+  - event_matrix
+  - overlap
+  - point_testing
+  - maxcompute
+  complements: vsql_20260616_point_event_penetration_value
+- id: vsql_20260715_bb_gp_latest_7d_media_roi360_distribution
+  type: verified_sql
+  path: verified_sql/vsql_20260715_bb_gp_latest_7d_media_roi360_distribution.md
+  title: BB GP Latest 7 天分媒体 ROI360 分布
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  tags:
+  - clickhouse
+  - bb_gp
+  - media_distribution
+  - roi360
+  - ltv0
+  - ltv360
+- id: vsql_20260715_bb_gp_20260626_media_spend_sdk_actual
+  type: verified_sql
+  path: verified_sql/vsql_20260715_bb_gp_20260626_media_spend_sdk_actual.md
+  title: BB GP 2026-06-26 分媒体消耗与 SDK 实际回收固定回放
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.tj_ad_spend_active_v2_view
+  - shucang_market.tj_ad_sdk_revenue_view
+  tags:
+  - clickhouse
+  - roi360
+  - kcolb_tsalb_gp
+  - media_spend_share
+  - sdk_actual_revenue
+- id: vsql_20260715_roi360_media_export_d360_zero_diagnosis
+  type: verified_sql
+  path: verified_sql/vsql_20260715_roi360_media_export_d360_zero_diagnosis.md
+  title: MI ROI360 分媒体导出与 D360 零值排查模板
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  tags:
+  - clickhouse
+  - mi_roi360
+  - media_export
+  - d360_zero
+  - organic_allocation
+- id: vsql_20260715_audience_us_xh_uac25_funnel
+  type: verified_sql
+  path: verified_sql/vsql_20260715_audience_us_xh_uac25_funnel.md
+  title: US-XH-UAC2.5 人群包漏斗诊断
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - h-s.ods_appsflyer_all_in_app_events_report_di
+  - h-s.dim_kcolb_tsalb_gp_user_ha
+  - h-s.dim_kcolb_tsalb_gp_user_first_start_da
+  tags:
+  - maxcompute
+  - audience
+  - funnel
+  - push_package
+- id: vsql_20260715_ltv_multiplier_drop_diagnosis
+  type: verified_sql
+  path: verified_sql/vsql_20260715_ltv_multiplier_drop_diagnosis.md
+  title: LTV 倍率下降归因 - LTV 三线趋势 + 留存 vs ARPDAU 拆解
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  tags:
+  - ltv_multiplier
+  - anomaly_diagnosis
+  - retention
+  - arpdau
+  - clickhouse
+- id: vsql_20260715_iaa_event_point_roi_ltv_trend
+  type: verified_sql
+  path: verified_sql/vsql_20260715_iaa_event_point_roi_ltv_trend.md
+  title: IAA 事件点位测试 - 事件渗透率 + ROI/LTV/倍率趋势
+  status: verified
+  sql_status: verified
+  promotion_status: verified_sql
+  last_validated_at: '2026-07-15'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  supersedes: []
+  tables:
+  - shucang_market.ads_market_roi_cohort_sdk_multidim
+  - shucang_market.dim_market_campaign_s2s_event_map_da
+  tags:
+  - iaa
+  - event_points
+  - ltv
+  - roi360
+  - penetration
+  - clickhouse
+- id: csql_multi_product_roi360_summary
+  type: candidate_sql
+  path: candidate_sql/multi_product_roi360_summary.sql
+  title: 双周会/周会复盘 - 多产品整包 ROI360 汇总
+  status: candidate
+  sql_status: live_validated_candidate
+  promotion_status: candidate_sql
+  field_evidence_status: table_card_and_live_validation
+  documentation_status: complete
+  last_validated_at: '2026-07-16'
+  validation_method: manual_small_window
+  owner: Cursor Agent
+  linked_sop:
+  - sop_20260610_growth_biweekly_review
+  - sop_20260615_growth_weekly_review
+  tags:
+  - biweekly_meeting
+  - weekly_report
+  - roi360
+  - multi_product
+  - clickhouse
+intake_checklist:
+- 记录 source URL 或文件名。
+- 明确业务问题（business question）。
+- 识别表名、维度、指标、过滤条件与时间窗口。
+- 标注 SQL 是否已执行与已验证。
+- 标注 SQL 的 promotion status 与 validation method。
+- 记录 SQL 资产的 last_validated_at、owner 与 supersedes。
+- 标注 MCP 读取状态与图片处理状态。
+- 标注是否存在需排除在 agent 上下文之外的敏感细节。
+promotion_gate_checklist:
+  gate_a_structure:
+  - 原始素材存在且可定位。
+  - 业务问题已记录。
+  - 已记录时间粒度、输出粒度、指标、维度、过滤条件与依赖表。
+  - 风险项与注意事项已记录。
+  gate_b_execution:
+  - SQL 已在安全时间窗口执行，或已与可信产出进行对账。
+  - 已记录验证日期、方法、参数与结果摘要。
+  - 已记录 PII 或用户级明细处理方式。
+  gate_c_recall:
+  - 只有 verified_sql / semantic_promoted 才可进入默认召回。
+  - Draft、candidate_sql、validated_sql、needs_decision 必须标为受限或待确认。
+sql_status_values:
+  missing_source_sql: 源报告尚未有可直接复用的 SQL。
+  draft_sql_needed: 需先按 SOP 要求补齐 SQL 后再使用。
+  copied_unverified: 从源材料拷贝后未执行。
+  copied_partial_validated: 从源材料拷贝并做了安全聚合核验，但尚未达到可复用标准。
+  verified: 已按日期过滤条件执行并完成结果复核。
+promotion_status_values:
+  raw: 仅原始素材，不作为 SQL 参考。
+  draft: 备稿中的知识或分析，默认不可召回。
+  candidate_sql: SQL 存在但未通过 verified gate。
+  validated_sql: 通过了小窗口安全校验，但尚未成为稳定可复用参考。
+  verified_sql: 通过结构与执行 gate，可进入默认召回。
+  semantic_promoted: SQL/指标已入 semantic_contract 或稳定诊断层。
+  needs_decision: 业务定义、阈值或动作仍需 owner 决策。
+  deprecated: 不再推荐使用，保留用于追溯。
+  superseded: 不要直接默认使用，按 supersedes 链接切换到替换版本。
+validation_method_values:
+  manual_small_window: 人工执行带日期/分区过滤的小窗口查询，并复核聚合结果。
+  manual_reconciliation: 人工与可信 dashboard/report 或跨源产出完成对账。
+  live_mc_window_validation: 在 MaxCompute 做有界日期窗口在线执行，并复核聚合结果。
+  live_ck_window_validation: 在 ClickHouse 做有界日期窗口在线执行，并复核聚合结果。
+  online_template_rerun_with_t_plus_1_guardrail: 模板在线重跑，覆盖 install-time 业务窗口和含 T+1/latest partition 的 dt 扫描窗口。
+  online_desc_and_common_partition_reconciliation: 在线 DESC + 相关表的分区交集对齐校验。
+  automated_regression: 通过仓库脚本或 CI 风格回归作业检查。
+  semantic_contract_regression: 通过 semantic_contract build 或 compose_sql 回归检查。
+  owner_confirmed: 经业务/数据 owner 确认，且未直接执行 SQL。
+  not_applicable: 非 SQL 资产，或无需执行级别验证。
+promotion_metrics:
+  verified_sql_count: 统计 promotion_status 为 verified_sql 或 semantic_promoted 的条目数。
+  high_frequency_question_coverage: verified SQL 与 semantic_contract 可覆盖的高频问题占比。
+  draft_misrecall_count: 统计 draft / candidate_sql / needs_decision 被误当事实使用的案例数。
+  rerun_failure_rate: 已验证 SQL 在重跑或漂移检查中失败的比例。
+  needs_decision_block_rate: needs_decision 场景正确被阻断至 owner 决策的比例。
+mcp_read_status_values:
+  text_and_tables_readable: DingTalk MCP 返回 Markdown 文本与表格块。
+  image_links_seen_but_not_ocr_verified: 检测到图片链接/图片块，但未做 OCR/视觉确认。
+  partial_link_ingested: 周更同步或源文本已读取，但部分提及链接未能按 nodeId 访问。
+  html_file_downloaded_and_text_extracted: DingTalk MCP 命中 HTML 节点并解析下载签名，提取了文本。
+  not_applicable: 不需要 MCP 解析。
+image_status_values:
+  no_image: 源数据无图片依赖。
+  images_archived: 图片已作为证据归档，但未做提取。
+  reviewed_image_extracts: 图片已人工复核，清晰表格/图示已提取并产出摘要。
+  table_images_ocr_pending: 表格截图可做 OCR，但尚未完成复核。
+  table_images_ocr_verified: 表格截图已提取并复核通过。
+  charts_need_source_data: 图表截图用于数值推断时需保留原始图表数据。
+  dense_images_archive_only: 密集热力图/矩阵类仅归档，不做解析。
+  needs_better_source: 图片质量不足，需更好的来源重提取。
