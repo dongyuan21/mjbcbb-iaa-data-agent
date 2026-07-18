@@ -15,32 +15,32 @@
 | 主题 | 候选表 | intake 要点 |
 |---|---|---|
 | 白名单主题 | `yrgnuh_studio.dwd_b-b_all_white_event_unique_data_hi` | 与当前 GP / iOS 白名单表卡关系待确认；必须写明 `app_name`、`event_name`、分区。 |
-| 白名单主题 | `yrgnuh_studio.dwd_block_collection_all_white_event_unique_data_hi` | DT 共享白名单事件表；需补 app_name、event_name、PII 和 freshness。 |
-| 用户属性主题 | `yrgnuh_studio.dim_block_collection_all_user_ha` | DT 用户属性快照；需补分区、hour、join key 和 PII。 |
-| 用户属性主题 | `yrgnuh_studio.dim_block_collection_all_user_label_da` | DT 用户标签天级表；需确认与用户属性表关系。 |
+| 白名单主题 | `yrgnuh_studio.dwd_kcolb_collection_all_white_event_unique_data_hi` | DT 共享白名单事件表；需补 app_name、event_name、PII 和 freshness。 |
+| 用户属性主题 | `yrgnuh_studio.dim_kcolb_collection_all_user_ha` | DT 用户属性快照；需补分区、hour、join key 和 PII。 |
+| 用户属性主题 | `yrgnuh_studio.dim_kcolb_collection_all_user_label_da` | DT 用户标签天级表；需确认与用户属性表关系。 |
 | 用户属性主题 | `yrgnuh_studio.dim_nova_collection_all_user_label_da` | nova 系用户标签天级表；需确认和 `*_label_ha` 的粒度差异。 |
 | 用户行为主题 | `yrgnuh_studio.dws_b-b_gp_user_multi_dim_di` | BB GP 用户日行为聚合；需补指标字段族和分区。 |
 | 用户行为主题 | `yrgnuh_studio.dws_b-b_ios_user_multi_dim_di` | BB iOS 用户日行为聚合；需补指标字段族和分区。 |
-| 用户行为主题 | `yrgnuh_studio.dws_block_collection_all_user_multi_dim_hi` | DT 用户行为聚合；需补 `app_name`、hour、收入字段族。 |
+| 用户行为主题 | `yrgnuh_studio.dws_kcolb_collection_all_user_multi_dim_hi` | DT 用户行为聚合；需补 `app_name`、hour、收入字段族。 |
 | 留存主题 | `yrgnuh_studio.dws_b-b_gp_new_user_retention_hi` | BB GP 新用户留存；需确认全量快照和 business date 字段。 |
 | 留存主题 | `yrgnuh_studio.dws_b-b_ios_new_user_retention_hi` | BB iOS 新用户留存；需确认全量快照和 business date 字段。 |
-| 留存主题 | `yrgnuh_studio.dws_block_collection_all_user_retention_da` | DT 留存；需补 app_name、分区和 retention day 字段。 |
+| 留存主题 | `yrgnuh_studio.dws_kcolb_collection_all_user_retention_da` | DT 留存；需补 app_name、分区和 retention day 字段。 |
 | 留存主题 | `yrgnuh_studio.dws_nova_collection_all_user_retention_da` | nova 系留存；需补 app_name、分区和 retention day 字段。 |
 | 实验方案主题 | `yrgnuh_studio.dws_b-b_all_new_abtest_user_multi_dim_hi` | BB 实验用户多维；需补方案字段、实验时间和 join key。 |
 | 实验汇总主题 | `yrgnuh_studio.dws_b-b_all_new_abtest_user_way_agg_hi` | BB 新双端实验用户方案汇总；需补全量快照、hour、收入单位、is_locked / pici 字段边界。 |
 | 方案留存主题 | `yrgnuh_studio.dws_b-b_all_new_abtest_user_retention_hi` | BB 新双端实验留存明细；需补 is_ab、retention_days、active_date、收入单位和新旧表替代关系。 |
-| 实验方案主题 | `yrgnuh_studio.dws_block_collection_all_new_abtest_user_multi_dim_hi` | DT 实验用户多维；需补 app_name、方案字段和 hour。 |
+| 实验方案主题 | `yrgnuh_studio.dws_kcolb_collection_all_new_abtest_user_multi_dim_hi` | DT 实验用户多维；需补 app_name、方案字段和 hour。 |
 | 方案留存主题 | `yrgnuh_studio.dws_b-b_gp_new_abtest_active_join_user_ab_retention_hi` | BB GP 方案留存；需确认人均留存天数和 RR 口径。 |
 | 方案留存主题 | `yrgnuh_studio.dws_b-b_ios_new_abtest_active_join_user_ab_retention_hi` | BB iOS 方案留存；需确认人均留存天数和 RR 口径。 |
-| 方案留存主题 | `yrgnuh_studio.dws_block_collection_all_new_abtest_user_retention_hi` | DT 方案留存；需确认 app_name 和 retention 字段。 |
-| 实验汇总主题 | `yrgnuh_studio.dws_block_collection_all_new_abtest_user_way_agg_hi` | DT 方案汇总表；需确认已聚合周期、字段含义和适用实验类型。 |
+| 方案留存主题 | `yrgnuh_studio.dws_kcolb_collection_all_new_abtest_user_retention_hi` | DT 方案留存；需确认 app_name 和 retention 字段。 |
+| 实验汇总主题 | `yrgnuh_studio.dws_kcolb_collection_all_new_abtest_user_way_agg_hi` | DT 方案汇总表；需确认已聚合周期、字段含义和适用实验类型。 |
 | 投放主题 | `yrgnuh_studio.ads_market_nova_nebula_ad_detail_di` | nova 系投放明细；需补 app_name / bundle_id 过滤和 campaign 粒度。 |
 | ROI 预估主题 | `hs_user_growth.ads_pg_ma0j_blest_launch_revenue_predict_v1` | 预估表；需确认产品适用范围、预测版本、真实/预估边界。 |
-| 局粒度主题 | `yrgnuh_studio.dws_b-b_ios_block_action_game_di` | BB iOS 局表；需补 game_id / session / 局结束口径。 |
-| 轮维度主题 | `yrgnuh_studio.dws_b-b_gp_block_action_round_di` | BB GP 轮表；需明确仅在局表不够时使用。 |
-| 轮维度主题 | `yrgnuh_studio.dws_b-b_ios_block_action_round_di` | BB iOS 轮表；需明确仅在局表不够时使用。 |
-| 出块维度主题 | `yrgnuh_studio.dwd_b-b_gp_block_action_block_di` | BB GP 出块表；高扫描风险，需补分区和限制条件。 |
-| 出块维度主题 | `yrgnuh_studio.dwd_b-b_ios_block_action_block_di` | BB iOS 出块表；高扫描风险，需补分区和限制条件。 |
+| 局粒度主题 | `yrgnuh_studio.dws_b-b_ios_kcolb_action_game_di` | BB iOS 局表；需补 game_id / session / 局结束口径。 |
+| 轮维度主题 | `yrgnuh_studio.dws_b-b_gp_kcolb_action_round_di` | BB GP 轮表；需明确仅在局表不够时使用。 |
+| 轮维度主题 | `yrgnuh_studio.dws_b-b_ios_kcolb_action_round_di` | BB iOS 轮表；需明确仅在局表不够时使用。 |
+| 出块维度主题 | `yrgnuh_studio.dwd_b-b_gp_kcolb_action_kcolb_di` | BB GP 出块表；高扫描风险，需补分区和限制条件。 |
+| 出块维度主题 | `yrgnuh_studio.dwd_b-b_ios_kcolb_action_kcolb_di` | BB iOS 出块表；高扫描风险，需补分区和限制条件。 |
 | MB 解析主题 | `yrgnuh_studio.dws_nova_ma0j_gp_parsed_board_game_click_di` | MB GP 点击解析明细；需补 grain、PII、game_mode、is_formal。 |
 | MB 看板主题 | `yrgnuh_studio.ads_nova_nebula_all_ab_with_dimension_and_media_type_hi` | MB 看板聚合层；需确认维度、分区、指标口径。 |
 | 实验配置主题 | `yrgnuh_studio.dim_nova_nebula_all_ab_plan_conf_ha` | MB / nova 实验配置；需补 hour、方案字段。 |
@@ -63,7 +63,7 @@
 
 - 2026-06-19 用源包文本复算全限定表名：64 张有效表，另有 `yrgnuh_studio.table_name` 占位符已排除。
 - 其中 23 张已进入当前 `ai_hive/agent_knowledge/catalog.yaml`，41 张源包表尚未入 catalog。
-- 上表保留 3 张本轮文本抽取未命中的 legacy 扩展候选：`yrgnuh_studio.dim_b-b_all_new_ab_title_mark_realtime`、`yrgnuh_studio.dim_block_collection_all_user_label_da`、`yrgnuh_studio.dws_b-b_all_new_abtest_user_multi_dim_hi`；后续需复核是否仍属于 SQL 写作链 intake 范围。
+- 上表保留 3 张本轮文本抽取未命中的 legacy 扩展候选：`yrgnuh_studio.dim_b-b_all_new_ab_title_mark_realtime`、`yrgnuh_studio.dim_kcolb_collection_all_user_label_da`、`yrgnuh_studio.dws_b-b_all_new_abtest_user_multi_dim_hi`；后续需复核是否仍属于 SQL 写作链 intake 范围。
 
 ## 本轮已完成 intake
 
@@ -79,8 +79,8 @@
 | 实验方案主题 | `yrgnuh_studio.dws_nova_collection_all_abtest_user_multi_dim_hi` | `ai_hive/agent_knowledge/tables/dws_nova_collection_all_abtest_user_multi_dim_hi.yaml` |
 | 方案留存主题 | `yrgnuh_studio.dws_nova_collection_all_user_ab_retention_hi` | `ai_hive/agent_knowledge/tables/dws_nova_collection_all_user_ab_retention_hi.yaml` |
 | MB 解析主题 | `yrgnuh_studio.dws_nova_ma0j_all_parsed_board_game_click_di` | `ai_hive/agent_knowledge/tables/dws_nova_ma0j_all_parsed_board_game_click_di.yaml` |
-| 局粒度主题 | `yrgnuh_studio.dws_b-b_gp_block_action_game_di` | `ai_hive/agent_knowledge/tables/dws_b-b_gp_block_action_game_di.yaml` |
-| 投放主题 | `yrgnuh_studio.ads_market_block_collection_ad_detail_di` | `ai_hive/agent_knowledge/tables/ads_market_block_collection_ad_detail_di.yaml` |
+| 局粒度主题 | `yrgnuh_studio.dws_b-b_gp_kcolb_action_game_di` | `ai_hive/agent_knowledge/tables/dws_b-b_gp_kcolb_action_game_di.yaml` |
+| 投放主题 | `yrgnuh_studio.ads_market_kcolb_collection_ad_detail_di` | `ai_hive/agent_knowledge/tables/ads_market_kcolb_collection_ad_detail_di.yaml` |
 | AF 激活主题 | `yrgnuh_studio.dim_market_appsflyer_activation_pull_da` | `ai_hive/agent_knowledge/tables/dim_market_appsflyer_activation_pull_da.yaml` |
 | 成本主题 | `yrgnuh_studio.dwd_market_cost_di` | `ai_hive/agent_knowledge/tables/dwd_market_cost_di.yaml` |
 | SDK 收入主题 | `yrgnuh_studio.dwd_market_sdk_revenue_attributed_di` | `ai_hive/agent_knowledge/tables/dwd_market_sdk_revenue_attributed_di.yaml` |

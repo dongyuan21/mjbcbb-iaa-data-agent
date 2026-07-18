@@ -6,15 +6,15 @@
 
 <!-- 自动快照：开始 -->
 
-> 自动快照：2026-06-18；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
+> 自动快照：2026-07-02；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
 
 | 项 | 当前值 |
 |---|---|
-| 问答回归 | 通过 — 8/8 cases passed, 0 freshness-blocked, knowledge 6/6 routes 4/4 (门槛 7 pass_or_blocked) |
+| 问答回归 | 通过 — 11/11 cases passed, 0 freshness-blocked, knowledge 7/7 routes 17/17 golden 80/80 (门槛 10 pass_or_blocked) |
 | 数据新鲜度门禁 | 正常 |
 | 语义模型 | 11 个实体、38 个维度、50 个指标、3 条关联规则；16/16 个语义用例通过 |
-| 表卡覆盖 | ai_hive 104 张表；ai_ck 20 张表；CK 精选表画像 49 份 |
-| DA 资产 | 已验证 SQL 22 条；候选 SQL 1 条；决策记录 4 个；已闭环 1 个 |
+| 表卡覆盖 | ai_hive 123 张表；ai_ck 27 张表；CK 精选表画像 55 份 |
+| DA 资产 | 已验证 SQL 28 条；候选 SQL 2 条；决策记录 9 个；已闭环 1 个 |
 | 北极星覆盖 | 约 16/35 个高频场景，概念覆盖率约 46% |
 
 - 数据新鲜度门禁：正常
@@ -36,7 +36,7 @@
 | 数据新鲜度 / 分区可用性 | 通过 | `ai_ck/engineering_artifacts/freshness_snapshot.json` + `ai_hive/engineering_artifacts/freshness_snapshot.json` 已覆盖 P0 表 |
 | 最小回归问题集 | 条件通过 | `eval/agent_regression/run_regression.py` 已覆盖 R1-R8；资产回归通过但可能被 freshness gate 阻断 |
 | 命令入口 | 通过 | `tools/runbooks/语义模型回归校验.md`、`tools/runbooks/Agent回归.md`、`tools/runbooks/ClickHouse连通与新鲜度探测.md` |
-| DA / UA 人工确认清单 | 通过 | 已拆到 `TODO/下周给DA的问题.md` 与 `TODO/下周给UA的问题.md` |
+| DA / UA 人工确认清单 | 通过 | DA 已处理结论见 `knowledge/agent_knowledge/policies/DA问题已处理结论_20260628.md`；UA 待确认项见 `TODO/语义层待补清单.md`（原 `TODO/下周给DA的问题.md` 与 `TODO/下周给UA的问题.md` 已于 2026-07-14 归档） |
 | 外部广告平台操作记录工具 | 未开始 | Google Ads / Meta change log 已记录在 `工具建设待办.md`，等待用户后续补代码能力 |
 | 端到端 decision case | 部分闭环 | 已闭环 1 个 D7 后验 case；更多 case 仍缺广告平台操作日志、人类动作和后验 |
 
@@ -45,7 +45,7 @@
 - 可问表：`ai_hive` 表卡数量以上方自动快照为准。
 - 可问 CK：`ai_ck` 已覆盖全库 metadata、业务样例、ROI360 指标语义。
 - 可跑 SQL：`maxcompute-dataworks` 和 CK native 均已验证。
-- 可引用 reference SQL：verified SQL 数量以上方自动快照和 `da_assets/SQL晋升指标报告.md` 为准。
+- 可引用 reference SQL：verified SQL 数量以上方自动快照和 `eval/sql_promotion/SQL晋升指标报告.md` 为准。
 - 可引用分析流程：已沉淀首日 ARPU 异动、MJ/DT 点位复盘、广告展示口径、LTV 倍率下降、IAA 点位测试等 SOP / raw。
 - 可跑语义模型回归：`python3 knowledge/engineering_artifacts/semantic_contract/build_model.py && python3 knowledge/engineering_artifacts/semantic_contract/eval/compose_sql.py`，当前状态以上方自动快照为准。
 - 可跑 R1-R8 agent 回归：`python3 eval/agent_regression/run_regression.py`，会把 delayed / stale freshness 提升为 `BLOCKED`。
@@ -84,7 +84,7 @@
 可以启动只读 POC。下一步优先：
 
 1. 用 R1 / R2 / R7 各做一次端到端只读演练。
-2. 拿 `TODO/下周给DA的问题.md` 和 `TODO/下周给UA的问题.md` 做人工确认。
+2. 拿 `knowledge/agent_knowledge/policies/DA问题已处理结论_20260628.md`（DA 已处理结论）和 `TODO/语义层待补清单.md`（UA 待确认项）做人工确认。原 `TODO/下周给DA的问题.md` 和 `TODO/下周给UA的问题.md` 已归档。
 3. 选择 2 个新 case 补齐人类动作、操作日志和 D+1/D+3/D+7 后验，扩大闭环样本。
 4. 等用户补 Google Ads API 代码能力后，再启动 `工具建设待办.md` 中的 Google Ads change log 工具。
 5. 如果只读 POC 在 freshness gate 下仍稳定，下一步进入自研开源 DataAgent runtime 的最小闭环实现，不再评估外部承载路线。

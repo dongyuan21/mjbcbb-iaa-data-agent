@@ -1,6 +1,7 @@
 # PI Runtime P0 本地实现记录（2026-06-28）
 
-> 来源：`TODO/PI Agent能力缺口小白说明.md` 已完成段落迁移。  
+> 状态：`archived_snapshot`（历史记录，P0-1/P0-3 已于 2026-07-16 进入 test 运营阶段，当前进展见 `TODO/PI Agent能力缺口小白说明.md`）
+> 来源：`TODO/PI Agent能力缺口小白说明.md` 已完成段落迁移。
 > 边界：这是本地工程验收记录，不等同于 test 环境两轮 replay 通过。
 
 ## 已完成
@@ -30,11 +31,12 @@ curl -sS http://127.0.0.1:8765/health
 curl -sS http://127.0.0.1:8765/api/preflight
 ```
 
-## test 环境待验收
+## test 环境收口进展（2026-07-15）
 
-- 用 test 环境 `BASE_URL` 连续跑两轮 `tools/scripts/pi_replay_regression.py`。
-- 用真实长查询场景验证刷新页面后通过 `job_id` / `session_id` 找回状态和结果。
-- 用真实失败 session 验证 `/api/debug/snapshot` 的 failure category 是否能在 1 分钟内定位主失败层。
+- 行为提交 `54df4d8f` 已完成 API / Worker / Freshness 三服务同提交部署、machine-auth smoke 与六项 preflight。
+- durable SSE 传输稳定性已由最终 14 条 live case × N=3 关闭：39 PASS、3 个预期 WARN、0 fail、0 blocked、0 flaky；114 条 query records 全部成功。
+- machine replay 已证明同一 job 的 `after_seq` 续传和最终结果可恢复；浏览器实际刷新后的 UI 恢复若没有独立手工报告，仍标 `evidence_gap`，不得从机器 N=3 推断。
+- `/api/debug/snapshot` 的真实失败 session 诊断仍按独立验收证据管理，不与 transport 稳定性结论混写。
 
 ## 后续代码阶段验收命令
 

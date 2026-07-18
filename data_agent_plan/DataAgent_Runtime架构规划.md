@@ -1,15 +1,21 @@
 # Data Agent Runtime 架构规划
 
-> 状态：framework_confirmed
+> 状态：historical_plan_with_20260715_implementation_overlay
 > 创建：2026-06-20
 > 更新：2026-06-20
-> 上下文：基于数仓知识库工程现状 + 公司基建（shai K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
+> 上下文：基于数仓知识库工程现状 + 公司基建（山海 K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
+
+## 2026-07-15 实现态覆盖说明
+
+中心化 Web、MySQL 持久化、Redis 任务队列/唤醒、PI Worker、durable SSE `after_seq` 续传和 test live N=3 已完成。行为提交 `54df4d8f` 的最终 14 条 live case × N=3 为 39 PASS、3 个预期黄色 WARN、0 fail、0 blocked、0 flaky，114 条 query records 全部成功。2026-07-15 已补齐浏览器刷新/断线后续接同一 job 的实现和离线自动化门禁；真实浏览器手工刷新报告仍与实现证据分开记录。原“工程现状”和 Phase 表保留为历史规划，不能继续当作当前完成度；OSS、钉钉通知、Langfuse与真实多人内测仍按各自证据单列。
+
+当前事件历史以 MySQL durable job events 为唯一权威，Redis 只负责排队和唤醒；客户端按最后连续序号续接同一 job，不重复创建任务，永久缺口仍 fail-closed。
 
 ## 已确认决策
 
 | 决策项 | 结论 | 确认时间 |
 |---|---|---|
-| 部署形态 | 中心化 Web 服务（shai K8s） | 2026-06-20 |
+| 部署形态 | 中心化 Web 服务（山海 K8s） | 2026-06-20 |
 | Agent 框架 | **PI Framework + 自定义数据工具/护栏层** | 2026-06-21 |
 | 后端语言 | Python（FastAPI） | 2026-06-20 |
 | 持久化 | MySQL（公司实例），**不用 SQLite** | 2026-06-20 |
@@ -64,7 +70,7 @@ Runtime：   ████░░░░░░  40%
 
 | 基建 | Data Agent 用法 | 参考 |
 |---|---|---|
-| shai DeployerV2 | 构建 Docker → ACR → K8s 部署 | pgp-platform |
+| 山海 DeployerV2 | 构建 Docker → ACR → K8s 部署 | pgp-platform |
 | SSO | 用户认证，ticket 换 session | pgp-platform `sso.go` |
 | MySQL | session / 报告元数据 / 查询记录 | pgp-platform GORM |
 | OSS (PVS) | markdown 报告 / 查询结果文件 | pgp-platform HtmlReport |
@@ -110,7 +116,7 @@ Agent 核心用 PI：agent loop、RPC/SDK、TUI/事件流、工具执行过程�
 ```python
 from openai import OpenAI
 client = OpenAI(
-    base_url="https://llm-gateway-internal.hs99.vip/v1",
+    base_url="https://stargate.youxi123.com/v1",
     api_key=os.environ["LLM_GATEWAY_API_KEY"],
 )
 ```
@@ -147,15 +153,17 @@ pgp-platform 用 Go，creative-video-agent 用 Python。Data Agent Web/API 层�
 - 知识库工具链全是 Python（33 个脚本）
 - MC/CK helper 当前是 Python（PyODPS / clickhouse-driver）
 - PI 是 TypeScript/Node Agent 框架，通过 RPC 与 Python Web 层集成
-- creative-video-agent 已验证 Python + FastAPI + shai K8s 可行
+- creative-video-agent 已验证 Python + FastAPI + 山海 K8s 可行
 
 ### 连接稳定性方案
 
-**SSE 断线重连**（Phase 0 已实现基础版）
+**SSE 断线重连**（当前实现态）
 - 服务端每 15s 发送 heartbeat 注释行保持连接
-- 每个 SSE 事件携带递增 `id:` 字段
-- 服务端发送 `retry: 5000` 指令，浏览器断线后 5 秒自动重连
-- 后续可扩展：服务端根据 `Last-Event-Id` 从断点续传
+- durable job 的每个 SSE `id:` 等于 MySQL event `seq`；`Last-Event-ID` 在未显式传 `after_seq` 时可作为续传游标
+- 服务端仍发送 `retry: 5000` 标准提示；React `fetch` reader 由自身状态机按固定退避重连，不依赖浏览器原生 `EventSource`
+- `GET /api/jobs/{job_id}/events?after_seq=` 从 MySQL durable event log 断点续传；Redis 通知不直接作为历史事件转发
+- 浏览器以 tab 级 `sessionStorage` 保存 `job_id`、最后连续 `seq` 和绝对 deadline；刷新只观察同一 job，不重复 POST，也不重置 deadline
+- 首次 POST 结果不明时只用同一个 `external_message_id` 幂等重试；得到 `job_id` 后立即从 checkpoint 移除问题正文
 
 **MC 长查询处理**
 - 用户提交 → 后端返回 query_id → 异步执行 MC SQL
@@ -165,6 +173,7 @@ pgp-platform 用 Go，creative-video-agent 用 Python。Data Agent Web/API 层�
 **会话恢复**
 - session_id 存前端 localStorage
 - 刷新页面 → 从 MySQL 恢复对话历史和查询结果
+- 若该 tab 仍有 active job checkpoint，则恢复历史后从最后连续 `seq` 继续观察；显式“停止接收”会清除自动续接标记，后台 job 不被误报为已取消
 
 ---
 
@@ -530,7 +539,7 @@ Phase 0 ~ Phase 1 完全零额外部署，用 structlog + MySQL trace 表就能�
 ## 十、K8s 部署拓扑
 
 ```
-shai DeployerV2
+山海 DeployerV2
   → Docker Build（Python 3.12 + FastAPI + 依赖）
   → ACR 镜像推送
   → K8s namespace: data-agent
@@ -600,7 +609,7 @@ WORKDIR /app
 - Markdown 报告生成 + OSS 存储
 - 钉钉通知（长查询完成 / 断线恢复）
 - Langfuse trace 接入
-- Docker 镜像 + shai部署
+- Docker 镜像 + 山海部署
 - 断线重连 + 会话恢复
 - E2E 回归测试
 - **验收**：DA/UA 组 5+ 人日常使用
@@ -631,7 +640,7 @@ WORKDIR /app
 | 通知 | 钉钉 webhook | creative-video-agent `dingtalk.py` |
 | 日志 | structlog → SLS | creative-video-agent |
 | Trace | Langfuse 自部署（Phase 1） | - |
-| 部署 | shai DeployerV2 → K8s | pgp-platform / creative-video-agent |
+| 部署 | 山海 DeployerV2 → K8s | pgp-platform / creative-video-agent |
 
 ---
 

@@ -183,14 +183,14 @@
     .compare .warn { color: var(--amber); }
     .compare .dim { color: #6a7f9a; }
 
-    .code-block {
+    .code-kcolb {
       margin-top: 14px; padding: 14px 16px; border: 1px solid rgba(182,148,255,0.3);
       border-radius: 12px; background: rgba(6,10,20,0.8);
       font-family: ui-monospace, monospace; font-size: 11.5px; line-height: 1.55; color: #b8d0ff; overflow-x: auto;
     }
-    .code-block .fn { color: var(--cyan); }
-    .code-block .str { color: var(--amber); }
-    .code-block .cmt { color: #6a7f9a; }
+    .code-kcolb .fn { color: var(--cyan); }
+    .code-kcolb .str { color: var(--amber); }
+    .code-kcolb .cmt { color: #6a7f9a; }
 
     .controls { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
     .btn {
@@ -363,17 +363,17 @@
         <article class="step-detail" data-panel="3" hidden>
           <div class="detail-kicker">Stage 3 · Tokenization</div>
           <h3 class="detail-title">问题拆解 + 产品别名消歧</h3>
-          <p class="detail-desc"><code>_question_tokens()</code> 把自然语言问题变成检索 token 集；<code>product_aliases.yaml</code> 把「BB」映射到 block_blast 产品画像，影响后续表卡打分与 SQL 检索。</p>
+          <p class="detail-desc"><code>_question_tokens()</code> 把自然语言问题变成检索 token 集；<code>product_aliases.yaml</code> 把「BB」映射到 kcolb_tsalb 产品画像，影响后续表卡打分与 SQL 检索。</p>
           <ol class="micro-steps">
             <li><span class="n">1</span><div class="body"><strong>原文归一化</strong><span>question.lower()；按标点/空白切词，过滤无意义短 token</span></div><span class="size">—</span></li>
-            <li><span class="n">2</span><div class="body"><strong>产品别名命中</strong><span>「BB」→ block_blast；注入 app_names、bundle_ids、preferred_fact_tables</span></div><span class="size">alias</span></li>
+            <li><span class="n">2</span><div class="body"><strong>产品别名命中</strong><span>「BB」→ kcolb_tsalb；注入 app_names、bundle_ids、preferred_fact_tables</span></div><span class="size">alias</span></li>
             <li><span class="n">3</span><div class="body"><strong>领域词扩展</strong><span>「消耗」→ cost/spend/cost_zhe；「收入」→ revenue/ad_revenue/sdk_revenue</span></div><span class="size">token</span></li>
-            <li><span class="n">4</span><div class="body"><strong>负向 token</strong><span>block_collection / block_mahjong 进入 table_negative_tokens，防 DT 表族误命中</span></div><span class="size">护栏</span></li>
+            <li><span class="n">4</span><div class="body"><strong>负向 token</strong><span>kcolb_collection / kcolb_mahjong 进入 table_negative_tokens，防 DT 表族误命中</span></div><span class="size">护栏</span></li>
           </ol>
           <ul class="file-list">
             <li><span class="badge token">输入</span> 检查一下 BB 26日的消耗和收入</li>
-            <li><span class="badge token">产品</span> block_blast ← aliases: [BB, block_blast, 方块, …]</li>
-            <li><span class="badge token">tokens</span> block_blast, cost, spend, revenue, cost_zhe, com.block.juggle, …</li>
+            <li><span class="badge token">产品</span> kcolb_tsalb ← aliases: [BB, kcolb_tsalb, 方块, …]</li>
+            <li><span class="badge token">tokens</span> kcolb_tsalb, cost, spend, revenue, cost_zhe, com.kcolb.juggle, …</li>
             <li><span class="badge token">偏好表</span> ads_market_tj_ad_spend_active_v2, ads_market_tj_ad_sdk_revenue_attributed_di, ads_market_device_camp_dau_behavior_di</li>
           </ul>
         </article>
@@ -466,13 +466,13 @@ context_metrics = <span class="fn">build_context_token_breakdown</span>(question
         <article class="step-detail" data-panel="9" hidden>
           <div class="detail-kicker">Stage 9 · Query Guidance</div>
           <h3 class="detail-title">问题级硬护栏 — 在通用表卡之前注入</h3>
-          <p class="detail-desc"><code>query_specific_guidance()</code> 检测问题模式。本问题命中 <code>_is_spend_revenue_query</code> + block_blast → 注入 BB 消耗+收入专用路由提示，优先级高于通用 excerpt。</p>
+          <p class="detail-desc"><code>query_specific_guidance()</code> 检测问题模式。本问题命中 <code>_is_spend_revenue_query</code> + kcolb_tsalb → 注入 BB 消耗+收入专用路由提示，优先级高于通用 excerpt。</p>
           <ul class="file-list">
             <li><span class="badge guard">口径</span> 自然日发生 vs cohort 回收 — 禁止混日期语义</li>
             <li><span class="badge guard">消耗</span> ads_market_tj_ad_spend_active_v2 · active_date + bundle_id</li>
             <li><span class="badge guard">SDK收入</span> ads_market_tj_ad_sdk_revenue_attributed_di · dt vs active_date</li>
             <li><span class="badge guard">DA行为收入</span> ads_market_device_camp_dau_behavior_di · 无消耗字段</li>
-            <li><span class="badge guard">禁止</span> block_collection / DT 表族因含 cost/revenue 被误选</li>
+            <li><span class="badge guard">禁止</span> kcolb_collection / DT 表族因含 cost/revenue 被误选</li>
           </ul>
         </article>
 

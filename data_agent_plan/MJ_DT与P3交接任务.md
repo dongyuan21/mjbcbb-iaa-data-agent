@@ -16,28 +16,28 @@
   - `da_assets/raw/2026-06-13_MJ_DT历史点位复盘手工材料.md`
   - `da_assets/analysis_sop/MJ_DT历史点位复盘SOP.md`
 
-但 MJ/DT 复盘 SQL 依赖的 `ods_appsflyer_block_collection_in_app_events_report_di` 目前只通过 MaxCompute 探查确认存在，尚未进入 `ai_hive` 正式表卡。
+但 MJ/DT 复盘 SQL 依赖的 `ods_appsflyer_kcolb_collection_in_app_events_report_di` 目前只通过 MaxCompute 探查确认存在，尚未进入 `ai_hive` 正式表卡。
 
 ## 任务目标
 
 本轮执行三件事：
 
-1. 补 `ods_appsflyer_block_collection_in_app_events_report_di` 表卡。
+1. 补 `ods_appsflyer_kcolb_collection_in_app_events_report_di` 表卡。
 2. 拆小验证 MJ/DT 历史点位复盘 SQL。
 3. 补用户增长 Topic P3 两张低优先级表卡。
 
-## 任务一：补 `ods_appsflyer_block_collection_in_app_events_report_di` 表卡
+## 任务一：补 `ods_appsflyer_kcolb_collection_in_app_events_report_di` 表卡
 
 ### 目标
 
-把 DT / Block Collection AF ODS 表纳入 `ai_hive`，用于后续历史点位复盘。
+把 DT / kcolb Collection AF ODS 表纳入 `ai_hive`，用于后续历史点位复盘。
 
 ### 已知信息
 
 表名：
 
 ```text
-yrgnuh_studio.ods_appsflyer_block_collection_in_app_events_report_di
+hungry_studio.ods_appsflyer_kcolb_collection_in_app_events_report_di
 ```
 
 已通过 MaxCompute 查到：
@@ -69,13 +69,13 @@ yrgnuh_studio.ods_appsflyer_block_collection_in_app_events_report_di
 2. 新增表卡：
 
 ```text
-ai_hive/agent_knowledge/tables/ods_appsflyer_block_collection_in_app_events_report_di.yaml
+ai_hive/agent_knowledge/tables/ods_appsflyer_kcolb_collection_in_app_events_report_di.yaml
 ```
 
 3. 表卡建议：
    - `documentation_status: complete`
    - `layer: ods`
-   - `domain: [appsflyer, attribution, events, block_collection, dt]`
+   - `domain: [appsflyer, attribution, events, kcolb_collection, dt]`
    - `partitions: dt, hour`
    - `query_rules.must_filter: [dt, hour]`
    - PII 列至少包含：`appsflyer_id`, `customer_user_id`, `idfa`, `advertising_id`, `ip`, `user_agent`
@@ -108,7 +108,7 @@ ai_hive/agent_knowledge/tables/ods_appsflyer_block_collection_in_app_events_repo
 
 ```text
 产品：DT Android
-bundle_id: com.yrgnuhstudio.ma0j
+bundle_id: com.hungrystudio.mahjong
 国家：US
 安装日期窗口：2026-03-01 ~ 2026-03-03
 行为观察截止：2026-03-10
@@ -118,7 +118,7 @@ bundle_id: com.yrgnuhstudio.ma0j
 
 ```text
 产品：MJ Android
-bundle_id: com.nebula.ma0jtile
+bundle_id: com.nebula.mahjongtile
 国家：US
 安装日期窗口：2026-03-01 ~ 2026-03-03
 ```
@@ -130,7 +130,7 @@ bundle_id: com.nebula.ma0jtile
 已沉淀的 verified 模板覆盖 3 段链路：
 
 1. 激活 cohort 小样本：验证 `dwd_market_appsflyer_activation_push_data_di` 能取到 cohort，验证去预装、国家、bundle、install_date 口径，只输出聚合。
-2. 事件渗透率：验证 `ods_appsflyer_block_collection_in_app_events_report_di` 能与 cohort 对齐，输出 `event_users / cohort_users` 的 `penetration_rate`。
+2. 事件渗透率：验证 `ods_appsflyer_kcolb_collection_in_app_events_report_di` 能与 cohort 对齐，输出 `event_users / cohort_users` 的 `penetration_rate`。
 3. 事件用户 ARPU / 留存：验证事件触发用户能否 join 到行为聚合表，先算 D1 / D7 的收入和留存，不直接做完整 D30。
 
 复用该模板时必须遵守分区护栏：
@@ -145,8 +145,8 @@ bundle_id: com.nebula.ma0jtile
 - 如果 DT 表/字段不通，先换成 MJ Android：
   - AF 事件表：`ods_appsflyer_nova_collection_in_app_events_report_di`
   - 行为表：`dws_nova_collection_all_user_multi_dim_hi`
-  - app_name：`nova_ma0j_gp`
-  - bundle_id：`com.nebula.ma0jtile`
+  - app_name：`nova_mahjong_gp`
+  - bundle_id：`com.nebula.mahjongtile`
 - 如果 SQL 仍然慢，继续缩到单日 `install_date='2026-03-01'`。
 - 不要输出 `distinct_id`、`customer_user_id`、`appsflyer_id` 明细。
 
@@ -183,7 +183,7 @@ ods_market_api_creative_moloco_da
 
 完成后应有：
 
-- `ods_appsflyer_block_collection_in_app_events_report_di` 表卡。
+- `ods_appsflyer_kcolb_collection_in_app_events_report_di` 表卡。
 - 3 条 MJ/DT 小窗口验证 SQL，至少 2 条执行成功。
 - P3 两张表卡。
 - `ai_hive/agent_knowledge/catalog.yaml` / `RAG召回包.md` 更新。

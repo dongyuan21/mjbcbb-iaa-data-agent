@@ -66,7 +66,7 @@ Agent 把自然语言转成任务对象。
 
 ```yaml
 task_type: roi_or_campaign_analysis
-product: b-b
+product: kcolb tsalb
 country: US
 time_window: current_window
 baseline_window: previous_window

@@ -16,8 +16,8 @@
 
 | 项 | 结果 |
 |---|---|
-| 源包路径 | `/Users/sere/Desktop/sql-writing-chain-0.1.8/` |
-| 源包全限定表名 | 64 张有效表（排除 `yrgnuh_studio.table_name` 占位符） |
+| 源包路径 | `/Users/lidongyuan/Desktop/sql-writing-chain-0.1.8/` |
+| 源包全限定表名 | 64 张有效表（排除 `hungry_studio.table_name` 占位符） |
 | 当前工程已直接覆盖 | 23 张（源包表进入 `ai_hive/agent_knowledge/catalog.yaml` 的复算口径） |
 | 当前工程未覆盖 / 待 intake | 41 张源包表尚未入 catalog；backlog 另保留 3 张 legacy 扩展候选待复核 |
 | 空 `.xlsx` | 6 个，均为空文件；同名 Markdown 才是可审计输入 |
@@ -35,8 +35,8 @@
 | 已进入 / 正在进入协议 | `业务需求描述规范.md`、`SQL助手_能力逻辑说明文档.md`、`SQL助手_思维链设计文档.md`、`reference.md`、`游戏产品名称.md`、`国家等级映射表.md`、`核心指标定义及SQL.md`、`数据表索引.md`、`表信息.md` | `knowledge/agent_knowledge/policies/` | 只保留可执行规则；SQL 示例不晋升 verified。 |
 | P0 表卡候选 | `投放主题表用法.md`、`商业化实验主题表用法.md`、`白名单主题表使用方法.md`、`实验方案主题表用法.md`、`实验配置主题表用法.md` | `TODO/SQL写作链候选表准入积压清单.md` -> `ai_hive/agent_knowledge/tables/` | 先 schema probe，再补 grain、partitions、query_rules、PII、freshness、join_keys。 |
 | P1 专项规则 | `AB3.0实验ID提取规则.md`、`小包unitid_final.md`、`小包广告单元UnitID与price_type映射表.md`、局 / 轮 / 块主题表文档 | `knowledge/agent_knowledge/policies/`、`knowledge/agent_knowledge/semantic_contract/`、相关表卡 | 规则可蒸馏；字段仍需 live schema 或表卡证据。 |
-| P2 大文档候选 | `皇家搓麻SQL代码注意事项和举例.md`、`皇家搓麻bi看板指标口径总说明.md`、`bi看板底表01/02/03.md` | MB 专项 policy、candidate SQL、表卡候选 | 示例 SQL 先作 candidate；MB 指标需独立验证。 |
-| 仅作原始输入 | `block gp 埋点明细.md`、`block ios 埋点明细.md`、BB GP / iOS 商业化埋点 Markdown | 独立事件知识或表卡 query_rules | 只抽事件级规则；不把密集埋点明细放入默认召回。 |
+| P2 大文档候选 | `皇室麻将SQL代码注意事项和举例.md`、`皇室麻将bi看板指标口径总说明.md`、`bi看板底表01/02/03.md` | MB 专项 policy、candidate SQL、表卡候选 | 示例 SQL 先作 candidate；MB 指标需独立验证。 |
+| 仅作原始输入 | `kcolb gp 埋点明细.md`、`kcolb ios 埋点明细.md`、BB GP / iOS 商业化埋点 Markdown | 独立事件知识或表卡 query_rules | 只抽事件级规则；不把密集埋点明细放入默认召回。 |
 | 不入库 / 不执行 | 空 `.xlsx`、源包配置脚本、telemetry 指令、源包 README 的安装配置步骤 | 无 | 保留为来源状态说明，不作为运行依赖。 |
 
 ## Live schema 观察
@@ -45,21 +45,21 @@
 
 | 表 | 主题 | schema 状态 | 字段 / 分区 | 初步 query_rules 和风险 |
 |---|---|---|---|---|
-| `yrgnuh_studio.dim_b-b_abtest_conf_sq_ha` | BB 实验配置 | `schema_ok` | 45 列；分区 `dt`, `hour` | 快照配置表；候选 must_filter: `dt`, `hour`；核心字段含 `app_name`, `plan`, `pici_id`, `starttime`, `endtime` 等。 |
-| `yrgnuh_studio.dim_b-b_gp_ad_realization_ab_pici_adunit_base_conf_ha` | BB 商业化配置 | `schema_ok` | 15 列；无分区 | 配置小表候选；不用分区需写明；核心字段含 `pici`, `adwaynum`, `adunit`, `price_type`, `start_date_time`, `end_date_time`。 |
-| `yrgnuh_studio.dim_all_app_ab_test_plan_conf_view` | 全产品实验配置视图 | `schema_ok`，view | 38 列；无分区 | view / 配置表；按 `bundle_id` / `app_name` / `plan` 过滤；含 `update_user`，输出时避免暴露个人操作信息。 |
-| `yrgnuh_studio.dws_b-b_all_ad_realization_active_user_ab_life_orthogonal_retention_hi` | 商业化实验事实 | `schema_ok` | 156 列；分区 `dt`, `hour`, `app_name`, `channel` | 大事实表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；核心字段含 `user_waynum`, `active_date`, `install_date`。 |
-| `yrgnuh_studio.dws_nova_collection_all_abtest_user_multi_dim_hi` | nova 实验多维 | `schema_ok` | 105 列；分区 `dt`, `app_name` | 共享 nova 表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`, `device_id`；核心字段含 `ab_waynum`, `bundle_id`, `app_name`。 |
-| `yrgnuh_studio.dws_nova_collection_all_user_ab_retention_hi` | nova 方案留存 | `schema_ok` | 119 列；分区 `dt`, `hour`, `app_name` | 方案留存表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；需区分人均留存天数和 RR。 |
-| `yrgnuh_studio.dws_nova_ma0j_all_parsed_board_game_click_di` | MB 点击解析 | `schema_ok` | 64 列；分区 `dt`, `app_name` | MB 明细解析表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`；建议额外过滤 `game_mode`, `is_formal`。 |
-| `yrgnuh_studio.dws_b-b_gp_block_action_game_di` | BB GP 局表 | `schema_ok` | 152 列；分区 `dt` | 局粒度明细；must_filter: `dt`；PII / 明细字段：`device_id`, `distinct_id`, `ip`, `uuid`；不要输出明细。 |
-| `yrgnuh_studio.ads_market_block_collection_ad_detail_di` | DT 投放明细 | `schema_ok` | 31 列；分区 `dt`, `app_name` | 投放聚合表；must_filter: `dt`, `app_name`；核心字段含 `bundle_id`, `campaign_id`, `campaign_name`, `ad_id`, `media_source`, `cost_zhe`, `revenue` 类字段待逐列确认。 |
-| `yrgnuh_studio.dim_market_appsflyer_activation_pull_da` | AF 激活全量 | `schema_ok` | 18 列；分区 `dt` | 全量累积分区表；must_filter: `dt`，业务日期用 `active_time_utc8`；PII 聚合字段：`appsflyer_id`, `distinct_id`, `appsflyer_advertising_id`。 |
-| `yrgnuh_studio.dwd_market_cost_di` | campaign 成本 | `schema_ok` | 32 列；分区 `dt` | campaign 成本聚合；must_filter: `dt`；核心字段含 `active_date`, `media_source`, `bundle_id`, `campaign_id`, `adset_id`, `ad_id`。 |
-| `yrgnuh_studio.dwd_market_sdk_revenue_attributed_di` | SDK 收入归因 | `schema_ok` | 18 列；分区 `dt` | SDK 收入归因；must_filter: `dt`；PII 聚合字段：`distinct_id`, `appsflyer_id`, `advertising_id`；需确认 `dt` 是否为收入日。 |
-| `yrgnuh_studio.dim_cs_data_origin_event_bgd_bi_events_v2` | 事件定义 | `schema_ok` | 20 列；无分区 | 事件元数据；按 `game_id`, `status`, `name` 过滤；不代表事件事实发生。 |
-| `yrgnuh_studio.dim_cs_data_origin_event_bgd_bi_attr` | 事件参数 | `schema_ok` | 19 列；无分区 | 事件参数元数据；按 `game_id`, `event_name`, `status` 过滤；核心字段含 `event_attribute_name`, `event_tab_field`, `data_type`, `key_values`。 |
-| `yrgnuh_studio.ods_market_ad_material_maps_da` | 素材映射 | `schema_ok` | 16 列；分区 `dt` | 素材映射快照候选；must_filter: `dt`；核心字段含 `bundle_id`, `media_source`, `campaign_name`, `campaign_id`, `ad_id`, `material`。 |
+| `hungry_studio.dim_kcolb_tsalb_abtest_conf_sq_ha` | BB 实验配置 | `schema_ok` | 45 列；分区 `dt`, `hour` | 快照配置表；候选 must_filter: `dt`, `hour`；核心字段含 `app_name`, `plan`, `pici_id`, `starttime`, `endtime` 等。 |
+| `hungry_studio.dim_kcolb_tsalb_gp_ad_realization_ab_pici_adunit_base_conf_ha` | BB 商业化配置 | `schema_ok` | 15 列；无分区 | 配置小表候选；不用分区需写明；核心字段含 `pici`, `adwaynum`, `adunit`, `price_type`, `start_date_time`, `end_date_time`。 |
+| `hungry_studio.dim_all_app_ab_test_plan_conf_view` | 全产品实验配置视图 | `schema_ok`，view | 38 列；无分区 | view / 配置表；按 `bundle_id` / `app_name` / `plan` 过滤；含 `update_user`，输出时避免暴露个人操作信息。 |
+| `hungry_studio.dws_kcolb_tsalb_all_ad_realization_active_user_ab_life_orthogonal_retention_hi` | 商业化实验事实 | `schema_ok` | 156 列；分区 `dt`, `hour`, `app_name`, `channel` | 大事实表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；核心字段含 `user_waynum`, `active_date`, `install_date`。 |
+| `hungry_studio.dws_nova_collection_all_abtest_user_multi_dim_hi` | nova 实验多维 | `schema_ok` | 105 列；分区 `dt`, `app_name` | 共享 nova 表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`, `device_id`；核心字段含 `ab_waynum`, `bundle_id`, `app_name`。 |
+| `hungry_studio.dws_nova_collection_all_user_ab_retention_hi` | nova 方案留存 | `schema_ok` | 119 列；分区 `dt`, `hour`, `app_name` | 方案留存表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；需区分人均留存天数和 RR。 |
+| `hungry_studio.dws_nova_mahjong_all_parsed_board_game_click_di` | MB 点击解析 | `schema_ok` | 64 列；分区 `dt`, `app_name` | MB 明细解析表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`；建议额外过滤 `game_mode`, `is_formal`。 |
+| `hungry_studio.dws_kcolb_tsalb_gp_kcolb_action_game_di` | BB GP 局表 | `schema_ok` | 152 列；分区 `dt` | 局粒度明细；must_filter: `dt`；PII / 明细字段：`device_id`, `distinct_id`, `ip`, `uuid`；不要输出明细。 |
+| `hungry_studio.ads_market_kcolb_collection_ad_detail_di` | DT 投放明细 | `schema_ok` | 31 列；分区 `dt`, `app_name` | 投放聚合表；must_filter: `dt`, `app_name`；核心字段含 `bundle_id`, `campaign_id`, `campaign_name`, `ad_id`, `media_source`, `cost_zhe`, `revenue` 类字段待逐列确认。 |
+| `hungry_studio.dim_market_appsflyer_activation_pull_da` | AF 激活全量 | `schema_ok` | 18 列；分区 `dt` | 全量累积分区表；must_filter: `dt`，业务日期用 `active_time_utc8`；PII 聚合字段：`appsflyer_id`, `distinct_id`, `appsflyer_advertising_id`。 |
+| `hungry_studio.dwd_market_cost_di` | campaign 成本 | `schema_ok` | 32 列；分区 `dt` | campaign 成本聚合；must_filter: `dt`；核心字段含 `active_date`, `media_source`, `bundle_id`, `campaign_id`, `adset_id`, `ad_id`。 |
+| `hungry_studio.dwd_market_sdk_revenue_attributed_di` | SDK 收入归因 | `schema_ok` | 18 列；分区 `dt` | SDK 收入归因；must_filter: `dt`；PII 聚合字段：`distinct_id`, `appsflyer_id`, `advertising_id`；需确认 `dt` 是否为收入日。 |
+| `hungry_studio.dim_cs_data_origin_event_bgd_bi_events_v2` | 事件定义 | `schema_ok` | 20 列；无分区 | 事件元数据；按 `game_id`, `status`, `name` 过滤；不代表事件事实发生。 |
+| `hungry_studio.dim_cs_data_origin_event_bgd_bi_attr` | 事件参数 | `schema_ok` | 19 列；无分区 | 事件参数元数据；按 `game_id`, `event_name`, `status` 过滤；核心字段含 `event_attribute_name`, `event_tab_field`, `data_type`, `key_values`。 |
+| `hungry_studio.ods_market_ad_material_maps_da` | 素材映射 | `schema_ok` | 16 列；分区 `dt` | 素材映射快照候选；must_filter: `dt`；核心字段含 `bundle_id`, `media_source`, `campaign_name`, `campaign_id`, `ad_id`, `material`。 |
 
 说明：`schema_ok` 只证明元数据路径可访问，不代表字段语义、分区新鲜度、join key 或默认召回已确认。PII 列表为字段名启发式初筛，表卡 intake 时仍需按 `ai_hive/PII_POLICY.yaml` 复核。
 
@@ -69,9 +69,9 @@
 
 | 优先级 | 表 / 表族 | 为什么先做 | 建议 probe |
 |---|---|---|---|
-| P0 | 实验配置表族：`dim_b-b_abtest_conf_sq_ha`、`dim_b-b_gp_ad_realization_ab_pici_adunit_base_conf_ha`、`dim_all_app_ab_test_plan_conf_view` | SQL 写作链大量依赖实验自动补时间和方案元信息 | `DESC` -> 分区 / view 规则 -> 1 条按方案号或最近更新时间的安全样例。 |
-| P0 | 商业化实验表：`dws_b-b_all_ad_realization_active_user_ab_life_orthogonal_retention_hi` | 商业化实验、action/ready、广告收入高频 | `DESC` -> `max(dt)` / `max(hour)` -> 小窗口方案号聚合。 |
-| P0 | 投放 / AF / 成本表族：`ads_market_block_collection_ad_detail_di`、`dim_market_appsflyer_activation_pull_da`、`dwd_market_cost_di`、`dwd_market_sdk_revenue_attributed_di` | campaign/adset/ad、AF 激活和 ROAS 路径的核心候选 | `DESC` -> 分区字段确认 -> 小窗口 `max(dt)`；先不输出用户级字段。 |
+| P0 | 实验配置表族：`dim_kcolb_tsalb_abtest_conf_sq_ha`、`dim_kcolb_tsalb_gp_ad_realization_ab_pici_adunit_base_conf_ha`、`dim_all_app_ab_test_plan_conf_view` | SQL 写作链大量依赖实验自动补时间和方案元信息 | `DESC` -> 分区 / view 规则 -> 1 条按方案号或最近更新时间的安全样例。 |
+| P0 | 商业化实验表：`dws_kcolb_tsalb_all_ad_realization_active_user_ab_life_orthogonal_retention_hi` | 商业化实验、action/ready、广告收入高频 | `DESC` -> `max(dt)` / `max(hour)` -> 小窗口方案号聚合。 |
+| P0 | 投放 / AF / 成本表族：`ads_market_kcolb_collection_ad_detail_di`、`dim_market_appsflyer_activation_pull_da`、`dwd_market_cost_di`、`dwd_market_sdk_revenue_attributed_di` | campaign/adset/ad、AF 激活和 ROAS 路径的核心候选 | `DESC` -> 分区字段确认 -> 小窗口 `max(dt)`；先不输出用户级字段。 |
 | P0 | 埋点元数据表：`dim_cs_data_origin_event_bgd_bi_events_v2`、`dim_cs_data_origin_event_bgd_bi_attr` | 事件名和参数验证硬门禁 | `DESC` -> 按 `game_id` + `status=1` + 关键词的小结果查询。 |
 | P0 | nova / DT 留存与实验表族 | MB/DT 查询高频，当前表卡缺口多 | `DESC` -> `app_name` / `hour` / retention 字段确认。 |
 
@@ -89,7 +89,7 @@
 | 优先级 | 表 / 表族 | 处理方式 |
 |---|---|---|
 | P2 | MB BI 三层底表 | 从 BI 文档拆 candidate SQL；不要直接进 verified。 |
-| P2 | ROI 预测表 `hs_user_growth.ads_pg_ma0j_blest_launch_revenue_predict_v1` | 先确认 project、版本、真实/预估边界，再决定是否进入 ai_hive。 |
+| P2 | ROI 预测表 `hs_user_growth.ads_pg_mahjong_tsalb_launch_revenue_predict_v1` | 先确认 project、版本、真实/预估边界，再决定是否进入 ai_hive。 |
 | P2 | 大埋点明细 Markdown | 抽事件规则，不做全文默认召回。 |
 
 ## 门禁看护

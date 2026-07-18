@@ -154,7 +154,7 @@ BB商业化埋点查询规则.md
 用户说“看 MB 看板指标”：
 
 ```text
-皇家搓麻BI看板查询规则.md
+皇室麻将BI看板查询规则.md
 游戏核心指标口径语义.md
 SQL表路由协议.md
 相关表卡或 backlog
@@ -177,7 +177,7 @@ SQL表路由协议.md
 Agent 先把自然语言变成标准需求：
 
 ```yaml
-product: b-b
+product: kcolb tsalb
 platform: GP
 scenario: 商业化实验
 experiment_batch: "145期"
@@ -242,7 +242,7 @@ Agent 找候选表：
 field_evidence:
   - requirement_item: 插屏收入
     item_type: metric
-    source_table: yrgnuh_studio.xxx
+    source_table: hungry_studio.xxx
     source_field: inter_revenue
     evidence_source:
       type: table_card
@@ -357,7 +357,7 @@ ai_ck/agent_knowledge/tables/<相关表>.yaml
 | 小包广告单元 | `小包广告单元映射.md`、配套 CSV |
 | 用户行为 / 留存 / 画像 | `用户行为留存画像查询规则.md` |
 | BB 局 / 轮 / 出块 | `局轮出块粒度查询规则.md` |
-| MB 看板 | `皇家搓麻BI看板查询规则.md` |
+| MB 看板 | `皇室麻将BI看板查询规则.md` |
 | 模型特征 / 埋点元数据 | `特征工程与埋点元数据查询规则.md` |
 | UA / ROI / 投放 | `投放与ROI预估SQL协议.md` |
 

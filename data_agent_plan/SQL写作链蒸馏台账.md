@@ -2,7 +2,7 @@
 
 > 状态：distillation_complete  
 > 创建日期：2026-06-19  
-> 原始输入：`/Users/sere/Desktop/sql-writing-chain-0.1.8/`  
+> 原始输入：`/Users/lidongyuan/Desktop/sql-writing-chain-0.1.8/`  
 > 原则：逐篇读、逐篇判断归属；最终知识必须沉淀到本项目既有层级，不让 Agent 依赖源包原文。
 
 ## 蒸馏归属
@@ -40,7 +40,7 @@
 | `用户行为主题表使用方法.md` | distilled | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 user_multi_dim 查询边界、安装信息归一、PII 和 candidate table 边界；样例 SQL 未晋升 |
 | `用户留存行为主题表使用方法.md` | distilled | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀全量快照、hour、业务日期、RR 分母和 SDK banner 字段边界；样例 SQL 未晋升 |
 | `用户画像主题表使用方法.md` | distilled | `knowledge/agent_knowledge/policies/用户行为留存画像查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀画像 / 标签快照、latest dt / hour、app_name / area 过滤和用户明细禁止输出 |
-| `b-b局粒度主题表用法.md` | distilled | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀局表优先、game_type、复活 / 通关 / 盘面权重字段边界；样例 SQL 未晋升 |
+| `kcolb tsalb局粒度主题表用法.md` | distilled | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀局表优先、game_type、复活 / 通关 / 盘面权重字段边界；样例 SQL 未晋升 |
 | `轮维度主题表用法.md` | distilled | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀轮表抽样、策略字段、累计字段禁止二次累加和 LAG / 差分规则 |
 | `出块维度主题表用法.md` | distilled | `knowledge/agent_knowledge/policies/局轮出块粒度查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀块级下钻边界、块位 / 顺序字段和高扫描风险 |
 | `BB-GP商业化埋点查询文档.md` | distilled | `knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md`、`knowledge/agent_knowledge/policies/商业化SQL协议.md` | 已沉淀 GP 旧 `s_*`、新 `ad_*`、ADX / MAX 收入、banner 和竞价信息边界；参数字典未搬运为默认事实 |
@@ -49,13 +49,13 @@
 | `实验方案主题表用法.md` | distilled | `knowledge/agent_knowledge/policies/实验配置与方案查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 BB / DT 实验效果表优先级、全量快照、下线实验分区、RR 与人均留存差异；SQL 样例未晋升 |
 | `模型特征工程主题表使用方法.md` | distilled | `knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀模型特征表用途、模型输出 / label 边界、窗口字段和 PII 风险；表卡仍需 schema probe |
 | `埋点元数据表用法.md` | distilled | `knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 CS 埋点元数据表族、game_id 映射、事件 / 参数 / Hudi 字段关系；事实表 SQL 仍需验证 |
-| `皇家搓麻SQL代码注意事项和举例.md` | distilled | `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 MB 默认产品过滤、解析表 / 事件表 / 用户表优先级、版本和 hour 护栏；示例 SQL 未晋升 |
-| `皇家搓麻bi看板指标口径总说明.md` | distilled | `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md` | 已沉淀 MB BI 01 / 02 / 03 层关系、start_uv / install_game_join_uv、局数、收入、banner 和异常处理口径 |
-| `bi看板底表01.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 01 层多维明细来源、白名单事件和基础指标字段；完整生产 SQL 未入 verified |
-| `bi看板底表02.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 02 层实验配置、用户维度、国家 / 媒体 / 留存拼接边界；完整生产 SQL 未入 verified |
-| `bi看板底表03.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇家搓麻BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 03 层看板聚合维度、底板 / Bayes 指标和聚合口径；完整生产 SQL 未入 verified |
-| `block gp 埋点明细.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md` | 已沉淀 GP 大字典事件族、广告 / 玩法 / APM / push / 支付 / web 字段边界和 PII 风险；完整参数字典不入默认召回 |
-| `block ios 埋点明细.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md` | 已沉淀 iOS 大字典端差异、预置属性、IDFA / postback / request id 风险和字段验证规则；完整参数字典不入默认召回 |
+| `皇室麻将SQL代码注意事项和举例.md` | distilled | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 MB 默认产品过滤、解析表 / 事件表 / 用户表优先级、版本和 hour 护栏；示例 SQL 未晋升 |
+| `皇室麻将bi看板指标口径总说明.md` | distilled | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`knowledge/agent_knowledge/policies/游戏核心指标口径语义.md` | 已沉淀 MB BI 01 / 02 / 03 层关系、start_uv / install_game_join_uv、局数、收入、banner 和异常处理口径 |
+| `bi看板底表01.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 01 层多维明细来源、白名单事件和基础指标字段；完整生产 SQL 未入 verified |
+| `bi看板底表02.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 02 层实验配置、用户维度、国家 / 媒体 / 留存拼接边界；完整生产 SQL 未入 verified |
+| `bi看板底表03.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/皇室麻将BI看板查询规则.md`、`TODO/SQL写作链候选表准入积压清单.md` | 已沉淀 03 层看板聚合维度、底板 / Bayes 指标和聚合口径；完整生产 SQL 未入 verified |
+| `kcolb gp 埋点明细.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md` | 已沉淀 GP 大字典事件族、广告 / 玩法 / APM / push / 支付 / web 字段边界和 PII 风险；完整参数字典不入默认召回 |
+| `kcolb ios 埋点明细.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/BB大埋点字典使用规则.md`、`knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md` | 已沉淀 iOS 大字典端差异、预置属性、IDFA / postback / request id 风险和字段验证规则；完整参数字典不入默认召回 |
 | `README.md` | distilled | `knowledge/agent_knowledge/policies/SQL写作业务协议.md` | 已沉淀能力范围、需求模板、配置安全边界和维护归属；安装 Cursor Skill 的说明不进入项目运行路径 |
 | `README_使用说明.md` | distilled | `knowledge/agent_knowledge/policies/SQL写作业务协议.md` | 已沉淀固定执行逻辑、字段校验、轻量 SQL 和提需求模板；同步到 Cursor 的说明不进入项目运行路径 |
 | `SKILL.md` | distilled_with_boundary | `knowledge/agent_knowledge/policies/SQL写作业务协议.md`、各专项 policy | 已抽出主动指标推荐、SQL 交付节奏、MaxCompute 语法 / 性能硬门控、字段验证和 dry-run 边界；telemetry、重复规则、安装说明和内部思维链不进入默认召回 |
@@ -89,7 +89,7 @@
 | P1 | `投放主题表用法.md`、`roi预估表使用方法.md` 表卡 / SQL 后续 | `ai_hive/agent_knowledge/tables/`、`knowledge/agent_knowledge/semantic_contract/metrics.yaml`、`da_assets/candidate_sql/` | 已完成协议蒸馏；后续只补 live schema / 表卡可证实的字段和可验证 SQL |
 | P1 | AB3.0 与小包广告单元 example query 后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 规则与映射已进入项目；只有通过 schema / 小窗口验证的 SQL pattern 才能作为表卡样例或 candidate_sql |
 | P1 | 用户行为 / 留存 / 画像表卡后续 | `ai_hive/agent_knowledge/tables/`、`knowledge/agent_knowledge/semantic_contract/` | 协议已完成；未进 catalog 的源表继续按 backlog 做 schema probe 和表卡 intake |
-| P1 | b-b 局 / 轮 / 出块表卡后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 协议已完成；候选表字段仍需 schema probe、PII、freshness、example query 和小窗口验证 |
+| P1 | kcolb tsalb 局 / 轮 / 出块表卡后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 协议已完成；候选表字段仍需 schema probe、PII、freshness、example query 和小窗口验证 |
 | P1 | BB 商业化埋点字段级表卡后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 协议已完成；字段是否列展开、JSON path、端差异和可复用 SQL 仍需小窗口验证 |
 | P1 | 实验配置 / 方案表卡后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 协议已完成；候选配置表、实验汇总表、留存表仍需 schema probe、freshness、收入单位和 example query |
 | P1 | 模型特征 / 埋点元数据表卡后续 | `ai_hive/agent_knowledge/tables/`、`da_assets/candidate_sql/` | 协议已完成；特征表和 CS 元数据表仍需 schema、分区、PII、join key、Hudi 映射和 example query 验证 |

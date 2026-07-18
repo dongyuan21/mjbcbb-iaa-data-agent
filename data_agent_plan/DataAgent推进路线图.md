@@ -6,15 +6,15 @@
 
 <!-- 自动快照：开始 -->
 
-> 自动快照：2026-06-18；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
+> 自动快照：2026-07-02；生成脚本：`python3 tools/scripts/refresh_data_agent_snapshots.py`；来源：`eval/agent_regression/Agent回归报告.md`、`knowledge/agent_knowledge/semantic_contract/model.json`、`da_assets/index.yaml`。
 
 | 项 | 当前值 |
 |---|---|
-| 问答回归 | 通过 — 8/8 cases passed, 0 freshness-blocked, knowledge 6/6 routes 4/4 (门槛 7 pass_or_blocked) |
+| 问答回归 | 通过 — 11/11 cases passed, 0 freshness-blocked, knowledge 7/7 routes 17/17 golden 80/80 (门槛 10 pass_or_blocked) |
 | 数据新鲜度门禁 | 正常 |
 | 语义模型 | 11 个实体、38 个维度、50 个指标、3 条关联规则；16/16 个语义用例通过 |
-| 表卡覆盖 | ai_hive 104 张表；ai_ck 20 张表；CK 精选表画像 49 份 |
-| DA 资产 | 已验证 SQL 22 条；候选 SQL 1 条；决策记录 4 个；已闭环 1 个 |
+| 表卡覆盖 | ai_hive 123 张表；ai_ck 27 张表；CK 精选表画像 55 份 |
+| DA 资产 | 已验证 SQL 28 条；候选 SQL 2 条；决策记录 9 个；已闭环 1 个 |
 | 北极星覆盖 | 约 16/35 个高频场景，概念覆盖率约 46% |
 
 - 数据新鲜度门禁：正常
@@ -41,11 +41,11 @@
 |---|---|---|
 | MC 知识库 | `../ai_hive/` | MaxCompute 表目录、表卡、口径决策、RAG bundle |
 | MC 查询能力 | `maxcompute-dataworks` | 已验证 `SELECT 1` 可执行 |
-| CK/MI 代码线索 | `/Users/sere/yrgnuhstudio/coding/nexus` | MI ROI360 报表字段、聚合口径、表路由 |
-| PGP CK 接入线索 | `/Users/sere/yrgnuhstudio/coding/pgp-platform` | ClickHouse 配置、只读 client、验真文档 |
+| CK/MI 代码线索 | `/Users/lidongyuan/hungrystudio/coding/nexus` | MI ROI360 报表字段、聚合口径、表路由 |
+| PGP CK 接入线索 | `/Users/lidongyuan/hungrystudio/coding/pgp-platform` | ClickHouse 配置、只读 client、验真文档 |
 | PGP CK 文档 | `pgp-platform/docs/03-架构设计/06-CK表结构与验真.md` | P0 CK 表、join 原则、验真 SQL |
 | DataWorks 数据专辑 | 用户增长Topic | 55 张增长相关专题表；已生成缺口报告 `用户增长Topic表缺口报告.md` |
-| Obsidian 候选知识 | `/Users/sere/yrgnuhstudio/obsidain/lzyzsere/8方块` | 投放术语、S2S、素材、campaign、AppLovin / partner 语义；先进入草稿区审核 |
+| Obsidian 候选知识 | `/Users/lidongyuan/hungrystudio/obsidain/lzyzsere/8方块` | 投放术语、S2S、素材、campaign、AppLovin / partner 语义；先进入草稿区审核 |
 
 ## Phase 1：修复 `ai_hive` 口径冲突
 
@@ -127,7 +127,7 @@ ai_ck/
 | MI ROI 指标实现 | `ai_ck/agent_knowledge/metrics/ROI360指标语义.md` |
 | MC ↔ CK/MI 对齐 | `ai_ck/agent_knowledge/metrics/`、`knowledge/agent_knowledge/semantic_contract/model.json`、相关表卡 |
 | 设备 / 用户资产对齐 | `da_assets/verified_sql/vsql_20260616_sdk_revenue_dwd_dws_boundary_validation.md`、相关表卡 |
-| 周报问题集 | `TODO/周报问题积压清单.md` |
+| 周报问题集 | 原 `TODO/周报问题积压清单.md` 已于 2026-07-14 归档，周报问题追踪由 `eval/真实问题验收集/` 接替 |
 | DA 入库清单 | `da_assets/下一批入库清单.md` |
 | verified SQL | `da_assets/verified_sql/`；数量以自动快照和 SQL 晋升报告为准 |
 
