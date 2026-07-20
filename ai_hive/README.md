@@ -89,7 +89,7 @@ python3 tools/scripts/rebuild_ai_hive_catalog.py
 涉及当前数据状态时才刷新新鲜度：
 
 ```bash
-source /Users/sere/yrgnuhstudio/cursor_friend_pack_system_env/fill_clickhouse_env_here.zsh
+source /Users/<dev>/acme-studio/cursor_friend_pack_system_env/fill_clickhouse_env_here.zsh
 python3 tools/scripts/probe_freshness.py
 ```
 

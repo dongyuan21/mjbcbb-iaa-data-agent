@@ -60,7 +60,11 @@ flowchart LR
 ## 5. 安全红线（对齐 `clickhouse-shucang` 技能模式）
 
 - AK/SK **绝不**落盘进 git、**绝不**硬编码进脚本、**绝不**贴进聊天（聊天会进 transcript）。
-- env 文件放**仓库外**，建议：`/Users/lidongyuan/HS/cursor_friend_pack_system_env/fill_quickbi_env_here.zsh`（与现有 `fill_clickhouse_env_here.zsh` 同目录，天然不在本仓）。
+<<<<<<< HEAD
+- env 文件放**仓库外**，建议：`/Users/<dev>/HS/cursor_friend_pack_system_env/fill_quickbi_env_here.zsh`（与现有 `fill_clickhouse_env_here.zsh` 同目录，天然不在本仓）。
+=======
+- env 文件放**仓库外**，建议：`/Users/<dev>/acme-studio/cursor_friend_pack_system_env/fill_quickbi_env_here.zsh`（与现有 `fill_clickhouse_env_here.zsh` 同目录，天然不在本仓）。
+>>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 - 变量名约定：
 
 ```bash

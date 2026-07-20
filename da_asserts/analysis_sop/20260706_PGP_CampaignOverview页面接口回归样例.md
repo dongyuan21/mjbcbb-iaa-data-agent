@@ -7,7 +7,7 @@
 | ID | `sop_20260706_pgp_campaign_overview_page_api_regression_sample` |
 | 状态 | live_validated_partial |
 | 生成日期 | 2026-07-06 |
-| 目标环境 | `https://placement-test.youxi123.com` |
+| 目标环境 | `https://placement-test.example.com` |
 | 适用问题 | Campaign Overview 页面接口级验证、登录态只读 smoke、页面数据链路监控样例 |
 | 来源 | `da_assets/analysis_sop/20260706_投放看板live验证记录.md`、PGP `campaign-overview` 前后端代码 |
 
@@ -89,7 +89,7 @@ url_end=2026-07-01
 验证方式：
 
 ```bash
-python3 tools/scripts/probe_pgp_agent_endpoints.py --base-url https://placement-test.youxi123.com
+python3 tools/scripts/probe_pgp_agent_endpoints.py --base-url https://placement-test.example.com
 ```
 
 本样本不使用 cookie、token 或登录态，只验证 agent-friendly 公开元信息入口。
@@ -110,21 +110,21 @@ python3 tools/scripts/probe_pgp_agent_endpoints.py --base-url https://placement-
 python3 tools/scripts/probe_pgp_campaign_overview_api.py \
   --auth none \
   --profile auth-boundary \
-  --base-url https://placement-test.youxi123.com
+  --base-url https://placement-test.example.com
 
 # 认证态轻量链路：需要本机 cookie jar
 PGP_COOKIE_FILE=.scratch/pgp.cookies \
 python3 tools/scripts/probe_pgp_campaign_overview_api.py \
   --auth cookie \
   --profile light \
-  --base-url https://placement-test.youxi123.com
+  --base-url https://placement-test.example.com
 
 # MI iframe 认证态：需要本机 MI_TOKEN 环境变量
 MI_TOKEN=<local-only> \
 python3 tools/scripts/probe_pgp_campaign_overview_api.py \
   --auth mi-token \
   --profile light \
-  --base-url https://placement-test.youxi123.com
+  --base-url https://placement-test.example.com
 ```
 
 脚本约束：

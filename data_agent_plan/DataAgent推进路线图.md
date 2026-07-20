@@ -41,11 +41,19 @@
 |---|---|---|
 | MC 知识库 | `../ai_hive/` | MaxCompute 表目录、表卡、口径决策、RAG bundle |
 | MC 查询能力 | `maxcompute-dataworks` | 已验证 `SELECT 1` 可执行 |
-| CK/MI 代码线索 | `/Users/lidongyuan/HS/coding/nexus` | MI ROI360 报表字段、聚合口径、表路由 |
-| PGP CK 接入线索 | `/Users/lidongyuan/HS/coding/pgp-platform` | ClickHouse 配置、只读 client、验真文档 |
-| PGP CK 文档 | `pgp-platform/docs/03-架构设计/06-CK表结构与验真.md` | P0 CK 表、join 原则、验真 SQL |
+<<<<<<< HEAD
+| CK/MI 代码线索 | `/Users/<dev>/HS/coding/nexus` | MI ROI360 报表字段、聚合口径、表路由 |
+| PGP CK 接入线索 | `/Users/<dev>/HS/coding/sibling-platform` | ClickHouse 配置、只读 client、验真文档 |
+| PGP CK 文档 | `sibling-platform/docs/03-架构设计/06-CK表结构与验真.md` | P0 CK 表、join 原则、验真 SQL |
 | DataWorks 数据专辑 | 用户增长Topic | 55 张增长相关专题表；已生成缺口报告 `用户增长Topic表缺口报告.md` |
-| Obsidian 候选知识 | `/Users/lidongyuan/HS/obsidain/lzyzsere/8方块` | 投放术语、S2S、素材、campaign、AppLovin / partner 语义；先进入草稿区审核 |
+| Obsidian 候选知识 | `/Users/<dev>/HS/obsidain/lzyzsere/8方块` | 投放术语、S2S、素材、campaign、AppLovin / partner 语义；先进入草稿区审核 |
+=======
+| CK/MI 代码线索 | `/Users/<dev>/acme-studio/coding/nexus` | MI ROI360 报表字段、聚合口径、表路由 |
+| PGP CK 接入线索 | `/Users/<dev>/acme-studio/coding/sibling-platform` | ClickHouse 配置、只读 client、验真文档 |
+| PGP CK 文档 | `sibling-platform/docs/03-架构设计/06-CK表结构与验真.md` | P0 CK 表、join 原则、验真 SQL |
+| DataWorks 数据专辑 | 用户增长Topic | 55 张增长相关专题表；已生成缺口报告 `用户增长Topic表缺口报告.md` |
+| Obsidian 候选知识 | `/Users/<dev>/acme-studio/obsidain/lzyzsere/8方块` | 投放术语、S2S、素材、campaign、AppLovin / partner 语义；先进入草稿区审核 |
+>>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 ## Phase 1：修复 `ai_hive` 口径冲突
 

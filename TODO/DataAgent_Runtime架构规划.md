@@ -3,13 +3,13 @@
 > 状态：framework_confirmed
 > 创建：2026-06-20
 > 更新：2026-06-20
-> 上下文：基于数仓知识库工程现状 + 公司基建（shai K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
+> 上下文：基于数仓知识库工程现状 + 公司基建（内部 K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
 
 ## 已确认决策
 
 | 决策项 | 结论 | 确认时间 |
 |---|---|---|
-| 部署形态 | 中心化 Web 服务（shai K8s） | 2026-06-20 |
+| 部署形态 | 中心化 Web 服务（内部 K8s） | 2026-06-20 |
 | Agent 框架 | **Pydantic AI + 自定义路由层** | 2026-06-20 |
 | 后端语言 | Python（FastAPI） | 2026-06-20 |
 | 持久化 | MySQL（公司实例），**不用 SQLite** | 2026-06-20 |
@@ -64,12 +64,12 @@ Runtime：   ░░░░░░░░░░   0%
 
 | 基建 | Data Agent 用法 | 参考 |
 |---|---|---|
-| shai DeployerV2 | 构建 Docker → ACR → K8s 部署 | pgp-platform |
-| SSO | 用户认证，ticket 换 session | pgp-platform `sso.go` |
-| MySQL | session / 报告元数据 / 查询记录 | pgp-platform GORM |
-| OSS (PVS) | markdown 报告 / 查询结果文件 | pgp-platform HtmlReport |
-| LiteLLM 网关 | LLM 推理（OpenAI 兼容 SDK） | creative-video-agent `gateway.py` |
-| 钉钉通知 | 长查询完成 / 异常通知 | creative-video-agent `dingtalk.py` |
+| DeployerV2 | 构建 Docker → ACR → K8s 部署 | sibling-platform |
+| SSO | 用户认证，ticket 换 session | sibling-platform `sso.go` |
+| MySQL | session / 报告元数据 / 查询记录 | sibling-platform GORM |
+| OSS (PVS) | markdown 报告 / 查询结果文件 | sibling-platform HtmlReport |
+| LiteLLM 网关 | LLM 推理（OpenAI 兼容 SDK） | sibling-video-agent `gateway.py` |
+| 钉钉通知 | 长查询完成 / 异常通知 | sibling-video-agent `dingtalk.py` |
 
 ---
 
@@ -103,12 +103,12 @@ Agent 核心用 Pydantic AI：tool calling + 结构化输出 + model-agnostic + 
 
 ### LLM 接入
 
-复用公司 LiteLLM 网关（同 creative-video-agent）：
+复用公司 LiteLLM 网关（同 sibling-video-agent）：
 
 ```python
 from openai import OpenAI
 client = OpenAI(
-    base_url="https://llm-gateway-internal.hs99.vip/v1",
+    base_url="https://llm-gateway.example.internal/v1",
     api_key=os.environ["LLM_GATEWAY_API_KEY"],
 )
 ```
@@ -131,21 +131,21 @@ Pydantic AI 原生支持 OpenAI 兼容接口，零适配成本。
 
 | 层级 | 选型 | 理由 |
 |---|---|---|
-| 前端 | Vue 3 + Element Plus（或 Ant Design Vue） | 对齐 pgp-platform 技术栈 |
+| 前端 | Vue 3 + Element Plus（或 Ant Design Vue） | 对齐 sibling-platform 技术栈 |
 | 前后端通信 | SSE（Server-Sent Events） | HTTP 兼容，单向推送够用 |
 | 后端框架 | FastAPI（Python） | 原生 async + SSE + Pydantic 集成 |
-| ORM | SQLAlchemy 2.0 + Alembic | Python 生态标准（参考 creative-video-agent） |
+| ORM | SQLAlchemy 2.0 + Alembic | Python 生态标准（参考 sibling-video-agent） |
 | 异步任务 | asyncio task（POC）/ Celery（生产） | MC 长查询异步执行 |
-| 部署 | Docker 一镜两用（API + Worker） | 同 creative-video-agent 模式 |
+| 部署 | Docker 一镜两用（API + Worker） | 同 sibling-video-agent 模式 |
 
 ### 关于后端语言选择
 
-pgp-platform 用 Go，creative-video-agent 用 Python。Data Agent 推荐 **Python**：
+sibling-platform 用 Go，sibling-video-agent 用 Python。Data Agent 推荐 **Python**：
 - 知识库工具链全是 Python（33 个脚本）
 - MC/CK 执行器是 Python（PyODPS / clickhouse-driver）
 - Pydantic AI 是 Python 框架
 - Agent/LLM 生态以 Python 为主
-- creative-video-agent 已验证 Python + FastAPI + shai K8s 可行
+- sibling-video-agent 已验证 Python + FastAPI + 内部 K8s 可行
 
 ### 连接稳定性方案
 
@@ -213,7 +213,7 @@ Data Agent 的核心输出之一是 markdown 分析报告。完整链路：
 
 | 权限层 | 要求 | 说明 |
 |---|---|---|
-| **登录** | 公司 SSO（钉钉扫码） | 同 pgp-platform，无额外注册 |
+| **登录** | 公司 SSO（钉钉扫码） | 同 sibling-platform，无额外注册 |
 | **查数** | SSO 登录即可 | Agent 后端用统一的 MC/CK **只读 service account** 执行 SQL，用户不接触 AK/SK |
 | **报告访问** | session owner 隔离 | 只能看到自己创建的报告；分享需生成短链 |
 
@@ -225,7 +225,7 @@ Data Agent 的核心输出之一是 markdown 分析报告。完整链路：
 
 ### 6.1 结论：成熟模式，无技术风险
 
-Session 隔离是 Web 应用的标准能力，pgp-platform 和 creative-video-agent 都已在生产验证。Data Agent 的 session 隔离比它们更简单——只需要对话历史 + 查询结果的隔离，不涉及复杂的资源竞争。
+Session 隔离是 Web 应用的标准能力，sibling-platform 和 sibling-video-agent 都已在生产验证。Data Agent 的 session 隔离比它们更简单——只需要对话历史 + 查询结果的隔离，不涉及复杂的资源竞争。
 
 ### 6.2 隔离机制
 
@@ -366,7 +366,7 @@ active_connections: dict[str, set[SSEConnection]] = {}
 
 ### 7.4 钉钉通知实现
 
-直接复用 creative-video-agent 已有的 `dingtalk.py` 模块（webhook + HMAC-SHA256 签名）：
+直接复用 sibling-video-agent 已有的 `dingtalk.py` 模块（webhook + HMAC-SHA256 签名）：
 
 **触发条件**
 
@@ -388,7 +388,7 @@ active_connections: dict[str, set[SSEConnection]] = {}
 - **耗时**：45 秒
 - **结果摘要**：DNU 12,345（环比 -3.2%）
 
-[点击查看完整结果](https://data-agent.youxi123.com/session/xxx)
+[点击查看完整结果](https://data-agent.example.com/session/xxx)
 ```
 
 **配置（K8s Secret 注入）**
@@ -527,7 +527,7 @@ Phase 0 ~ Phase 1 完全零额外部署，用 structlog + MySQL trace 表就能�
 ## 十、K8s 部署拓扑
 
 ```
-shai DeployerV2
+DeployerV2
   → Docker Build（Python 3.12 + FastAPI + 依赖）
   → ACR 镜像推送
   → K8s namespace: data-agent
@@ -544,13 +544,13 @@ Secrets:
   data-agent-secrets:   MC AK/SK, CK 密码, LLM API key, SSO secret, 钉钉 token
 
 Service + ALB Ingress:
-  https://data-agent.youxi123.com
+  https://data-agent.example.com
 
 PVS (OSS 后端):
   /data/reports/         报告文件
 ```
 
-### Dockerfile 参考（同 creative-video-agent 模式）
+### Dockerfile 参考（同 sibling-video-agent 模式）
 
 ```dockerfile
 FROM python:3.12-slim
@@ -596,7 +596,7 @@ WORKDIR /app
 - Markdown 报告生成 + OSS 存储
 - 钉钉通知（长查询完成 / 断线恢复）
 - Langfuse trace 接入
-- Docker 镜像 + shai部署
+- Docker 镜像 + 平台部署
 - 断线重连 + 会话恢复
 - E2E 回归测试
 - **验收**：DA/UA 组 5+ 人日常使用
@@ -615,19 +615,19 @@ WORKDIR /app
 | 组件 | 选型 | 参考来源 |
 |---|---|---|
 | Agent 框架 | Pydantic AI | - |
-| Web 后端 | FastAPI | creative-video-agent |
+| Web 后端 | FastAPI | sibling-video-agent |
 | 前后端通信 | SSE | - |
-| 前端 | Vue 3 + Element Plus | pgp-platform |
-| ORM | SQLAlchemy 2.0 + Alembic | creative-video-agent |
-| LLM | 公司 LiteLLM 网关（OpenAI 兼容） | creative-video-agent `gateway.py` |
+| 前端 | Vue 3 + Element Plus | sibling-platform |
+| ORM | SQLAlchemy 2.0 + Alembic | sibling-video-agent |
+| LLM | 公司 LiteLLM 网关（OpenAI 兼容） | sibling-video-agent `gateway.py` |
 | MC 执行 | PyODPS | 现有 skill |
 | CK 执行 | clickhouse-driver | 现有 skill |
-| 认证 | 公司 SSO ticket | pgp-platform `sso.go` |
-| 文件存储 | OSS via PVS | pgp-platform HtmlReport |
-| 通知 | 钉钉 webhook | creative-video-agent `dingtalk.py` |
-| 日志 | structlog → SLS | creative-video-agent |
+| 认证 | 公司 SSO ticket | sibling-platform `sso.go` |
+| 文件存储 | OSS via PVS | sibling-platform HtmlReport |
+| 通知 | 钉钉 webhook | sibling-video-agent `dingtalk.py` |
+| 日志 | structlog → SLS | sibling-video-agent |
 | Trace | Langfuse 自部署（Phase 1） | - |
-| 部署 | shai DeployerV2 → K8s | pgp-platform / creative-video-agent |
+| 部署 | DeployerV2 → K8s | sibling-platform / sibling-video-agent |
 
 ---
 
@@ -635,7 +635,7 @@ WORKDIR /app
 
 以下事项需要在开始实现前确认：
 
-1. **前端技术栈确认**：Vue 3（对齐 pgp-platform）还是 React？
+1. **前端技术栈确认**：Vue 3（对齐 sibling-platform）还是 React？
 2. **LLM 模型选择**：通过 LiteLLM 网关使用哪个模型？（qwen3 / claude / gpt-5.5）
 3. **K8s namespace / 域名**：SRE 申请
 4. **SSO AppID 申请**：走公司 SSO 注册流程

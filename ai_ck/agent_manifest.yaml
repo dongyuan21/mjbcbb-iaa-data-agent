@@ -76,10 +76,10 @@ query_execution:
   datasource: ClickHouse
   default_database: shucang_market
   connection_source:
-    - /Users/sere/yrgnuhstudio/coding/pgp-platform/server/configs/config.toml
+    - /Users/<dev>/acme-studio/coding/sibling-platform/server/configs/config.toml
     - /app/configs/config.toml
   notes:
-    - pgp-platform uses clickhouse-go/v2 native protocol.
+    - sibling-platform uses clickhouse-go/v2 native protocol.
     - Real credentials are injected by deployment and must not be stored here.
 
 priority_tables:
@@ -108,7 +108,7 @@ hard_rules:
 
 source_priority:
   - Online ClickHouse DESCRIBE or SHOW CREATE TABLE
-  - pgp-platform CK validation docs and client code
+  - sibling-platform CK validation docs and client code
   - nexus ROI handler field configs and table routing
   - GORM structs and comments
   - DA verified SQL

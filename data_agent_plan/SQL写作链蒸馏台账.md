@@ -2,7 +2,11 @@
 
 > 状态：distillation_complete  
 > 创建日期：2026-06-19  
-> 原始输入：`/Users/lidongyuan/Desktop/sql-writing-chain-0.1.8/`  
+<<<<<<< HEAD
+> 原始输入：`/Users/<dev>/Desktop/sql-writing-chain-0.1.8/`  
+=======
+> 原始输入：`/Users/<dev>/Desktop/sql-writing-chain-0.1.8/`  
+>>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 > 原则：逐篇读、逐篇判断归属；最终知识必须沉淀到本项目既有层级，不让 Agent 依赖源包原文。
 
 ## 蒸馏归属

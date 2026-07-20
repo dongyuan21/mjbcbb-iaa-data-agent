@@ -76,7 +76,7 @@ PI 配置位于 `runtime/pi/agent/models.json`：
 
 - provider：`hs-litellm`
 - model：由 Runtime 设置从 `models.json` 的受支持列表选择；2026-07-15 最终 live N=3 实际为 `claude-sonnet-5`
-- baseUrl：`https://stargate.youxi123.com/v1`
+- baseUrl：`https://stargate.example.com/v1`
 - apiKey：从环境变量 `LLM_GATEWAY_API_KEY` 读取，不写入仓库
 
 ## 快速预检
@@ -95,7 +95,7 @@ python -m app.preflight
 默认读取（本地开发路径，生产环境由 K8s Secret 注入）：
 
 - LLM：从 `runtime/backend/.env` 读取 `LLM_GATEWAY_BASE_URL` / `LLM_GATEWAY_API_KEY`
-- MySQL：从 `pgp-platform/.scratch/mysql` 解析连接信息
+- MySQL：从 `sibling-platform/.scratch/mysql` 解析连接信息
 - MC helper：`~/.maxcompute-dataworks/bin/maxcompute_sql.py`
 - CK helper：`~/.clickhouse-shucang/bin/clickhouse_sql.py`
 
@@ -129,10 +129,10 @@ npm run dev
 
 ## Docker 构建
 
-Dockerfile 位于**数仓仓根** `Dockerfile`（对齐 creative-video-agent / pgp-platform 的 DeployerV2 仓根约定）：
+Dockerfile 位于**数仓仓根** `Dockerfile`（对齐 sibling-video-agent / sibling-platform 的 DeployerV2 仓根约定）：
 
 ```bash
-cd /Users/lidongyuan/HS/点位/数仓
+cd /Users/<dev>/HS/点位/数仓
 export DATA_AGENT_BUILD_COMMIT="$(git rev-parse HEAD)"
 docker build --build-arg DATA_AGENT_BUILD_COMMIT="$DATA_AGENT_BUILD_COMMIT" -t data-agent-runtime:test .
 python3 runtime/tools/verify_image_revision.py \

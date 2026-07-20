@@ -106,7 +106,7 @@
 所有命令都在数仓根目录执行：
 
 ```bash
-cd /Users/sere/yrgnuhstudio/点位/数仓
+cd /Users/<dev>/acme-studio/点位/数仓
 bash tools/scripts/refresh_ai_ck.sh
 ```
 

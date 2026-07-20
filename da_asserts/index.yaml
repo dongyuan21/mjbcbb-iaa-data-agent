@@ -1227,7 +1227,7 @@ entries:
   path: ../knowledge/audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
   title: MI ROI360 实战分析：BB 美国、回收源、Campaign、预测版本
   source_type: mi_roi360_browser_api
-  source_url: https://mi.youxi123.com/web/campaigns/reports/roi360
+  source_url: https://mi.example.com/web/campaigns/reports/roi360
   status: draft
   mcp_read_status: browser_page_and_api_read
   image_status: no_image

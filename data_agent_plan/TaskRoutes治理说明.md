@@ -83,7 +83,7 @@ python3 eval/agent_regression/run_regression.py
 
 ```bash
 PYTHONPATH=runtime/backend python3 tools/scripts/runtime_deploy_smoke.py \
-  --base-url https://pgp-v1-xgboost.youxi123.com \
+  --base-url https://pgp-v1-xgboost.example.com \
   --env-id 811 \
   --timeout 180 \
   --machine-id codex-route-smoke \

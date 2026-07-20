@@ -16,8 +16,13 @@
 
 | 项 | 结果 |
 |---|---|
-| 源包路径 | `/Users/lidongyuan/Desktop/sql-writing-chain-0.1.8/` |
+<<<<<<< HEAD
+| 源包路径 | `/Users/<dev>/Desktop/sql-writing-chain-0.1.8/` |
 | 源包全限定表名 | 64 张有效表（排除 `h-s.table_name` 占位符） |
+=======
+| 源包路径 | `/Users/<dev>/Desktop/sql-writing-chain-0.1.8/` |
+| 源包全限定表名 | 64 张有效表（排除 `acme_studio.table_name` 占位符） |
+>>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 | 当前工程已直接覆盖 | 23 张（源包表进入 `ai_hive/agent_knowledge/catalog.yaml` 的复算口径） |
 | 当前工程未覆盖 / 待 intake | 41 张源包表尚未入 catalog；backlog 另保留 3 张 legacy 扩展候选待复核 |
 | 空 `.xlsx` | 6 个，均为空文件；同名 Markdown 才是可审计输入 |
@@ -45,6 +50,7 @@
 
 | 表 | 主题 | schema 状态 | 字段 / 分区 | 初步 query_rules 和风险 |
 |---|---|---|---|---|
+<<<<<<< HEAD
 | `h-s.dim_kcolb_tsalb_abtest_conf_sq_ha` | BB 实验配置 | `schema_ok` | 45 列；分区 `dt`, `hour` | 快照配置表；候选 must_filter: `dt`, `hour`；核心字段含 `app_name`, `plan`, `pici_id`, `starttime`, `endtime` 等。 |
 | `h-s.dim_kcolb_tsalb_gp_ad_realization_ab_pici_adunit_base_conf_ha` | BB 商业化配置 | `schema_ok` | 15 列；无分区 | 配置小表候选；不用分区需写明；核心字段含 `pici`, `adwaynum`, `adunit`, `price_type`, `start_date_time`, `end_date_time`。 |
 | `h-s.dim_all_app_ab_test_plan_conf_view` | 全产品实验配置视图 | `schema_ok`，view | 38 列；无分区 | view / 配置表；按 `bundle_id` / `app_name` / `plan` 过滤；含 `update_user`，输出时避免暴露个人操作信息。 |
@@ -60,6 +66,23 @@
 | `h-s.dim_cs_data_origin_event_bgd_bi_events_v2` | 事件定义 | `schema_ok` | 20 列；无分区 | 事件元数据；按 `game_id`, `status`, `name` 过滤；不代表事件事实发生。 |
 | `h-s.dim_cs_data_origin_event_bgd_bi_attr` | 事件参数 | `schema_ok` | 19 列；无分区 | 事件参数元数据；按 `game_id`, `event_name`, `status` 过滤；核心字段含 `event_attribute_name`, `event_tab_field`, `data_type`, `key_values`。 |
 | `h-s.ods_market_ad_material_maps_da` | 素材映射 | `schema_ok` | 16 列；分区 `dt` | 素材映射快照候选；must_filter: `dt`；核心字段含 `bundle_id`, `media_source`, `campaign_name`, `campaign_id`, `ad_id`, `material`。 |
+=======
+| `acme_studio.dim_b-b_abtest_conf_sq_ha` | BB 实验配置 | `schema_ok` | 45 列；分区 `dt`, `hour` | 快照配置表；候选 must_filter: `dt`, `hour`；核心字段含 `app_name`, `plan`, `pici_id`, `starttime`, `endtime` 等。 |
+| `acme_studio.dim_b-b_gp_ad_realization_ab_pici_adunit_base_conf_ha` | BB 商业化配置 | `schema_ok` | 15 列；无分区 | 配置小表候选；不用分区需写明；核心字段含 `pici`, `adwaynum`, `adunit`, `price_type`, `start_date_time`, `end_date_time`。 |
+| `acme_studio.dim_all_app_ab_test_plan_conf_view` | 全产品实验配置视图 | `schema_ok`，view | 38 列；无分区 | view / 配置表；按 `bundle_id` / `app_name` / `plan` 过滤；含 `update_user`，输出时避免暴露个人操作信息。 |
+| `acme_studio.dws_b-b_all_ad_realization_active_user_ab_life_orthogonal_retention_hi` | 商业化实验事实 | `schema_ok` | 156 列；分区 `dt`, `hour`, `app_name`, `channel` | 大事实表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；核心字段含 `user_waynum`, `active_date`, `install_date`。 |
+| `acme_studio.dws_nova_collection_all_abtest_user_multi_dim_hi` | nova 实验多维 | `schema_ok` | 105 列；分区 `dt`, `app_name` | 共享 nova 表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`, `device_id`；核心字段含 `ab_waynum`, `bundle_id`, `app_name`。 |
+| `acme_studio.dws_nova_collection_all_user_ab_retention_hi` | nova 方案留存 | `schema_ok` | 119 列；分区 `dt`, `hour`, `app_name` | 方案留存表；must_filter: `dt`, `hour`, `app_name`；PII 聚合字段：`distinct_id`；需区分人均留存天数和 RR。 |
+| `acme_studio.dws_nova_ma0j_all_parsed_board_game_click_di` | MB 点击解析 | `schema_ok` | 64 列；分区 `dt`, `app_name` | MB 明细解析表；must_filter: `dt`, `app_name`；PII 聚合字段：`distinct_id`；建议额外过滤 `game_mode`, `is_formal`。 |
+| `acme_studio.dws_b-b_gp_block_action_game_di` | BB GP 局表 | `schema_ok` | 152 列；分区 `dt` | 局粒度明细；must_filter: `dt`；PII / 明细字段：`device_id`, `distinct_id`, `ip`, `uuid`；不要输出明细。 |
+| `acme_studio.ads_market_block_collection_ad_detail_di` | DT 投放明细 | `schema_ok` | 31 列；分区 `dt`, `app_name` | 投放聚合表；must_filter: `dt`, `app_name`；核心字段含 `bundle_id`, `campaign_id`, `campaign_name`, `ad_id`, `media_source`, `cost_zhe`, `revenue` 类字段待逐列确认。 |
+| `acme_studio.dim_market_appsflyer_activation_pull_da` | AF 激活全量 | `schema_ok` | 18 列；分区 `dt` | 全量累积分区表；must_filter: `dt`，业务日期用 `active_time_utc8`；PII 聚合字段：`appsflyer_id`, `distinct_id`, `appsflyer_advertising_id`。 |
+| `acme_studio.dwd_market_cost_di` | campaign 成本 | `schema_ok` | 32 列；分区 `dt` | campaign 成本聚合；must_filter: `dt`；核心字段含 `active_date`, `media_source`, `bundle_id`, `campaign_id`, `adset_id`, `ad_id`。 |
+| `acme_studio.dwd_market_sdk_revenue_attributed_di` | SDK 收入归因 | `schema_ok` | 18 列；分区 `dt` | SDK 收入归因；must_filter: `dt`；PII 聚合字段：`distinct_id`, `appsflyer_id`, `advertising_id`；需确认 `dt` 是否为收入日。 |
+| `acme_studio.dim_cs_data_origin_event_bgd_bi_events_v2` | 事件定义 | `schema_ok` | 20 列；无分区 | 事件元数据；按 `game_id`, `status`, `name` 过滤；不代表事件事实发生。 |
+| `acme_studio.dim_cs_data_origin_event_bgd_bi_attr` | 事件参数 | `schema_ok` | 19 列；无分区 | 事件参数元数据；按 `game_id`, `event_name`, `status` 过滤；核心字段含 `event_attribute_name`, `event_tab_field`, `data_type`, `key_values`。 |
+| `acme_studio.ods_market_ad_material_maps_da` | 素材映射 | `schema_ok` | 16 列；分区 `dt` | 素材映射快照候选；must_filter: `dt`；核心字段含 `bundle_id`, `media_source`, `campaign_name`, `campaign_id`, `ad_id`, `material`。 |
+>>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 说明：`schema_ok` 只证明元数据路径可访问，不代表字段语义、分区新鲜度、join key 或默认召回已确认。PII 列表为字段名启发式初筛，表卡 intake 时仍需按 `ai_hive/PII_POLICY.yaml` 复核。
 

@@ -62,7 +62,7 @@ decision_sources:
 query_execution:
   datasource: MaxCompute
   primary: maxcompute-dataworks
-  project: yrgnuh_studio
+  project: acme_studio
   endpoint: https://service.us-east-1.maxcompute.aliyun.com/api
   quota: ua_event
   helper: ~/.maxcompute-dataworks/bin/maxcompute_sql.py
@@ -70,13 +70,13 @@ query_execution:
 priority_tables:
   source_of_truth: agent_knowledge/catalog.yaml
   P0:
-    - yrgnuh_studio.ods_appsflyer_all_in_app_events_report_di
-    - yrgnuh_studio.dws_market_capi_user_hourly_metrics_wide_ha
-    - yrgnuh_studio.dws_market_capi_user_hourly_metrics_wide_hi
-    - yrgnuh_studio.dwd_market_s2s_platform_ready_hi
-    - yrgnuh_studio.dwd_market_s2s_platform_push_log_hi
-    - yrgnuh_studio.dwd_market_appsflyer_activation_push_data_di
-    - yrgnuh_studio.dim_market_campaign_s2s_event_map_da
+    - acme_studio.ods_appsflyer_all_in_app_events_report_di
+    - acme_studio.dws_market_capi_user_hourly_metrics_wide_ha
+    - acme_studio.dws_market_capi_user_hourly_metrics_wide_hi
+    - acme_studio.dwd_market_s2s_platform_ready_hi
+    - acme_studio.dwd_market_s2s_platform_push_log_hi
+    - acme_studio.dwd_market_appsflyer_activation_push_data_di
+    - acme_studio.dim_market_campaign_s2s_event_map_da
 
 pii_policy: agent_knowledge/PII_POLICY.yaml
 
