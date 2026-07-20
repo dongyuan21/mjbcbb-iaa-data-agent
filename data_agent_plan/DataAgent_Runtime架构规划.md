@@ -3,7 +3,6 @@
 > 状态：historical_plan_with_20260715_implementation_overlay
 > 创建：2026-06-20
 > 更新：2026-06-20
-<<<<<<< HEAD
 > 上下文：基于数仓知识库工程现状 + 公司基建（山海 K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
 
 ## 2026-07-15 实现态覆盖说明
@@ -11,19 +10,12 @@
 中心化 Web、MySQL 持久化、Redis 任务队列/唤醒、PI Worker、durable SSE `after_seq` 续传和 test live N=3 已完成。行为提交 `54df4d8f` 的最终 14 条 live case × N=3 为 39 PASS、3 个预期黄色 WARN、0 fail、0 blocked、0 flaky，114 条 query records 全部成功。2026-07-15 已补齐浏览器刷新/断线后续接同一 job 的实现和离线自动化门禁；真实浏览器手工刷新报告仍与实现证据分开记录。原“工程现状”和 Phase 表保留为历史规划，不能继续当作当前完成度；OSS、钉钉通知、Langfuse与真实多人内测仍按各自证据单列。
 
 当前事件历史以 MySQL durable job events 为唯一权威，Redis 只负责排队和唤醒；客户端按最后连续序号续接同一 job，不重复创建任务，永久缺口仍 fail-closed。
-=======
-> 上下文：基于数仓知识库工程现状 + 公司基建（内部 K8s / SSO / MySQL / OSS / LiteLLM 网关）的综合规划
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 ## 已确认决策
 
 | 决策项 | 结论 | 确认时间 |
 |---|---|---|
-<<<<<<< HEAD
 | 部署形态 | 中心化 Web 服务（山海 K8s） | 2026-06-20 |
-=======
-| 部署形态 | 中心化 Web 服务（内部 K8s） | 2026-06-20 |
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 | Agent 框架 | **PI Framework + 自定义数据工具/护栏层** | 2026-06-21 |
 | 后端语言 | Python（FastAPI） | 2026-06-20 |
 | 持久化 | MySQL（公司实例），**不用 SQLite** | 2026-06-20 |
@@ -78,21 +70,12 @@ Runtime：   ████░░░░░░  40%
 
 | 基建 | Data Agent 用法 | 参考 |
 |---|---|---|
-<<<<<<< HEAD
 | 山海 DeployerV2 | 构建 Docker → ACR → K8s 部署 | sibling-platform |
 | SSO | 用户认证，ticket 换 session | sibling-platform `sso.go` |
 | MySQL | session / 报告元数据 / 查询记录 | sibling-platform GORM |
 | OSS (PVS) | markdown 报告 / 查询结果文件 | sibling-platform HtmlReport |
 | LiteLLM 网关 | LLM 推理（OpenAI 兼容 SDK） | sibling-video-agent `gateway.py` |
 | 钉钉通知 | 长查询完成 / 异常通知 | sibling-video-agent `dingtalk.py` |
-=======
-| DeployerV2 | 构建 Docker → ACR → K8s 部署 | sibling-platform |
-| SSO | 用户认证，ticket 换 session | sibling-platform `sso.go` |
-| MySQL | session / 报告元数据 / 查询记录 | sibling-platform GORM |
-| OSS (PVS) | markdown 报告 / 查询结果文件 | sibling-platform HtmlReport |
-| LiteLLM 网关 | LLM 推理（OpenAI 兼容 SDK） | sibling-video-agent `gateway.py` |
-| 钉钉通知 | 长查询完成 / 异常通知 | sibling-video-agent `dingtalk.py` |
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 ---
 
@@ -133,11 +116,7 @@ Agent 核心用 PI：agent loop、RPC/SDK、TUI/事件流、工具执行过程�
 ```python
 from openai import OpenAI
 client = OpenAI(
-<<<<<<< HEAD
     base_url="https://stargate.example.com/v1",
-=======
-    base_url="https://llm-gateway.example.internal/v1",
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
     api_key=os.environ["LLM_GATEWAY_API_KEY"],
 )
 ```
@@ -174,11 +153,7 @@ sibling-platform 用 Go，sibling-video-agent 用 Python。Data Agent Web/API �
 - 知识库工具链全是 Python（33 个脚本）
 - MC/CK helper 当前是 Python（PyODPS / clickhouse-driver）
 - PI 是 TypeScript/Node Agent 框架，通过 RPC 与 Python Web 层集成
-<<<<<<< HEAD
 - sibling-video-agent 已验证 Python + FastAPI + 山海 K8s 可行
-=======
-- sibling-video-agent 已验证 Python + FastAPI + 内部 K8s 可行
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 ### 连接稳定性方案
 
@@ -564,11 +539,7 @@ Phase 0 ~ Phase 1 完全零额外部署，用 structlog + MySQL trace 表就能�
 ## 十、K8s 部署拓扑
 
 ```
-<<<<<<< HEAD
 山海 DeployerV2
-=======
-DeployerV2
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
   → Docker Build（Python 3.12 + FastAPI + 依赖）
   → ACR 镜像推送
   → K8s namespace: data-agent
@@ -638,11 +609,7 @@ WORKDIR /app
 - Markdown 报告生成 + OSS 存储
 - 钉钉通知（长查询完成 / 断线恢复）
 - Langfuse trace 接入
-<<<<<<< HEAD
 - Docker 镜像 + 山海部署
-=======
-- Docker 镜像 + 平台部署
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 - 断线重连 + 会话恢复
 - E2E 回归测试
 - **验收**：DA/UA 组 5+ 人日常使用
@@ -673,11 +640,7 @@ WORKDIR /app
 | 通知 | 钉钉 webhook | sibling-video-agent `dingtalk.py` |
 | 日志 | structlog → SLS | sibling-video-agent |
 | Trace | Langfuse 自部署（Phase 1） | - |
-<<<<<<< HEAD
 | 部署 | 山海 DeployerV2 → K8s | sibling-platform / sibling-video-agent |
-=======
-| 部署 | DeployerV2 → K8s | sibling-platform / sibling-video-agent |
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 
 ---
 

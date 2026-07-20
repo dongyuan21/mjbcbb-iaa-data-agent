@@ -37,11 +37,7 @@
 表名：
 
 ```text
-<<<<<<< HEAD
 h-s.ods_appsflyer_kcolb_collection_in_app_events_report_di
-=======
-acme_studio.ods_appsflyer_block_collection_in_app_events_report_di
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 ```
 
 已通过 MaxCompute 查到：
@@ -112,11 +108,7 @@ ai_hive/agent_knowledge/tables/ods_appsflyer_kcolb_collection_in_app_events_repo
 
 ```text
 产品：DT Android
-<<<<<<< HEAD
 bundle_id: com.HS.mahjong
-=======
-bundle_id: com.acme-studio.ma0j
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
 国家：US
 安装日期窗口：2026-03-01 ~ 2026-03-03
 行为观察截止：2026-03-10

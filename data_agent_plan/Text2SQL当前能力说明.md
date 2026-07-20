@@ -242,11 +242,7 @@ Agent 找候选表：
 field_evidence:
   - requirement_item: 插屏收入
     item_type: metric
-<<<<<<< HEAD
     source_table: h-s.xxx
-=======
-    source_table: acme_studio.xxx
->>>>>>> e1375c4 (脱敏文档中的公司域名、路径与兄弟仓指纹，并忽略本地 skill-ignore。)
     source_field: inter_revenue
     evidence_source:
       type: table_card
