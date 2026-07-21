@@ -1,0 +1,485 @@
+version: '0.1'
+updated: '2026-07-16'
+status: active
+facts:
+  redline_thresholds:
+    description: 包体 ROI 红线 / 达标线 / 观察线阈值及使用规则
+    rule_logic: knowledge/agent_knowledge/policies/投放ROI治理政策.md
+    numeric_data: knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+    data_explanation: knowledge/agent_knowledge/report_knowledge/包体ROI目标阈值.md
+    confirmation: da_assets/decision_cases/20260625_红黄线双日review规则DA确认.md
+    source: da_assets/raw/2026-06-16_发行红绿线执行说明_docx.md
+    sql_implementation: null
+    sop: da_assets/analysis_sop/红黄线ROI双日review筛选SOP.md
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/redline_bidaily_review.yaml
+  sdk_revenue_definition:
+    description: SDK 回收定义、表依赖、分媒体消耗与 SDK 回收对账 SQL
+    rule_logic: knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260715_bb_gp_20260626_media_spend_sdk_actual.md
+    sop: null
+    table_card: ai_ck/agent_knowledge/tables/tj_ad_sdk_revenue.yaml
+    semantic_contract: knowledge/agent_knowledge/semantic_contract/metrics.yaml
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  roi360_d360_zero_diagnosis:
+    description: MI ROI360 分媒体导出、D360=0 覆盖率诊断、自然量分摊试算
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260715_roi360_media_export_d360_zero_diagnosis.md
+    sop: da_assets/analysis_sop/20260702_MI_ROI360分媒体导出与D360零值排查SOP.md
+    table_card: ai_ck/agent_knowledge/tables/ads_market_roi_cohort_sdk_multidim.yaml
+    semantic_contract: null
+    related_task_route: task_routes/mi_roi360_analysis.yaml
+  ltv_multiplier_drop:
+    description: LTV 倍率（LTV_N/LTV_0）下降时的拆解方法论与验证 SQL
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: da_assets/raw/2026-04-23_BB_LTV倍率下降钉钉材料.md
+    sql_implementation: da_assets/verified_sql/vsql_20260715_ltv_multiplier_drop_diagnosis.md
+    sop: da_assets/analysis_sop/20260423_LTV倍率下降归因SOP.md
+    table_card: ai_ck/agent_knowledge/tables/ads_market_roi_cohort_sdk_multidim.yaml
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  iaa_event_point_testing:
+    description: 事件点位渗透率、ROI/LTV/倍率趋势、分层评估方法论与 SQL
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: da_assets/raw/2026-04_Mahjong_IAA_360LTV事件点位钉钉材料.md
+    sql_implementation: da_assets/verified_sql/vsql_20260715_iaa_event_point_roi_ltv_trend.md
+    sop: da_assets/analysis_sop/202604_IAA事件点位测试分层评估SOP.md
+    table_card: ai_ck/agent_knowledge/tables/dim_market_campaign_s2s_event_map_da.yaml
+    semantic_contract: null
+    related_task_route: task_routes/point_s2s_analysis.yaml
+  channel_quality_antifraud:
+    description: CTIT 分布、match_type 分层、gp_referrer 归因劫持候选识别
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260716_channel_quality_ctit_matchtype.md
+    sop: da_assets/analysis_sop/20260615_渠道质量与归因异常分析SOP.md
+    table_card: ai_hive/agent_knowledge/tables/dwd_market_appsflyer_activation_push_data_di.yaml
+    semantic_contract: null
+    related_task_route: null
+  mc_ck_spend_reconciliation:
+    description: MaxCompute 与 ClickHouse 消耗对账口径与 SQL
+    rule_logic: knowledge/agent_knowledge/policies/花费同步与对账规则.md
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/mc_ck_spend_reconciliation.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  package_bundle_mapping:
+    description: 游戏名与 bundle_id 双向速查、MI 包体展示映射
+    rule_logic: knowledge/agent_knowledge/policies/点位Campaign映射查询规则.md
+    numeric_data: knowledge/agent_knowledge/report_knowledge/PACKAGE_BUNDLE_MAP.csv
+    data_explanation: knowledge/agent_knowledge/report_knowledge/游戏名与bundle_id双向速查.md
+    confirmation: null
+    source: null
+    sql_implementation: null
+    sop: null
+    table_card: null
+    semantic_contract: knowledge/agent_knowledge/semantic_contract/entities.yaml
+    related_task_route: task_routes/product_bundle_mapping.yaml
+  bb_gp_media_roi360_distribution:
+    description: Block Blast GP 最近 7 天分媒体 ROI360/LTV0/LTV360/消耗占比分布
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260715_bb_gp_latest_7d_media_roi360_distribution.md
+    sop: null
+    table_card: ai_ck/agent_knowledge/tables/ads_market_roi_cohort_sdk_multidim.yaml
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  event_overlap_matrix:
+    description: 事件间用户重叠率，判断事件点位信息量冗余度
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: da_assets/raw/2026-06-13_用户价值点位事件矩阵手工材料.md
+    sql_implementation: da_assets/verified_sql/vsql_20260716_event_overlap_matrix.md
+    sop: da_assets/analysis_sop/用户价值点位事件矩阵分析SOP.md
+    table_card: ai_hive/agent_knowledge/tables/dwd_market_appsflyer_activation_push_data_di.yaml
+    semantic_contract: null
+    related_task_route: task_routes/point_s2s_analysis.yaml
+    complements: vsql_20260616_point_event_penetration_value
+  ad_impression_metrics:
+    description: 广告展示、广告逃逸、广告素材与广告主字段口径与 SQL
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260613_ad_impression_metrics.md
+    sop: null
+    table_card: ai_hive/agent_knowledge/tables/dwd_nova_collection_all_white_event_unique_data_hi.yaml
+    semantic_contract: null
+    related_task_route: task_routes/monetization_performance_analysis.yaml
+  material_ipm_cpi:
+    description: 素材 IPM/CPI/CTR/CVR 快照与 SDK 回收对比
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/material_analysis.yaml
+  bb_us_ua_dnu_delta:
+    description: BB 美国 UA 分媒体 DNU 缺口拆解
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/bb_us_ua_media_source_dnu_delta_analysis.yaml
+  device_dau_dnu_wow:
+    description: 设备 DAU/DNU 周环比
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260617_device_dau_dnu_wow.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  bb_country_dau_dnu_wow:
+    description: BB 分国家 DAU/DNU 周环比
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260617_bb_country_dau_dnu_wow.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  bb_dnu_source_channel_delta:
+    description: BB DNU 来源渠道变化
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260617_bb_dnu_source_channel_delta.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  growth_weekly_dnu_channel_country_wow:
+    description: 周报 DNU 分渠道分国家 WoW
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260618_growth_weekly_dnu_channel_country_wow.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  growth_weekly_actual_roi_media_split:
+    description: 周报实际 ROI 分媒体拆解
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260618_growth_weekly_actual_roi_media_split.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  mi_spend_activation_by_campaign:
+    description: MI 消耗+激活按 campaign 聚合
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/mi_spend_activation_by_campaign.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  google_ads_config_change:
+    description: Google Ads 配置变更监控与 DNU 异动排查
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/google_ads_config_change_analysis.yaml
+  google_campaign_dnu_changelog:
+    description: Google Campaign DNU 异动与变更记录排查
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260618_google_campaign_dnu_changelog_triage.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/google_ads_config_change_analysis.yaml
+  day0_arpu_anomaly:
+    description: 首日 ARPU 异动归因
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  bb_gp_google_country_d7_arpu:
+    description: BB GP Google 分国家 D7 累计 ARPU
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260715_bb_gp_google_country_d7_cumulative_arpu.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  d30_top20_concentration:
+    description: D30 Top20% 用户收入集中度
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260630_d30_top20_user_concentration_channel_country.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  sdk_vs_af_revenue:
+    description: SDK 回收 vs AF 回收 cohort 对比
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/sdk_vs_af_revenue_by_cohort.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  mc_ck_revenue_cohort_reconciliation:
+    description: MC vs CK 回收 cohort 对账
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/mc_ck_revenue_cohort_reconciliation.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  mi_roi360_board_recon:
+    description: MI ROI360 看板与 CK 底层对账
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260616_mi_roi360_campaign_board_recon.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/mi_roi360_analysis.yaml
+  af_mi_register_timezone_recon:
+    description: AF 与 MI 注册数时区对账
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260616_af_mi_register_timezone_recon.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  point_s2s_roi_review:
+    description: 点位 S2S ROI 复盘
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260616_point_s2s_roi_review.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/point_s2s_analysis.yaml
+  point_event_penetration_value:
+    description: 点位事件触发渗透率与触发用户价值
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260616_point_event_penetration_value.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/point_s2s_analysis.yaml
+  device_asset_scale:
+    description: 设备资产规模按产品聚合
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/device_asset_scale_by_app.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  af_attribution_coverage:
+    description: AF 归因覆盖率按设备聚合
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/af_attribution_coverage_by_device.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  device_sdk_revenue_new_return:
+    description: 设备 SDK 收入新回流聚合
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/device_sdk_revenue_new_return.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  new_return_device_attribution:
+    description: 新回流设备归因聚合验证
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260620_new_return_device_attribution_aggregation.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  sdk_revenue_boundary_validation:
+    description: SDK 回收 DWD/DWS 边界验证
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260616_sdk_revenue_dwd_dws_boundary_validation.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/data_foundation_health_or_freshness_audit.yaml
+  af_cohort_retention:
+    description: AF cohort 留存按媒体
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/af_cohort_retention_by_media.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  roi_prediction_accuracy:
+    description: ROI 预测准确性快照
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/roi_prediction_accuracy_snapshot.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/roi_or_campaign_analysis.yaml
+  mj_dt_historical_point_review:
+    description: MJ/DT 历史点位复盘小窗口验证
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260613_mj_dt_historical_point_review_small_window.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/point_s2s_analysis.yaml
+  audience_us_xh_uac25_funnel:
+    description: US-XH-UAC2.5 人群包漏斗诊断
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260715_audience_us_xh_uac25_funnel.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: null
+  bb_gp_product_experiment:
+    description: BB GP 商业化方案实验 D0/RR1/时长/局数/广告收入对比
+    rule_logic: null
+    numeric_data: null
+    data_explanation: null
+    confirmation: null
+    source: null
+    sql_implementation: da_assets/verified_sql/vsql_20260716_bb_gp_product_experiment_retention_monetization.md
+    sop: null
+    table_card: null
+    semantic_contract: null
+    related_task_route: task_routes/product_behavior_or_experiment_analysis.yaml

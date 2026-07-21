@@ -1,0 +1,295 @@
+version: "0.1"
+updated: "2026-06-13"
+
+# 结构化回归用例:验证 agent 能否仅凭 model.json 把问题拼成正确 SQL。
+# 每个 case 是"语义请求"(dimensions+metrics+filters+variant),
+# composer 读 model.json 拼 SQL,再按 expect 断言用对了表/join/口径/过滤。
+# 对应 Agent最小回归问题集.md 的 R7 / R5 / 留存 / R6。
+
+cases:
+  - id: SC1
+    maps_to: R7
+    question: "BB 美国 5月上半月各 campaign 的 ROI7、af_cpi、次留,用于放量/观察候选"
+    select:
+      dimensions: [campaign_name]
+      metrics:
+        - {metric: roi_n, n: 7}
+        - {metric: af_cpi}
+        - {metric: retention_n, n: 1}
+      variant: {revenue_source: sdk}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        media_source: "Google Ads"
+        country: "US"
+        active_date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - shucang_market.tj_ad_spend_active_v2
+        - shucang_market.tj_ad_sdk_revenue
+        - shucang_market.af_cohort_user_acquisition_v2
+      joins: [spend_x_revenue]
+      sql_contains: ["active_date", "cost_zhe", "date_diff <= 6", "date_diff = 0", "campaign_name"]
+    note: 放量/停投阈值需用户拍板,SQL 只产候选字段
+
+  - id: SC2
+    maps_to: R5
+    question: "同一组维度下 SDK 回收 vs AF 回收的 total_revenue 和 ROI7 差异"
+    select:
+      dimensions: [campaign_name]
+      metrics:
+        - {metric: roi_n, n: 7}
+      compare_variants:
+        revenue_source: [sdk, af]
+      filters:
+        bundle_id: "com.blockblast.gp"
+        media_source: "Google Ads"
+        active_date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - shucang_market.tj_ad_spend_active_v2
+        - shucang_market.tj_ad_sdk_revenue
+        - shucang_market.tj_ad_revenue_v2
+      joins: [spend_x_revenue]
+      sql_contains: ["tj_ad_sdk_revenue", "tj_ad_revenue_v2", "date_diff <= 6"]
+    note: 不擅自决定官方默认 revenue_source,两版并列输出
+
+  - id: SC3
+    maps_to: retention
+    question: "各 campaign 的次留和 7 日留存(date_diff=6)"
+    select:
+      dimensions: [campaign_name]
+      metrics:
+        - {metric: retention_n, n: 1}
+        - {metric: retention_n, n: 6}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        media_source: "Google Ads"
+        active_date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - shucang_market.af_cohort_user_acquisition_v2
+      joins: []
+      sql_contains: ["date_diff = 0", "date_diff IN (0, 1, 6)", "dt >="]
+    note: 留存分母来自 date_diff=0,必须同时取 0 与目标天
+
+  - id: SC4
+    maps_to: R6
+    question: "ROI 预测偏差 D7/D30/D60:各包/媒体真实 vs 预估 ROI 及偏差方向"
+    select:
+      dimensions: [bundle_id, media_source]
+      metrics:
+        - {metric: roi_real_dn, n: 7}
+        - {metric: roi_pred_dn, n: 7}
+        - {metric: roi_forecast_error_dn, n: 30}
+        - {metric: roi_forecast_error_dn, n: 60}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        active_date: ["2026-05-01", "2026-05-14"]
+        dt: "2026-06-12"
+    expect:
+      tables:
+        - hungry_studio.ads_market_roi_pred_accuracy_da
+      joins: []
+      sql_contains: ["real_d7", "pred_d7", "real_d30 - pred_d30", "dt = '2026-06-12'"]
+    note: D3 无 pred_d3 列;预测表在 MaxCompute,跨源不与 CK join
+
+  - id: SC5
+    maps_to: cross_source_guard
+    question: "(护栏)能否把 CK 留存表与 MaxCompute 预测表直接 join"
+    select:
+      metrics:
+        - {metric: roi_forecast_accuracy_xsrc}
+    expect:
+      unsupported: true
+      reason_contains: ["未定义"]
+    note: 故意请求不存在指标,验证 composer 对越界请求返回 unsupported 而非硬编
+
+  - id: SC6
+    maps_to: P1-material
+    question: "BB 各素材的 IPM/CPI/CTR/CVR 前端效率,用于素材冷启动/衰减初筛(MaxCompute 源)"
+    select:
+      dimensions: [material]
+      metrics:
+        - {metric: material_ipm}
+        - {metric: material_cpi}
+        - {metric: material_ctr}
+        - {metric: material_cvr}
+      filters:
+        bundle_id: "com.block.juggle"
+        active_date: ["2026-05-24", "2026-05-30"]
+        dt: ["2026-05-24", "2026-05-30"]
+    expect:
+      tables:
+        - hungry_studio.ads_market_material_metric_di
+      joins: []
+      sql_contains: ["ads_market_material_metric_di", "material", "SUM(registers) / NULLIF(SUM(shows), 0) * 1000", "dt BETWEEN"]
+    note: 素材前端口径,无回收;素材 ROI 需阶段2 join 回收表;验证 MC 双源单表指标可拼
+
+  - id: SC7
+    maps_to: P0-campaign-dim
+    question: "BB 各投放类型(convert_type)的 CPC/折前CPI/媒体CVR,验证 CK spend 维度层级与比率补全"
+    select:
+      dimensions: [convert_type]
+      metrics:
+        - {metric: cpc}
+        - {metric: original_cpi}
+        - {metric: media_cvr}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        active_date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - shucang_market.tj_ad_spend_active_v2
+      joins: []
+      sql_contains: ["convert_type", "SUM(media_installs) / SUM(clicks)", "active_date BETWEEN"]
+    note: convert_type/key_action/ad/material/device 等已冗余在 spend 事实表,单表即可拼,无需 join 配置表
+
+  - id: SC8
+    maps_to: P1-ad_revenue_ltv
+    question: "BB 各媒体的 D7 累计广告变现与 D7 广告 LTV(ad_revenue 库 LTV 宽表)"
+    select:
+      dimensions: [media_source]
+      metrics:
+        - {metric: ad_revenue_dn, n: 7}
+        - {metric: ad_ltv_dn, n: 7}
+      filters:
+        bundle_id: "com.block.juggle"
+        date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - ad_revenue.tj_ad_revenue_ltv_list_utc
+      joins: []
+      sql_contains: ["tj_ad_revenue_ltv_list_utc", "ad_revenue_7", "date BETWEEN"]
+    note: ad_revenue 库单表 LTV 曲线;跨库不与 shucang SQL join,与 MI 口径需对账
+
+  - id: SC9
+    maps_to: governance
+    question: "(治理)做 campaign 放量候选分析,每行对象必须输出哪些状态字段,有何护栏"
+    governance_query:
+      need: status_fields
+    expect:
+      status_fields_contain: [lifecycle_stage, roi_source, threshold_status, decision_status, data_scope]
+      guard_contains: ["不写死"]
+    note: 验证 model.json 的 governance 状态机可被 agent 消费;阈值数值留 needs_decision
+
+  - id: SC10
+    maps_to: diagnostics
+    question: "(诊断)素材冷启动差,该用什么前端指标和哪条 verified SQL"
+    diagnostic_query:
+      symptom_contains: "素材冷启动"
+    expect:
+      recommend_contains: "vsql_20260613_material_ipm_cpi_snapshot"
+      check_metrics_contain: [material_ipm, material_cpi]
+    note: 验证 diagnostics 现象→推荐 SQL/指标 可被 agent 消费
+
+  - id: SC11
+    maps_to: D-2-material_roi
+    question: "BB 各素材的 D7 广告 ROI 与 D7 广告 LTV(ad_revenue ltv 表素材级下钻)"
+    select:
+      dimensions: [material]
+      metrics:
+        - {metric: ad_roi_dn, n: 7}
+        - {metric: ad_ltv_dn, n: 7}
+      filters:
+        bundle_id: "com.block.juggle"
+        date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - ad_revenue.tj_ad_revenue_ltv_list_utc
+      joins: []
+      sql_contains: ["material", "SUM(ad_revenue_7) / SUM(cost_zhe)", "date BETWEEN"]
+    note: D-2=a 素材 ROI 走 ad_revenue ltv 单表(含 material);广告变现 IAA 口径,与 MI sdk/af 需对账
+
+  - id: SC12
+    maps_to: D-3-dau_dnu
+    question: "BB 各国家大盘 DAU/DNU/DRU 与前向次留(设备口径,MaxCompute)"
+    select:
+      dimensions: [country]
+      metrics:
+        - {metric: dau}
+        - {metric: dnu}
+        - {metric: dru}
+        - {metric: dau_d1_retention_rate}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        dt: ["2026-05-24", "2026-05-30"]
+    expect:
+      tables:
+        - hungry_studio.ads_market_device_dau_behavior_di
+      joins: []
+      sql_contains: ["SUM(dau)", "age_bucket = 'D0'", "is_return_device = 1", "dt BETWEEN"]
+    note: D-3=a 设备口径大盘;DNU/DRU 用 bucket 条件聚合;organic 拆分另见 organic_dnu(needs_decision)
+
+  - id: SC13
+    maps_to: needs_decision_guard
+    question: "(护栏)请求 organic_dnu_broad(广义口径待业务确认)能否生成 SQL"
+    select:
+      dimensions: [country]
+      metrics:
+        - {metric: organic_dnu_broad}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        dt: ["2026-06-15", "2026-06-15"]
+    expect:
+      unsupported: true
+      reason_contains: ["needs_decision"]
+    note: D-3 狭义已拍(organic_dnu confirmed);广义(含'其他')待业务确认,composer 对 needs_decision metric 返回 unsupported
+
+  - id: SC14
+    maps_to: roi360_arpu
+    question: "BB 各 campaign 首日 ARPU(af 分母注册 / media 分母媒体安装,默认 sdk 回收)"
+    select:
+      dimensions: [campaign_name]
+      metrics:
+        - {metric: af_arpu}
+        - {metric: media_arpu}
+      variant: {revenue_source: sdk}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        media_source: "Google Ads"
+        active_date: ["2026-05-01", "2026-05-14"]
+    expect:
+      tables:
+        - shucang_market.tj_ad_spend_active_v2
+        - shucang_market.tj_ad_sdk_revenue
+      joins: [spend_x_revenue]
+      sql_contains: ["SUM(registers) AS installs", "SUM(media_installs) AS installs", "date_diff = 0", "revenue_0"]
+    note: ROI360 首日 ARPU=date_diff=0 收入/安装;af 分母 registers, media 分母 media_installs
+
+  - id: SC15
+    maps_to: day0_arpu_diagnosis
+    question: "BB 大盘 ARPDAU / 人均展示 / 激励&插屏 eCPM(首日 ARPU 异动拆解)"
+    select:
+      dimensions: [country]
+      metrics:
+        - {metric: arpdau}
+        - {metric: ad_pv_per_user}
+        - {metric: rewarded_ecpm}
+        - {metric: inter_ecpm}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        dt: ["2026-05-24", "2026-05-30"]
+    expect:
+      tables:
+        - hungry_studio.ads_market_device_dau_behavior_di
+      joins: []
+      sql_contains: ["SUM(ad_revenue) / NULLIF(SUM(dau), 0)", "rewarded_ad_revenue", "* 1000"]
+    note: ARPU≈人均展示×eCPM/1000;单表大盘变现,支撑首日 ARPU 异动诊断 SOP
+
+  - id: SC16
+    maps_to: organic_dnu_resolved
+    question: "BB 各国家自然量新增 organic_dnu(D-3=B,channel_category=自然) + 大盘 DNU"
+    select:
+      dimensions: [country]
+      metrics:
+        - {metric: organic_dnu}
+        - {metric: dnu}
+      filters:
+        bundle_id: "com.blockblast.gp"
+        dt: ["2026-06-15", "2026-06-15"]
+    expect:
+      tables:
+        - hungry_studio.ads_market_device_dau_behavior_di
+      joins: []
+      sql_contains: ["channel_category = '自然'", "age_bucket = 'D0'", "dt BETWEEN"]
+    note: D-3=b_narrow 落地;organic 狭义=channel_category 自然;与大盘 dnu 同表设备口径,可一次拆全渠道(再按 channel_category group by)

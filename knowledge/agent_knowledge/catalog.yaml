@@ -1,0 +1,966 @@
+version: '0.1'
+updated: '2026-07-16'
+status: active
+purpose: 知识/召回、状态、新鲜度边界与一致性检查的机器可读目录。
+status_policy:
+  default_recall_allowed:
+  - active
+  - active_backlog
+  - confirmed_evidence
+  - trial_active
+  never_default_recall:
+  - draft_only
+  - review_log
+  - snapshot
+  - snapshot_data
+  - source_manifest
+  notes:
+  - trial_active 表示试运行期可用于当前候选判断，不是长期生效的业务确认阈值。
+  - draft_only 与 snapshot 仅作证据或线索；未经过明确复核前不得作为当前事实直接升级。
+entries:
+- id: knowledge_manifest
+  path: agent_knowledge/catalog.yaml
+  type: manifest
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: registry
+- id: knowledge_readme
+  path: README.md
+  type: index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: policies_readme
+  path: agent_knowledge/policies/README.md
+  type: index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: default_recall_boundary_promotion_rule
+  path: agent_knowledge/policies/默认召回边界与晋升规则.md
+  type: governance_policy
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: governance_rule
+  source:
+    confirmed_date: '2026-06-20'
+    confirmed_via: 用户确认采用低风险治理规则验证 knowledge 默认召回正向晋升
+    updated_via: 2026-07-02 用户确认 Codex 本机记忆同步线上 PI 仅限业务知识，部署/基建流水不进入业务默认召回
+  depends_on:
+  - AGENT_RETRIEVAL_MAP.yaml
+  - tools/scripts/check_knowledge_consistency.py
+  - tools/scripts/check_agent_retrieval_map.py
+  - eval/agent_regression/regression_cases.yaml
+- id: analysis_agent_protocol
+  path: agent_knowledge/policies/第一层分析Agent协议.md
+  type: protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - ai_ck/engineering_artifacts/freshness_snapshot.json
+  - ai_hive/engineering_artifacts/freshness_snapshot.json
+  - ai_hive/agent_knowledge/tables/ods_market_google_ads_config_wide_hi.yaml
+  - da_assets/verified_sql/vsql_20260618_google_ads_config_change_monitoring.md
+  - da_assets/analysis_sop/20260618_DNU安装时间与分区迟到护栏SOP.md
+  - tools/scripts/probe_freshness.py
+- id: dialog_turn_kind_protocol
+  path: agent_knowledge/policies/深入理解/00_总纲索引.md
+  type: protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+  - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+- id: dialog_turn_kind_deep_01
+  path: agent_knowledge/policies/深入理解/01_深入_为什么要有turn_kind.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_02
+  path: agent_knowledge/policies/深入理解/02_深入_四种turn_kind详解.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_03
+  path: agent_knowledge/policies/深入理解/03_深入_判定信号与判定流程.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_04
+  path: agent_knowledge/policies/深入理解/04_深入_上下文继承矩阵.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_05
+  path: agent_knowledge/policies/深入理解/05_深入_常见误判与反模式.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_06
+  path: agent_knowledge/policies/深入理解/06_深入_落地实现要点.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+- id: dialog_turn_kind_deep_07
+  path: agent_knowledge/policies/深入理解/07_深入_与本仓库现有协议的关系.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  depends_on:
+  - knowledge/agent_knowledge/policies/深入理解/00_总纲索引.md
+  - knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+  - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+- id: country_tier_mapping
+  path: agent_knowledge/policies/国家等级映射.md
+  type: mapping
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+- id: sql_writing_business_protocol
+  path: agent_knowledge/policies/SQL写作业务协议.md
+  type: protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-18'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/国家等级映射.md
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - da_assets/SQL晋升治理.md
+  - knowledge/agent_knowledge/semantic_contract/model.json
+- id: game_kpi_metric_semantics
+  path: agent_knowledge/policies/游戏核心指标口径语义.md
+  type: metric_semantics
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL写作业务协议.md
+  - da_assets/SQL晋升治理.md
+  - knowledge/agent_knowledge/semantic_contract/model.json
+- id: sql_table_routing_protocol
+  path: agent_knowledge/policies/SQL表路由协议.md
+  type: routing_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - ai_hive/agent_knowledge/catalog.yaml
+  - ai_hive/engineering_artifacts/Hive表准入标准.md
+  - knowledge/agent_knowledge/policies/SQL写作业务协议.md
+- id: white_event_query_protocol
+  path: agent_knowledge/policies/白名单事件表查询协议.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - ai_hive/agent_knowledge/catalog.yaml
+  - ai_hive/engineering_artifacts/Hive表准入标准.md
+- id: commercialization_sql_protocol
+  path: agent_knowledge/policies/商业化SQL协议.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - da_assets/SQL晋升治理.md
+- id: ua_marketing_sql_protocol
+  path: agent_knowledge/policies/投放与ROI预估SQL协议.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - ai_hive/agent_knowledge/catalog.yaml
+  - da_assets/SQL晋升治理.md
+- id: da_question_resolved_conclusions_20260628
+  path: agent_knowledge/policies/DA问题已处理结论_20260628.md
+  type: resolved_conclusion
+  status: active
+  default_recall: false
+  applies_to_current: false
+  confidence: high
+  facts_level: history
+  source:
+    ingested_at: '2026-06-28'
+    confirmed_via: DA问题已处理结论_20260628.md（原下周给DA的问题清单已归档）
+- id: ab3_experiment_id_extraction_rule
+  path: agent_knowledge/policies/AB3实验ID提取规则.md
+  type: extraction_rule
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/商业化SQL协议.md
+  - da_assets/SQL晋升治理.md
+- id: point_campaign_mapping_query_rule
+  path: agent_knowledge/policies/点位Campaign映射查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-07-02'
+    confirmed_via: 用户要求沉淀点位与 Campaign 映射 CK 表及注意点
+  depends_on:
+  - ai_ck/agent_knowledge/tables/dim_market_campaign_s2s_event_map_da.yaml
+  - ai_hive/agent_knowledge/tables/dim_market_campaign_s2s_event_map_da.yaml
+  - da_assets/verified_sql/vsql_20260616_point_s2s_roi_review.md
+  - da_assets/verified_sql/vsql_20260616_point_event_penetration_value.md
+  - knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+- id: small_package_ad_unit_mapping_doc
+  path: agent_knowledge/policies/小包广告单元映射.md
+  type: mapping
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  paired_data: agent_knowledge/policies/小包广告单元映射.csv
+  depends_on:
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/商业化SQL协议.md
+- id: small_package_ad_unit_mapping_csv
+  path: agent_knowledge/policies/小包广告单元映射.csv
+  type: mapping_data
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_mapping
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  paired_doc: agent_knowledge/policies/小包广告单元映射.md
+- id: user_behavior_retention_profile_query_rule
+  path: agent_knowledge/policies/用户行为留存画像查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - knowledge/agent_knowledge/policies/国家等级映射.md
+  - ai_hive/agent_knowledge/catalog.yaml
+  - TODO/SQL写作链候选表准入积压清单.md
+  - da_assets/SQL晋升治理.md
+- id: block_blast_game_round_block_grain_rule
+  path: agent_knowledge/policies/局轮出块粒度查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - TODO/SQL写作链候选表准入积压清单.md
+  - da_assets/SQL晋升治理.md
+- id: bb_commercial_event_query_rule
+  path: agent_knowledge/policies/BB商业化埋点查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/商业化SQL协议.md
+  - knowledge/agent_knowledge/policies/AB3实验ID提取规则.md
+  - knowledge/agent_knowledge/policies/小包广告单元映射.md
+  - da_assets/SQL晋升治理.md
+- id: experiment_config_and_plan_query_rule
+  path: agent_knowledge/policies/实验配置与方案查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - knowledge/agent_knowledge/policies/商业化SQL协议.md
+  - knowledge/agent_knowledge/policies/小包广告单元映射.md
+  - TODO/SQL写作链候选表准入积压清单.md
+  - da_assets/SQL晋升治理.md
+- id: feature_and_event_metadata_query_rule
+  path: agent_knowledge/policies/特征工程与埋点元数据查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md
+  - TODO/SQL写作链候选表准入积压清单.md
+  - da_assets/SQL晋升治理.md
+- id: mahjong_bi_board_query_rule
+  path: agent_knowledge/policies/皇室麻将BI看板查询规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/游戏核心指标口径语义.md
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/实验配置与方案查询规则.md
+  - ai_hive/agent_knowledge/tables/dwd_nova_collection_all_white_event_unique_data_hi.yaml
+  - ai_hive/agent_knowledge/tables/dim_nova_collection_all_user_ha.yaml
+  - TODO/SQL写作链候选表准入积压清单.md
+  - da_assets/SQL晋升治理.md
+- id: bb_event_dictionary_usage_rule
+  path: agent_knowledge/policies/BB大埋点字典使用规则.md
+  type: query_protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    ingested_at: '2026-06-19'
+    confirmed_via: 用户确认 DA 认证资料可蒸馏入项目
+  depends_on:
+  - knowledge/agent_knowledge/policies/SQL表路由协议.md
+  - knowledge/agent_knowledge/policies/白名单事件表查询协议.md
+  - knowledge/agent_knowledge/policies/BB商业化埋点查询规则.md
+  - knowledge/agent_knowledge/policies/特征工程与埋点元数据查询规则.md
+  - ai_hive/agent_knowledge/tables/dwd_block_blast_gp_white_event_unique_data_hi.yaml
+  - ai_hive/agent_knowledge/tables/dwd_block_blast_ios_white_event_unique_data_hi.yaml
+  - da_assets/SQL晋升治理.md
+- id: analysis_agent_question_catalog
+  path: agent_knowledge/policies/第一层分析Agent问题目录.md
+  type: question_catalog
+  status: active_backlog
+  default_recall: true
+  applies_to_current: true
+  confidence: medium
+  facts_level: routing_and_backlog
+- id: roi_prediction_freshness_sla
+  path: agent_knowledge/policies/ROI预测准确性表新鲜度SLA.md
+  type: freshness_policy
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-06-18'
+    confirmed_via: 用户确认的业务结论
+  depends_on:
+  - ai_hive/agent_knowledge/tables/ads_market_roi_pred_accuracy_da.yaml
+  - tools/scripts/probe_freshness.py
+- id: roi360_af_revenue_freshness_sla
+  path: agent_knowledge/policies/ROI360_AF回收表新鲜度SLA.md
+  type: freshness_policy
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-06-18'
+    confirmed_via: 用户确认的业务结论
+  depends_on:
+  - ai_ck/agent_knowledge/tables/tj_ad_revenue_v2.yaml
+  - tools/scripts/probe_freshness.py
+- id: roi360_sdk_revenue_freshness_sla
+  path: agent_knowledge/policies/ROI360_SDK回收表新鲜度SLA.md
+  type: freshness_policy
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-06-23'
+    confirmed_via: 用户确认的业务结论
+  depends_on:
+  - ai_ck/agent_knowledge/tables/tj_ad_sdk_revenue.yaml
+  - tools/scripts/probe_freshness.py
+- id: ua_roi_governance_policy
+  path: agent_knowledge/policies/投放ROI治理政策.md
+  type: policy
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-07-05'
+    confirmed_via: 用户确认冷启动至少观察7天、日均消耗<300 USD只观察、头部campaign接近红线交给人、素材IPM高但ROI差由人判断；补充Google ROI参考标准（2026.1-2026.6历史均值、优秀/可观察/需优化预警、新手保护期14天）
+    updated_at: '2026-07-06'
+    updated_via: 用户输入 21 行包体 ROI 阈值更新
+  depends_on:
+  - knowledge/agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  - knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+- id: cost_spend_sync_reconciliation_rule
+  path: agent_knowledge/policies/花费同步与对账规则.md
+  type: query_protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: reviewed
+  source:
+    confirmed_date: '2026-06-20'
+    confirmed_via: nexus spend_sync 模块源码蒸馏
+  depends_on:
+  - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+  - ai_ck/agent_knowledge/tables/tj_ad_spend_active_v2.yaml
+- id: campaign_management_protocol
+  path: agent_knowledge/policies/Campaign管理与操作协议.md
+  type: query_protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: reviewed
+  source:
+    confirmed_date: '2026-06-20'
+    confirmed_via: nexus campaign 模块源码蒸馏
+  depends_on:
+  - knowledge/agent_knowledge/policies/投放与ROI预估SQL协议.md
+- id: campaign_overview_analysis_protocol
+  path: agent_knowledge/policies/Campaign全览分析协议.md
+  type: protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-07-07'
+    confirmed_via: 用户要求沉淀 Campaign 分析思路，尤其 UA 操作历史与数据异动关联
+    source_doc: 钉钉文档《Campaign 全览计划详情页宣讲》
+    source_code: pgp-platform pgp/campaign-overview
+  depends_on:
+  - knowledge/agent_knowledge/policies/第一层分析Agent协议.md
+  - knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - knowledge/agent_knowledge/policies/Campaign管理与操作协议.md
+  - da_assets/analysis_sop/20260707_Campaign异动与UA操作联动SOP.md
+  - da_assets/analysis_sop/20260705_投放看板模块知识蒸馏SOP.md
+  - da_assets/analysis_sop/20260706_投放看板live验证记录.md
+- id: mi_platform_architecture_reference
+  path: agent_knowledge/policies/MI平台架构参考.md
+  type: reference
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: medium
+  facts_level: reviewed
+  source:
+    confirmed_date: '2026-06-20'
+    confirmed_via: nexus simple handler / assets 模块源码蒸馏
+- id: report_knowledge_readme
+  path: agent_knowledge/report_knowledge/README.md
+  type: index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: package_roi_target_thresholds_doc
+  path: agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  type: report_threshold_doc
+  status: trial_active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: trial_current_threshold
+  source:
+    first_seen: 2026-04 weekly report
+    confirmed_via: 2026-06-16 发行红绿线执行说明简化版（试运行）; 2026-06-24 团队口径确认（只预警/不自动投放）; 2026-07-06 用户输入更新为 21 行当前阈值
+  paired_data: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  version_history: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLD_VERSIONS.csv
+- id: package_roi_target_thresholds_csv
+  path: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  type: report_threshold_data
+  status: trial_active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: trial_current_threshold
+  source:
+    first_seen: 2026-04 weekly report
+    confirmed_via: 2026-06-16 发行红绿线执行说明简化版（试运行）; 2026-06-24 团队口径确认（只预警/不自动投放）; 2026-07-06 用户输入更新为 21 行当前阈值
+  paired_doc: agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  version_history: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLD_VERSIONS.csv
+- id: package_roi_target_threshold_versions_csv
+  path: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLD_VERSIONS.csv
+  type: version_history_data
+  status: trial_active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: trial_version_history
+  source:
+    first_seen: 2026-04 weekly report
+    confirmed_via: 2026-06-16 发行红绿线执行说明简化版（试运行）; 2026-06-24 团队口径确认（只预警/不自动投放）; 2026-07-06 用户输入更新为 21 行当前阈值
+  paired_doc: agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  paired_current_data: agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  notes: '版本流水 CSV，记录每次划线/更新阈值的日期和来源。只追加，不删除历史行。 当前阈值以 PACKAGE_ROI_TARGET_THRESHOLDS.csv 为准；本文件保存历史版本记录。
+
+    '
+- id: package_bundle_lookup_doc
+  path: agent_knowledge/report_knowledge/游戏名与bundle_id双向速查.md
+  type: support_mapping_doc
+  status: trial_active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: trial_support_mapping
+  source:
+    confirmed_via: shucang_market.prj_pag_list probe 2026-06-24; MI ROI360 页面字段字典补充新增端 2026-07-06
+  paired_data: agent_knowledge/report_knowledge/PACKAGE_BUNDLE_MAP.csv
+- id: package_bundle_map_csv
+  path: agent_knowledge/report_knowledge/PACKAGE_BUNDLE_MAP.csv
+  type: report_threshold_support_data
+  status: trial_active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: trial_support_mapping
+  source:
+    confirmed_via: shucang_market.prj_pag_list probe 2026-06-24; MI ROI360 页面字段字典补充新增端 2026-07-06
+  paired_doc: agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  paired_lookup_doc: agent_knowledge/report_knowledge/游戏名与bundle_id双向速查.md
+- id: prompts_readme
+  path: agent_knowledge/prompts/README.md
+  type: index
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: weekly_report_analysis_prompt
+  path: agent_knowledge/prompts/周报分析提示词.md
+  type: prompt
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: operation_prompt
+  depends_on:
+  - da_assets/报告投喂规范.md
+  - da_assets/报告图片处理策略.md
+  - da_assets/报告证据结构.md
+  - knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - knowledge/agent_knowledge/report_knowledge/包体ROI目标阈值.md
+  - ai_ck/agent_knowledge/metrics/ROI360指标语义.md
+- id: reconciliations_readme
+  path: agent_knowledge/reconciliations/README.md
+  type: index
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: mi_roi_date_diff_reconciliation_20260614
+  path: agent_knowledge/reconciliations/MI_ROI日期差异对账_20260614.md
+  type: reconciliation
+  status: confirmed_evidence
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: metric_mapping_evidence
+  depends_on:
+  - knowledge/agent_knowledge/semantic_contract/metrics.yaml
+  - knowledge/engineering_artifacts/semantic_contract/eval/regression_cases.yaml
+- id: semantic_contract_readme
+  path: agent_knowledge/semantic_contract/README.md
+  type: semantic_contract_index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: semantic_contract_agent_manifest
+  path: agent_knowledge/semantic_contract/agent_manifest.yaml
+  type: manifest
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: semantic_contract_data_map
+  path: agent_knowledge/semantic_contract/数据地图.md
+  type: index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: semantic_contract_model
+  path: agent_knowledge/semantic_contract/model.json
+  type: semantic_contract_model
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract
+  depends_on:
+  - knowledge/agent_knowledge/semantic_contract/entities.yaml
+  - knowledge/agent_knowledge/semantic_contract/dimensions.yaml
+  - knowledge/agent_knowledge/semantic_contract/metrics.yaml
+  - knowledge/agent_knowledge/semantic_contract/joins.yaml
+  - knowledge/agent_knowledge/semantic_contract/governance.yaml
+  - knowledge/agent_knowledge/semantic_contract/diagnostics.yaml
+  - knowledge/engineering_artifacts/semantic_contract/build_model.py
+- id: semantic_contract_entities
+  path: agent_knowledge/semantic_contract/entities.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+- id: semantic_contract_dimensions
+  path: agent_knowledge/semantic_contract/dimensions.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+- id: semantic_contract_metrics
+  path: agent_knowledge/semantic_contract/metrics.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+- id: semantic_contract_joins
+  path: agent_knowledge/semantic_contract/joins.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+- id: semantic_contract_governance
+  path: agent_knowledge/semantic_contract/governance.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+  depends_on:
+  - knowledge/agent_knowledge/policies/投放ROI治理政策.md
+  - knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+- id: semantic_contract_diagnostics
+  path: agent_knowledge/semantic_contract/diagnostics.yaml
+  type: semantic_contract_source
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: machine_contract_source
+- id: semantic_contract_coverage_baseline
+  path: engineering_artifacts/semantic_contract/覆盖缺口基线.md
+  type: maintenance
+  status: active_backlog
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: engineering_status
+- id: semantic_contract_regression_cases
+  path: engineering_artifacts/semantic_contract/eval/regression_cases.yaml
+  type: regression_cases
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: engineering_rule
+- id: semantic_contract_regression_report
+  path: engineering_artifacts/semantic_contract/eval/回归验证报告.md
+  type: regression_report
+  status: snapshot
+  default_recall: false
+  applies_to_current: false
+  confidence: high
+  facts_level: engineering_status
+- id: semantic_contract_audit_proposals
+  path: audit_archive/semantic_contract/raw_exports_knowledge_proposals.yaml
+  type: source_manifest
+  status: source_manifest
+  default_recall: false
+  applies_to_current: false
+  confidence: draft
+  facts_level: candidate_semantic_contract
+- id: semantic_contract_audit_index
+  path: audit_archive/semantic_contract/来源索引.md
+  type: index
+  status: source_manifest
+  default_recall: false
+  applies_to_current: false
+  confidence: high
+  facts_level: archive_index
+- id: mi_analysis_readme
+  path: audit_archive/mi_analysis/README.md
+  type: index
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: mi_roi360_practical_analysis_20260613_doc
+  path: audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
+  type: snapshot_doc
+  status: snapshot
+  default_recall: false
+  applies_to_current: false
+  confidence: reviewed
+  facts_level: historical_snapshot
+  paired_data: audit_archive/mi_analysis/mi_roi360_practical_analysis_20260613.json
+- id: mi_roi360_practical_analysis_20260613_json
+  path: audit_archive/mi_analysis/mi_roi360_practical_analysis_20260613.json
+  type: snapshot_data
+  status: snapshot_data
+  default_recall: false
+  applies_to_current: false
+  confidence: reviewed
+  facts_level: historical_snapshot_data
+  paired_doc: audit_archive/mi_analysis/MI_ROI360实战分析_20260613.md
+- id: mi_roi360_mature_window_analysis_20260613_doc
+  path: audit_archive/mi_analysis/MI_ROI360成熟窗口复盘_20260613.md
+  type: snapshot_doc
+  status: snapshot
+  default_recall: false
+  applies_to_current: false
+  confidence: reviewed
+  facts_level: historical_snapshot
+  paired_data: audit_archive/mi_analysis/mi_roi360_mature_window_analysis_20260613.json
+- id: mi_roi360_mature_window_analysis_20260613_json
+  path: audit_archive/mi_analysis/mi_roi360_mature_window_analysis_20260613.json
+  type: snapshot_data
+  status: snapshot_data
+  default_recall: false
+  applies_to_current: false
+  confidence: reviewed
+  facts_level: historical_snapshot_data
+  paired_doc: audit_archive/mi_analysis/MI_ROI360成熟窗口复盘_20260613.md
+- id: draft_knowledge_readme
+  path: audit_archive/draft_knowledge/README.md
+  type: index
+  status: draft_only
+  default_recall: false
+  applies_to_current: false
+  confidence: draft
+  facts_level: draft_routing
+- id: draft_knowledge_index
+  path: audit_archive/draft_knowledge/INDEX.md
+  type: draft_index
+  status: draft_only
+  default_recall: false
+  applies_to_current: false
+  confidence: draft
+  facts_level: draft_routing
+- id: knowledge_agent_manifest
+  path: agent_manifest.yaml
+  type: manifest
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: knowledge_data_map
+  path: agent_knowledge/数据地图.md
+  type: index
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: routing
+- id: knowledge_consistency_gate
+  path: engineering_artifacts/知识一致性门禁.md
+  type: maintenance
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: engineering_rule
+- id: tool_call_audit_output_template
+  path: agent_knowledge/policies/工具调用审计输出模板.md
+  type: tool_audit_policy
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: current_rule
+  source:
+    confirmed_date: '2026-06-28'
+    confirmed_via: TODO-to-knowledge promotion from tools construction backlog
+- id: mi_platform_other_modules_protocol
+  path: agent_knowledge/policies/MI平台其他模块协议.md
+  type: protocol
+  status: active
+  default_recall: false
+  applies_to_current: true
+  confidence: high
+  facts_level: reviewed
+  source:
+    confirmed_date: '2026-06-20'
+    confirmed_via: nexus delivery/experiment/gpstore/kol/forecast 模块源码蒸馏
+- id: knowledge_audit_archive_index
+  path: audit_archive/来源索引.md
+  type: index
+  status: source_manifest
+  default_recall: false
+  applies_to_current: false
+  confidence: high
+  facts_level: archive_index
+- id: authority_map
+  path: agent_knowledge/authority_map.yaml
+  type: manifest
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: registry
+  source:
+    confirmed_date: '2026-07-16'
+    confirmed_via: 事实切面分离与唯一性治理方案
+- id: fact_facet_separation_governance
+  path: agent_knowledge/policies/事实切面分离与唯一性治理方案.md
+  type: protocol
+  status: active
+  default_recall: true
+  applies_to_current: true
+  confidence: high
+  facts_level: confirmed
+  source:
+    confirmed_date: '2026-07-16'
+    confirmed_via: da_assets 与 knowledge 事实唯一性治理设计

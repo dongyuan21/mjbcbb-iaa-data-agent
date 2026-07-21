@@ -1,0 +1,113 @@
+version: "0.2"
+updated: "2026-06-15"
+status: partially_confirmed
+source: ../raw_exports/knowledge/源包知识.md
+
+# 这些是 raw_exports/knowledge 中抽取的语义候选。
+# 使用边界：不参与 knowledge/agent_knowledge/semantic_contract/model.json 构建；经 SQL/业务确认后再并入 dimensions.yaml、metrics.yaml 或 joins.yaml。
+
+proposed_dimensions:
+  - name: app_identifier_format
+    entity: game_package
+    status: partial_confirmed
+    semantic: 不同 AF 表使用不同 App 标识；installs/dwd 常用 bundle_id 的 com.xxx，clicks/cohort 常用 app_id，iOS 为 id+数字
+    rules:
+      - table: hungry_studio.ods_appsflyer_locker_sync_data_installs_mc_di
+        identifier_column: bundle_id
+        ios_format: com.xxx
+      - table: hungry_studio.dwd_market_appsflyer_activation_push_data_di
+        identifier_column: bundle_id
+        ios_format: com.xxx
+      - table: hungry_studio.ods_appsflyer_locker_sync_data_clicks_di
+        identifier_column: app_id
+        ios_format: id_numeric
+      - table: hungry_studio.ods_appsflyer_locker_sync_data_cohort_user_acquisition_di
+        identifier_column: app_id
+        ios_format: id_numeric
+    pitfalls:
+      - "Sudoku iOS 在 raw 中记录为事实表使用 com.mathbrain.sudoku；需按线上 install 表复核后再固化。"
+      - "点击 / cohort 表必须按 app_id 过滤；不要把 installs/dwd 的 bundle_id 规则无条件套用到 clicks/cohort。"
+
+  - name: country_type_a
+    entity: country
+    status: user_confirmed_mapping_open
+    semantic: raw 知识库体系 A 国家分组，候选值为 US组、日韩台、欧洲组+大洋洲+CA、南美+非洲+MX、亚洲除日韩台
+    source_columns:
+      - country
+      - country_bak
+    pitfalls:
+      - "用户 2026-06-15 确认体系 A 作为默认国家分组；但 UK/GB 统一方式暂不确定，有些表用 UK，有些表用 GB，使用前需按表确认。"
+
+  - name: media_source_norm
+    entity: media_source
+    status: draft
+    semantic: 渠道映射前的 media_source 归一化候选规则
+    rules:
+      - expression: "CASE WHEN media_source IN ('tiktokglobal_int','bytedanceglobal_int') THEN 'bytedanceglobal_int' ELSE media_source END"
+        reason: "TikTok/Bytedance 在 raw 渠道映射中需合并到同一 vendor。"
+    joins_with:
+      - hungry_studio.dim_market_channel_mapping_da.channel_media_source
+
+  - name: channel_category
+    entity: media_source
+    status: partial_verified
+    source_table: hungry_studio.dim_market_channel_mapping_da
+    semantic: 一级渠道，如 Media Buy / 预装 / 自然 / ASA / KOL / 其他
+    pitfalls:
+      - "用户 2026-06-15 确认：未明确说明时默认排除预装；dim_market_channel_mapping_da 线上表为准，可定期查询。"
+
+proposed_metrics:
+  - name: mc_cost_zhe_usd
+    status: partially_confirmed
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0))"
+    semantic: MaxCompute 消耗表折后美元消耗；与 MI/CK total_cost_zhe 语义一致，但数据源不同
+    promotion_condition: "与 ai_ck/agent_knowledge/metrics/ROI360指标语义.md 对账通过后可并入 metrics.yaml"
+
+  - name: ctit_sec
+    status: draft_pending_sql_validation
+    datasource: maxcompute
+    source_tables:
+      - hungry_studio.dwd_market_appsflyer_activation_push_data_di
+      - hungry_studio.ods_appsflyer_locker_sync_data_installs_mc_di
+    formula_options:
+      dwd_template_a: "datediff(cast(event_time AS TIMESTAMP), cast(attributed_touch_time AS TIMESTAMP), 'ss')"
+      ods_template_b: "UNIX_TIMESTAMP(install_time) - UNIX_TIMESTAMP(attributed_touch_time)"
+    semantic: Click-to-install time，用于渠道质量和归因异常筛查
+    pitfalls:
+      - "先统一时区，再比较 attributed_touch_time、event_time、install_time。"
+      - "用户 2026-06-15 确认：若红线白皮书无补充标准，CTIT 阈值只做风险提示；是否能成为正式治理规则应提给 DA。"
+
+proposed_rules:
+  - name: gp_referrer_hijack_candidate
+    status: draft_pending_business_review
+    applies_to: Android AF 归因质量分析
+    logic: "gp_referrer 显示 organic 或其他来源，但 AF media_source 为付费渠道且 match_type 非 gp_referrer/srn/preload/gclid 时，标记疑似归因劫持。"
+    raw_source:
+      file: ../raw_exports/knowledge/源包知识.md
+      section: "gp_referrer 归因劫持分析 / 核心判断逻辑"
+      lines: "1349-1456"
+    needs_decision:
+      - "哪些 match_type 作为例外白名单。"
+      - "是否可用于渠道扣量或仅用于观察。"
+
+  - name: moloco_creative_type_by_ad_name
+    status: draft_pending_business_review
+    applies_to: Moloco 素材质量分析
+    raw_source:
+      file: ../raw_exports/knowledge/源包知识.md
+      section: "Moloco 广告类型区分方法（Native / Video / Playable）"
+      lines: "1529-1597"
+    logic:
+      native: "ad_bak/ad_name 命名含 -NV-"
+      video: "命名含 -V- 或 mp4，且不含 -NV-"
+      playable: "命名含 -PA- 或 html"
+    pitfalls:
+      - "raw 中曾用 LIKE '%nv%'，正式规则建议收敛为大小写无关的分隔符匹配，避免误伤单词片段。"
+
+  - name: report_action_decision_boundary
+    status: user_confirmed
+    applies_to: HTML 报告模板自动生成
+    logic: "用户 2026-06-15 确认：模板中的停投、扩量、收缩、扣款等动作目前只能输出为 needs_decision。"
