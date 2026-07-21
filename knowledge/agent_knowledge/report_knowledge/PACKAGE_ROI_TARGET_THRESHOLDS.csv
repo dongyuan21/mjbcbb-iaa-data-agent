@@ -1,0 +1,22 @@
+package_name,platform,package_standard_pct,package_standard_note,recovery_redline_pct,delivery_recovery_target_pct,spend_30d_usd_wan,actual_overall_with_organic_pct,actual_paid_excluding_organic_pct,redline_gap_pct_point,target_gap_pct_point,overall_gap_pct_point,business_delivery_target_pct,da_30d_reverse_target_pct,da_30d_reverse_target_note,sample_status,source,status,extracted_at,effective_date
+Block Blast,GP,130,includes_vietnam_package,70,70,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Block Blast,iOS,130,includes_vietnam_package,70,70,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Mahjong Blast,GP,95,,75,90,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Mahjong Blast,iOS,100,,70,80,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Block Crush,GP,95,,80,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Block Crush,iOS,105,,80,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Jade Mahjong,GP,90,,80,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Jade Mahjong,iOS,120,,70,100,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Sudoku Master,GP,90,,80,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Sudoku Master,iOS,90,,70,75,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Double Tile,iOS,100,,85,90,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Double Tile,GP,100,,85,90,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Solitaire Master,GP,100,,90,95,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Solitaire Master,iOS,100,,90,95,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Tap Tile,GP,70,,60,65,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Tap Tile,iOS,100,,70,95,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Nut Sort GO,iOS,60,,50,55,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Word Solitaire Go,GP,90,,70,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Word Solitaire Go,iOS,90,,70,85,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Arrows Blast,GP,100,,80,90,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06
+Arrows Blast,iOS,100,,80,90,,,,,,,,,,not_provided,user_threshold_update_2026-07-06,trial_active,2026-07-06,2026-07-06

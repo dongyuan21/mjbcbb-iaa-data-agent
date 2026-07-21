@@ -1,0 +1,53 @@
+version: "0.1"
+updated: "2026-06-13"
+
+# 固化 ROI360 GetRows 的多表拼装。
+# on 表示按交集维度对齐；type 决定主表（本项目固定以 spend 表为左表）。
+# keys_compat：MI 兼容 join 以 campaign_name（保留原始字符串）为主键，稳定回退键为 campaign_id。
+# 注意：country 字段仅在 spend 表存在，不放入 on；跨表分析请先在 spend 侧按 country 过滤，再执行 join。
+
+joins:
+  - name: spend_x_revenue
+    description: 以消耗表为左表关联回收表，计算 ROI_N / LTV_N
+    left: shucang_market.tj_ad_spend_active_v2
+    right:
+      sdk: shucang_market.tj_ad_sdk_revenue
+      af: shucang_market.tj_ad_revenue_v2
+    type: left
+    on_keys: [active_date, campaign_name, bundle_id, media_source]
+    keys_compat:
+      mi_compatible: campaign_name
+      stable_fallback: campaign_id
+    notes:
+      - 收益表无 country 列；按 country 分桶时请先在 spend 侧做过滤，再执行 join。
+      - revenue_n 由应用层按 date_diff 透视，join 后再做 N 日累计与前向填充。
+    status: confirmed
+    source: "nexus roi/ua GetRows 多表拼装"
+
+  - name: spend_x_cohort
+    description: 以消耗表关联 cohort（队列） 留存表，计算 retention_N
+    left: shucang_market.tj_ad_spend_active_v2
+    right: shucang_market.af_cohort_user_acquisition_v2
+    type: left
+    on_keys: [active_date, campaign_name, bundle_id, media_source]
+    keys_compat:
+      mi_compatible: campaign_name
+      stable_fallback: campaign_id
+    notes:
+      - cohort 表查询额外要求 dt >= start_date 且 date_diff 同时包含 0 和 N。
+      - cohort 表无 country 列，处理方式与 spend_x_revenue 一致。
+    status: confirmed
+
+  - name: mapping_x_spend
+    description: 点位映射表关联消耗表，用于做点位到 campaign（广告系列） 的覆盖率与“有映射但无事实”诊断
+    left: shucang_market.dim_market_campaign_s2s_event_map_da
+    right: shucang_market.tj_ad_spend_active_v2
+    type: left
+    on_keys: [campaign_name, bundle_id, media_source]
+    keys_compat:
+      mi_compatible: campaign_name
+      stable_fallback: campaign_id
+    notes:
+      - mapping 表无日期分区键，last_dt 仅代表最新出现日期；spend 侧需额外加 active_date 过滤。
+      - s2s_event 与 PGP 点位的 event_name 不是全局 1:1 对应关系。
+    status: confirmed

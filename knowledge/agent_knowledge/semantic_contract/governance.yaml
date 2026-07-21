@@ -1,0 +1,112 @@
+version: "0.1"
+updated: "2026-07-06"
+
+# 投放治理状态机 + 生命周期判断 + 阈值占位。
+# 来源: knowledge/agent_knowledge/policies/投放ROI治理政策.md(confirmed 部分)
+#       + ai_ck/agent_knowledge/metrics/ROI预估实现说明.md(roi_source/蓝底)。
+# 原则: 生命周期阈值(7K/4K/14天/1w)为 confirmed;日均消耗<300 USD只观察;21 行红线/达标线为 trial_active;未覆盖阈值、风控黄线和下修 buffer 仍需拍板。
+# Agent 做投放治理分析时,每行对象必须先输出 status_fields,再给结论。
+
+# 每个治理对象必须输出的状态字段(机器可消费)
+status_fields:
+  - name: object_grain
+    options: [package, package_channel, campaign]
+    required: true
+  - name: lifecycle_stage
+    options: [cold_start, ramp_candidate, ramping, head_campaign, small_sample, unknown]
+    required: true
+  - name: data_scope
+    options: [all, paid_only, both]
+    default: both
+    note: organic 固定输出 all 与 paid_only 两版,不给单版
+  - name: roi_source
+    options: [actual, forecast_blue, mixed, unknown]
+    required: true
+    note: 蓝底=预估(MI 应用层外部服务,不在 CK);非蓝底=真实;语义层只产真实段
+  - name: threshold_status
+    options: [above_target, between_redline_target, below_redline, missing_threshold]
+    note: 当前缺 trial_active/confirmed 红线/达标线覆盖时取 missing_threshold
+  - name: decision_status
+    options: [actionable_candidate, observe_only, needs_decision, meeting_required, algorithm_pending]
+
+# 生命周期判断(阈值 confirmed)
+lifecycle_rules:
+  - stage: cold_start
+    when: {cum_cost_usd: "<7000", period_days: "<=14"}
+    guidance: {daily_cost_usd_lt_300: observe_only, min_observe_days: 7}
+    status: confirmed
+  - stage: ramp_candidate
+    when_any:
+      - {cum_cost_usd: ">=4000", observe_days: ">=7", roi: ">target_line"}
+      - {cum_cost_usd: ">=4000", observe_days: ">=14", roi: ">redline", quality: "留存/倍率/CPI 较强优势"}
+    status: confirmed
+  - stage: ramping
+    rule: {single_budget_increase_pct: "<=100", hold_days_after: ">=4"}
+    status: confirmed
+  - stage: head_campaign
+    when: {daily_cost_usd: ">=10000"}
+    policy: 强管控 ROI 红线/达标线/上下修趋势;接近红线时输出 needs_decision 交给人
+    status: confirmed
+  - stage: small_sample
+    when: 样本不足 或 试运行阈值表标注 sample_status=small_sample
+    policy: 只观察,不触发红线强动作
+    status: confirmed_direction
+
+# 阈值: 21 行试运行生效; 未覆盖包体仍需补阈值
+thresholds:
+  source: 发行红绿线执行说明简化版(试运行) + 2026-07-06 用户阈值更新
+  confirmed_date: "2026-06-16"
+  updated_at: "2026-07-06"
+  table_ref: knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+  archived_source: da_assets/raw/2026-06-16_发行红绿线执行说明_docx.md
+  status: trial_active   # 试运行生效, 按月 review; 非永久 confirmed
+  caliber:               # 口径前提(从 docx 确认, 落库判断必须随附)
+    roi_metric: ROI360
+    roi_segment: 含预估段(forecast); 真实段优先, 蓝底为预估不当真实回收
+    revenue_source: sdk   # docx image_002 标注"全部 SDK 口径"
+    cost: cost_zhe
+    organic: 包维度标准=all(含自然量); 回收红线/投放达标线=paid_only(扣自然量逆推)
+    unit: percent
+  redline_roi:
+    status: trial_active
+    definition: 公司无法接受的 ROI 下限;跌破立即缩预算恢复到红线以上
+    values_ref: PACKAGE_ROI_TARGET_THRESHOLDS.csv 的 recovery_redline_pct
+    note: 包维度=包×渠道=日均>=1w campaign 同一套(docx 明确不另加渠道修正系数)
+  target_line_roi:
+    status: trial_active
+    definition: 投放回收达标线;包维度 ROI 扣自然量逆向推算目标,计划优化以此为目标
+    values_ref: PACKAGE_ROI_TARGET_THRESHOLDS.csv 的 delivery_recovery_target_pct
+  known_partial:
+    - rule: "日均消耗 3w-10w USD 产品: 360 ROI > 75%"
+      status: confirmed
+  package_2026_04:
+    status: superseded_by_trial_2026_06
+    ref: knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv
+    note: 2026-06-16 试运行文档保留作历史沿革; 当前阈值以 2026-07-06 用户更新后的 PACKAGE_ROI_TARGET_THRESHOLDS.csv 为准
+  risk_yellow_line:
+    status: needs_risk_owner
+    note: campaign/渠道风控分黄灯阈值仍无数值(docx 说 MI 功能就绪前手动);见 TODO/下周给风控与算法owner的问题.md Q1
+  roi_downward_buffer:
+    status: algorithm_pending
+    note: docx 要求留 ROI 下修 buffer 但未给数值;见 TODO/下周给风控与算法owner的问题.md Q2
+
+# 爬坡判定用质量指标(口径以 MI ROI360 为准,confirmed)
+quality_metrics_for_ramp:
+  af_cpi: "total_cost_zhe / total_registers"
+  ltv_7_2: "roi_7 / roi_2"
+  ltv_30_2: "roi_30 / roi_2"
+  ltv_360_2: "roi_360 / roi_2"
+  retention_summary: "sum(retention_N × installs) / sum(installs),仅成熟且 retention_N>0"
+  advantage_threshold_status: needs_decision   # "较强优势"量化门槛待 DA/业务,见 TODO/下周给风控与算法owner的问题.md Q3
+  status: confirmed
+
+# Agent 护栏
+guardrails:
+  - 不输出"必须停投/必须放量",除非阈值已结构化且用户明确授权
+  - 不在阈值表之外写死 ROI 红线/达标线; 不写死风控黄线/下修 buffer 数值
+  - organic 固定输出 all 与 paid_only 两版,不给单版
+  - 蓝底预估段不得当真实回收;真实回收只用非蓝底段
+  - 数据量小对象或日均消耗<300 USD 的 campaign 默认只观察,不触发红线强动作
+  - 素材 IPM 高但 ROI 差时只输出事实和拆解,动作交给人判断
+
+output_template_ref: knowledge/agent_knowledge/policies/投放ROI治理政策.md

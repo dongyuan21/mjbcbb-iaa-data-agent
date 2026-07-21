@@ -1,0 +1,66 @@
+version: "0.1"
+updated: "2026-06-20"
+knowledge_root: knowledge
+
+asset_layers:
+  agent_runtime_knowledge:
+    description: 日常跨表指标、维度、join、治理和诊断使用的机器可读语义契约层。
+    default_read:
+      - knowledge/agent_knowledge/semantic_contract/README.md
+      - knowledge/agent_knowledge/semantic_contract/model.json
+      - knowledge/agent_knowledge/semantic_contract/数据地图.md
+    on_demand_read:
+      - knowledge/agent_knowledge/semantic_contract/entities.yaml
+      - knowledge/agent_knowledge/semantic_contract/dimensions.yaml
+      - knowledge/agent_knowledge/semantic_contract/metrics.yaml
+      - knowledge/agent_knowledge/semantic_contract/joins.yaml
+      - knowledge/agent_knowledge/semantic_contract/governance.yaml
+      - knowledge/agent_knowledge/semantic_contract/diagnostics.yaml
+    recall_rule: >
+      普通问答和 SQL 生成优先读 knowledge/agent_knowledge/semantic_contract/model.json；只有维护、排错或核对生成逻辑时，
+      才按需读取源 YAML。语义层不复制单表字段定义，字段存在性回到 ai_ck / ai_hive 表卡。
+  engineering_artifacts:
+    description: 构建、校验、回归和覆盖治理材料。
+    paths:
+      - knowledge/engineering_artifacts/semantic_contract/build_model.py
+      - knowledge/engineering_artifacts/semantic_contract/eval/
+      - knowledge/engineering_artifacts/semantic_contract/覆盖缺口基线.md
+    recall_rule: 不进默认召回；只在语义层维护、回归、覆盖评估时读取。
+  audit_archive:
+    description: 未晋升提案、原始候选和历史探索材料。
+    paths:
+      - knowledge/audit_archive/semantic_contract/raw_exports_knowledge_proposals.yaml
+      - knowledge/audit_archive/semantic_contract/来源索引.md
+    recall_rule: 不进默认召回；不能作为当前事实，只用于追溯和候选治理。
+
+bootstrap_read_order:
+  - knowledge/agent_knowledge/semantic_contract/README.md
+  - knowledge/agent_knowledge/semantic_contract/model.json
+  - knowledge/agent_knowledge/semantic_contract/数据地图.md
+
+maintenance_read_order:
+  - knowledge/agent_knowledge/semantic_contract/README.md
+  - knowledge/engineering_artifacts/semantic_contract/build_model.py
+  - knowledge/engineering_artifacts/semantic_contract/eval/regression_cases.yaml
+  - knowledge/agent_knowledge/semantic_contract/metrics.yaml
+  - knowledge/agent_knowledge/semantic_contract/joins.yaml
+
+build:
+  compile: python3 knowledge/engineering_artifacts/semantic_contract/build_model.py
+  regression: python3 knowledge/engineering_artifacts/semantic_contract/eval/compose_sql.py
+  output: knowledge/agent_knowledge/semantic_contract/model.json
+
+hard_rules:
+  - knowledge/agent_knowledge/semantic_contract/model.json 是默认消费入口，勿手改；修改源 YAML 后重跑 build。
+  - 跨源 join 禁止在 SQL 层直接拼接；CK 与 MaxCompute 分别查询，在应用层对齐。
+  - needs_decision 状态不生成最终动作 SQL，不替业务 owner 拍板。
+  - 语义层不保存 AK/SK、token、cookie、用户级明细或设备 ID 明细。
+  - 表字段、PII、分区和 freshness 以 ai_ck / ai_hive 表卡为准；语义层只引用表和列。
+
+source_priority:
+  - verified_sql / confirmed policy（已确认口径和策略）
+  - knowledge/agent_knowledge/semantic_contract/model.json
+  - knowledge/agent_knowledge/semantic_contract/*.yaml
+  - ai_ck/agent_knowledge/tables/*.yaml
+  - ai_hive/agent_knowledge/tables/*.yaml
+  - knowledge/audit_archive/semantic_contract/raw_exports_knowledge_proposals.yaml

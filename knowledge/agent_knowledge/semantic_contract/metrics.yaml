@@ -1,0 +1,623 @@
+version: "0.1"
+updated: "2026-06-13"
+
+# layer_role: cross_table_canonical_metric_owner（跨表口径指标归属）
+# 本文件是跨表机器指标的 canonical owner;CK / MI 页面指标解释属 ai_ck/agent_knowledge/metrics/,
+# 由 tools/scripts/check_metric_layer_boundary.py 强制两层边界,不得互相复制跨表定义。
+
+# 指标定义。校验依据:
+#   - source_table: 单表指标的来源表(必须在 catalog 中)
+#   - requires_join: 跨表指标依赖的 join 名(必须在 joins.yaml 中)
+#   - base_columns: 公式引用的物理列(必须在对应表卡 columns 中存在)
+# summary_rule: 行级加权汇总口径,不可用行级平均(对齐 ROI360 summary 语义)。
+
+metrics:
+  # ---------- spend 单表 ----------
+  - name: total_cost
+    display: 消耗
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost, currency]
+    formula: "SUM(cost / NULLIF(currency, 0))"
+    semantic: 折前消耗
+    status: confirmed
+    source: "nexus roi/ua/field.go"
+
+  - name: total_cost_zhe
+    display: 折后消耗
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0))"
+    semantic: 折后消耗=消耗×返点比例;ROI360 默认核心成本
+    is_default_cost: true
+    status: confirmed
+    source: "nexus roi/ua/field.go"
+
+  - name: total_shows
+    display: 展示
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [shows]
+    formula: "SUM(shows)"
+    status: confirmed
+
+  - name: total_clicks
+    display: 点击
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [clicks]
+    formula: "SUM(clicks)"
+    status: confirmed
+
+  - name: total_registers
+    display: 注册设备(af)
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [registers]
+    formula: "SUM(registers)"
+    semantic: AF 侧注册设备;MI 默认 CPI/LTV 分母
+    is_default_install_denominator: true
+    status: confirmed
+
+  - name: total_media_installs
+    display: 注册设备(media)
+    type: simple_aggregate
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [media_installs]
+    formula: "SUM(media_installs)"
+    semantic: 媒体侧安装/激活对照
+    status: confirmed
+
+  - name: ctr
+    display: CTR
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [clicks, shows]
+    formula: "SUM(clicks) / SUM(shows)"
+    summary_rule: "SUM(clicks) / SUM(shows)"
+    status: confirmed
+
+  - name: cpm
+    display: CPM
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency, shows]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(shows) * 1000"
+    summary_rule: "SUM(cost_zhe / NULLIF(currency,0)) / SUM(shows) * 1000"
+    status: confirmed
+
+  - name: af_cpi
+    display: 注册成本(af)
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency, registers]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(registers)"
+    summary_rule: "SUM(cost_zhe / NULLIF(currency,0)) / SUM(registers)"
+    semantic: MI 默认 CPI=折后消耗/AF 注册设备
+    is_default_cpi: true
+    status: confirmed
+
+  - name: media_cpi
+    display: 注册成本(media)
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency, media_installs]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(media_installs)"
+    summary_rule: "SUM(cost_zhe / NULLIF(currency,0)) / SUM(media_installs)"
+    status: confirmed
+
+  - name: af_cvr
+    display: CVR(af)
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [registers, clicks]
+    formula: "SUM(registers) / SUM(clicks)"
+    summary_rule: "SUM(registers) / SUM(clicks)"
+    status: confirmed
+
+  - name: ipm
+    display: IPM
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [registers, shows]
+    formula: "SUM(registers) / SUM(shows) * 1000"
+    summary_rule: "SUM(registers) / SUM(shows) * 1000"
+    status: confirmed
+
+  - name: cpc
+    display: CPC
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost_zhe, currency, clicks]
+    formula: "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(clicks)"
+    summary_rule: "SUM(cost_zhe / NULLIF(currency,0)) / SUM(clicks)"
+    semantic: 折后消耗/点击
+    status: confirmed
+    source: "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+
+  - name: original_cpi
+    display: 折前注册成本
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [cost, currency, registers]
+    formula: "SUM(cost / NULLIF(currency, 0)) / SUM(registers)"
+    summary_rule: "SUM(cost / NULLIF(currency,0)) / SUM(registers)"
+    semantic: 折前消耗/AF 注册设备;对照 af_cpi(折后)
+    status: confirmed
+    source: "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+
+  - name: media_cvr
+    display: CVR(media)
+    type: ratio
+    source_table: shucang_market.tj_ad_spend_active_v2
+    base_columns: [media_installs, clicks]
+    formula: "SUM(media_installs) / SUM(clicks)"
+    summary_rule: "SUM(media_installs) / SUM(clicks)"
+    semantic: 媒体安装/点击;对照 af_cvr
+    status: confirmed
+    source: "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+
+  # ---------- revenue(带 sdk/af 口径变体) ----------
+  - name: total_revenue
+    display: 累计变现收入
+    type: simple_aggregate
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+        source_table:
+          sdk: shucang_market.tj_ad_sdk_revenue
+          af: shucang_market.tj_ad_revenue_v2
+    base_columns: [revenue]
+    formula: "SUM(revenue)"
+    semantic: MI 默认 revenue_source=sdk;af 为对照口径,不可混用
+    status: confirmed
+
+  - name: revenue_n
+    display: N日累计收入
+    type: app_layer_pivot
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+        source_table:
+          sdk: shucang_market.tj_ad_sdk_revenue
+          af: shucang_market.tj_ad_revenue_v2
+    base_columns: [revenue, date_diff]
+    formula: "arrayCumSum(groupArray(SUM(revenue)) ORDER BY date_diff) 取 date_diff<=N-1, 前向填充"
+    semantic: 应用层按 date_diff 透视+前向填充,非物理列;业务展示 ROI_N/LTV_N 查询需取 date_diff=0..N-1,如 ROI7 取 0..6
+    pitfalls: [date-diff-pivot]
+    status: confirmed
+
+  - name: roi_n
+    display: ROI_N
+    type: cross_table
+    requires_join: spend_x_revenue
+    formula:
+      numerator: { metric: revenue_n }
+      denominator: { metric: total_cost_zhe }
+      scale: 100
+    summary_rule: "SUM(revenue_n) / SUM(cost_zhe where revenue_n is not null) * 100"
+    roi_source: actual          # 蓝底为 forecast,不可当真实回收
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+    semantic: 真实段 roi_N = revenue_N / cost_zhe × 100;N 是业务展示天数,底层最大 date_diff=N-1
+    pitfalls: [view-vs-table, cost-zhe-default]
+    status: confirmed
+    source: "nexus roi/ua + ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+
+  - name: ltv_n
+    display: LTV_N
+    type: cross_table
+    requires_join: spend_x_revenue
+    formula:
+      numerator: { metric: revenue_n }
+      denominator: { metric: total_registers }
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+    semantic: MI 默认 ltv_N = revenue_(N-1) / total_registers,分母为 AF install
+    status: confirmed
+
+  - name: ltv_ratio_x_2
+    display: LTV倍率(X/2)
+    type: derived
+    formula:
+      expression: "roi_x / roi_2"
+    semantic: 治理用倍率,如 ltv_7_2=ROI7/ROI2, ltv_30_2=ROI30/ROI2, ltv_360_2=ROI360/ROI2
+    used_by: 投放ROI治理政策.md
+    status: confirmed
+
+  - name: af_arpu
+    display: ARPU(af)
+    type: cross_table
+    requires_join: spend_x_revenue
+    formula:
+      numerator: { expr: "SUM(revenue) WHERE date_diff=0", semantic: 首日收入 }
+      denominator: { metric: total_registers }
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+    semantic: ROI360 af_arpu=首日收入/AF注册设备(total_registers);分子跟随 revenue_source
+    pitfalls: [first-day-date-diff-0]
+    status: confirmed
+    source: "ai_ck/agent_knowledge/metrics/ROI360指标语义.md(af_arpu=首日收入/注册设备)"
+
+  - name: media_arpu
+    display: ARPU(media)
+    type: cross_table
+    requires_join: spend_x_revenue
+    formula:
+      numerator: { expr: "SUM(revenue) WHERE date_diff=0", semantic: 首日收入 }
+      denominator: { metric: total_media_installs }
+    variants:
+      revenue_source:
+        default: sdk
+        options: [sdk, af]
+    semantic: ROI360 media_arpu=首日收入/媒体安装(total_media_installs);ROI360 默认展示指标
+    pitfalls: [first-day-date-diff-0]
+    status: confirmed
+    source: "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+
+  # ---------- cohort 留存 ----------
+  - name: unique_users
+    display: 唯一用户数
+    type: simple_aggregate
+    source_table: shucang_market.af_cohort_user_acquisition_v2
+    base_columns: [unique_users]
+    formula: "SUM(unique_users)"
+    status: confirmed
+
+  - name: retention_n
+    display: N日留存
+    type: ratio
+    source_table: shucang_market.af_cohort_user_acquisition_v2
+    base_columns: [unique_users, date_diff]
+    formula: "sumIf(unique_users, date_diff = N) / sumIf(unique_users, date_diff = 0)"
+    summary_rule: "SUM(retention_n × installs) / SUM(installs), 仅统计成熟且 retention_n>0 的行"
+    semantic: 分母来自 date_diff=0;查询必须同时取 0 和 N;且需 dt>=start_date
+    pitfalls: [need-date-diff-zero, active-date-required]
+    status: confirmed
+
+  # ---------- mapping(点位映射) ----------
+  - name: mapped_campaigns
+    display: 映射命中 campaign 数
+    type: simple_aggregate
+    source_table: shucang_market.dim_market_campaign_s2s_event_map_da
+    base_columns: [campaign_name]
+    formula: "uniqExact(campaign_name)"
+    semantic: 某点位/包体/媒体下映射到的 campaign 去重数,用于点位覆盖诊断
+    status: confirmed
+
+  # ---------- 素材前端效率(MaxCompute ads_market_material_metric_di;前端口径,无回收) ----------
+  - name: material_shows
+    display: 素材曝光
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [shows]
+    formula: "SUM(shows)"
+    status: confirmed
+    source: "da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md"
+
+  - name: material_cost_usd
+    display: 素材消耗(折后美元)
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [cost_zhe_usd]
+    formula: "SUM(cost_zhe_usd)"
+    semantic: 素材表 cost_zhe_usd 已是折后美元,不再除 currency(区别于 CK spend 表 cost_zhe/currency)
+    status: confirmed
+
+  - name: material_ctr
+    display: 素材CTR
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [clicks, shows]
+    formula: "SUM(clicks) / NULLIF(SUM(shows), 0)"
+    summary_rule: "SUM(clicks) / SUM(shows)"
+    status: confirmed
+
+  - name: material_cvr
+    display: 素材CVR
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [registers, clicks]
+    formula: "SUM(registers) / NULLIF(SUM(clicks), 0)"
+    summary_rule: "SUM(registers) / SUM(clicks)"
+    status: confirmed
+
+  - name: material_ipm
+    display: 素材IPM
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [registers, shows]
+    formula: "SUM(registers) / NULLIF(SUM(shows), 0) * 1000"
+    summary_rule: "SUM(registers) / SUM(shows) * 1000"
+    semantic: 每千次曝光带来的注册;素材冷启动初筛核心前端指标
+    status: confirmed
+
+  - name: material_cpi
+    display: 素材CPI(美元)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_material_metric_di
+    base_columns: [cost_zhe_usd, registers]
+    formula: "SUM(cost_zhe_usd) / NULLIF(SUM(registers), 0)"
+    summary_rule: "SUM(cost_zhe_usd) / SUM(registers)"
+    semantic: 素材前端 CPI=折后美元消耗/注册;前端口径无回收,不能据此算 ROI
+    pitfalls: [front-end-only-no-revenue]
+    status: confirmed
+
+  # ---------- ad_revenue 库(广告变现/LTV,单表;跨库不与 shucang_market SQL join) ----------
+  - name: ad_revenue_usd
+    display: 广告变现(美元)
+    type: simple_aggregate
+    source_table: ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+    base_columns: [revenue_usd]
+    formula: "SUM(revenue_usd)"
+    semantic: ad 级 cohort 广告变现美元口径;ad_revenue 库 BS 回收只有 v2_di 活(v1/v3 已停更)
+    pitfalls: [v2-is-canonical, cross-db]
+    status: confirmed
+    source: "ad_revenue.ads_market_bs_ad_revenue_v2_di DESCRIBE"
+
+  - name: ad_revenue_dn
+    display: D_N 累计广告变现
+    type: simple_aggregate
+    source_table: ad_revenue.tj_ad_revenue_ltv_list_utc
+    base_columns: [ad_revenue_N]
+    formula: "SUM(ad_revenue_N)"
+    available_n: [1, 3, 7, 14, 30, 60, 90, 180]
+    semantic: 安装日后第 N 日累计广告变现(LTV 曲线);ad_revenue_N 为累计值,差分得单日
+    pitfalls: [ltv-cumulative, cross-db]
+    status: confirmed
+
+  - name: ad_ltv_dn
+    display: D_N 广告 LTV
+    type: ratio
+    source_table: ad_revenue.tj_ad_revenue_ltv_list_utc
+    base_columns: [ad_revenue_N, registers]
+    formula: "SUM(ad_revenue_N) / SUM(registers)"
+    summary_rule: "SUM(ad_revenue_N) / SUM(registers)"
+    available_n: [1, 3, 7, 14, 30, 60, 90, 180]
+    semantic: 第 N 日广告 LTV=累计广告变现/注册设备;与 shucang_market SDK/AF LTV 口径需对账后混用
+    pitfalls: [ltv-cumulative, cross-db]
+    status: confirmed
+
+  - name: ad_roi_dn
+    display: D_N 广告ROI(素材级可用)
+    type: ratio
+    source_table: ad_revenue.tj_ad_revenue_ltv_list_utc
+    base_columns: [ad_revenue_N, cost_zhe]
+    formula: "SUM(ad_revenue_N) / SUM(cost_zhe)"
+    summary_rule: "SUM(ad_revenue_N) / SUM(cost_zhe)"
+    available_n: [1, 3, 7, 14, 30, 60, 90, 180]
+    semantic: 第 N 日广告 ROI=累计广告变现/折后消耗;ltv 表含 material 列可下钻素材级;广告变现 IAA 口径,与 MI ROI360 sdk/af 需对账,不可冒充 MI 口径
+    pitfalls: [ltv-cumulative, cross-db, iaa-vs-mi]
+    status: confirmed
+    source: "D-2 拍板=a;ad_revenue.tj_ad_revenue_ltv_list_utc 表卡 metric_fields"
+
+  # ---------- ROI 预测偏差(MaxCompute,跨源不与 CK join) ----------
+  - name: roi_pred_dn
+    display: D_N 预估ROI(成本加权)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_roi_pred_accuracy_da
+    base_columns: [pred_dN, cost]
+    formula: "SUM(pred_dN * cost) / SUM(cost)"
+    available_n: [7, 15, 30, 60, 90, 180, 360]
+    semantic: 各包/媒体/国家成本加权预估 ROI;蓝底为预估,非真实回收
+    pitfalls: [no-d3-column]
+    status: confirmed
+    source: "ai_hive/agent_knowledge/tables/ads_market_roi_pred_accuracy_da.yaml"
+
+  - name: roi_real_dn
+    display: D_N 真实ROI(成本加权)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_roi_pred_accuracy_da
+    base_columns: [real_dN, cost]
+    formula: "SUM(real_dN * cost) / SUM(cost)"
+    available_n: [7, 15, 30, 60, 90, 180, 360]
+    semantic: 各包/媒体/国家成本加权真实 ROI;cur_range >= N 才有效
+    status: confirmed
+
+  - name: roi_forecast_error_dn
+    display: D_N 预测偏差(真实-预估)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_roi_pred_accuracy_da
+    base_columns: [real_dN, pred_dN, cost]
+    formula: "SUM((real_dN - pred_dN) * cost) / SUM(cost)"
+    available_n: [7, 15, 30, 60, 90, 180, 360]
+    semantic: 正=真实高于预估(上修),负=真实低于预估(下修);用于 ROI 修正方向判断
+    pitfalls: [no-d3-column]
+    status: confirmed
+
+  # ---------- 大盘 DAU/DNU(MaxCompute ads_market_device_dau_behavior_di;D-3 拍板=a) ----------
+  # 设备口径,与 AF install 口径 DNU 是两套体系,勿混用;dnu/dru 用 bucket 条件聚合,不要再把 age_bucket 当 group by 维度。
+  - name: dau
+    display: 活跃设备数
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [dau]
+    formula: "SUM(dau)"
+    semantic: 设备口径日活
+    status: confirmed
+    source: "ai_hive/agent_knowledge/tables/ads_market_device_dau_behavior_di.yaml(口径已 confirmed)"
+
+  - name: dnu
+    display: 新增设备数
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [dau, age_bucket]
+    formula: "SUM(CASE WHEN age_bucket = 'D0' THEN dau ELSE 0 END)"
+    semantic: 新增=日龄 D0 的活跃设备(设备口径)
+    pitfalls: [dnu-bucket-not-groupby]
+    status: confirmed
+
+  - name: dru
+    display: 回流设备数
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [dau, is_return_device, return_age_bucket]
+    formula: "SUM(CASE WHEN is_return_device = 1 AND return_age_bucket = 'D0' THEN dau ELSE 0 END)"
+    semantic: 回流=回流设备且回流日龄 D0
+    status: confirmed
+
+  - name: dau_d1_retention_rate
+    display: 大盘次日留存率(前向)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [d1_retention_cnt, dau]
+    formula: "SUM(d1_retention_cnt) / NULLIF(SUM(dau), 0)"
+    summary_rule: "SUM(d1_retention_cnt) / SUM(dau)"
+    semantic: 前向留存=当日活跃设备 dt+1 仍活跃;与 cohort 回看留存口径不同
+    status: confirmed
+
+  - name: dau_d7_retention_rate
+    display: 大盘7日留存率(前向)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [d7_retention_cnt, dau]
+    formula: "SUM(d7_retention_cnt) / NULLIF(SUM(dau), 0)"
+    summary_rule: "SUM(d7_retention_cnt) / SUM(dau)"
+    status: confirmed
+
+  - name: organic_dnu
+    display: 自然量新增
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [dau, age_bucket, channel_category]
+    formula: "SUM(CASE WHEN age_bucket = 'D0' AND channel_category = '自然' THEN dau ELSE 0 END)"
+    semantic: D-3 拍板=B(channel_category 直接分类);organic=channel_category='自然' 的 D0 设备;狭义口径(不含'其他'未归因),排预装后约占大盘 DNU 30%,接近周报 32-37%
+    pitfalls: [dnu-bucket-not-groupby]
+    status: confirmed
+    source: "D-3 拍板=b_narrow;dim_market_channel_mapping_da channel_category 枚举;2026-06-15 实证(自然 DNU 514617)"
+
+  - name: organic_dnu_broad
+    display: 自然量新增(广义,待业务确认)
+    type: needs_decision
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [dau, age_bucket, channel_category]
+    formula: "SUM(CASE WHEN age_bucket = 'D0' AND channel_category IN ('自然','其他') THEN dau ELSE 0 END)"
+    semantic: 广义 organic='自然'+'其他'(含未明确归类渠道);用户已选狭义(b_narrow),是否额外采用广义待业务确认;'其他'占比大(排预装约36%),composer 暂返回 unsupported
+    status: needs_decision
+
+  # ---------- 大盘广告变现/eCPM(dau 表;支撑 diagnostics 首日 ARPU 异动诊断) ----------
+  - name: dau_ad_revenue
+    display: 大盘广告收入
+    type: simple_aggregate
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [ad_revenue]
+    formula: "SUM(ad_revenue)"
+    semantic: 设备口径大盘广告变现总额
+    status: confirmed
+
+  - name: arpdau
+    display: ARPDAU(大盘)
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [ad_revenue, dau]
+    formula: "SUM(ad_revenue) / NULLIF(SUM(dau), 0)"
+    summary_rule: "SUM(ad_revenue) / SUM(dau)"
+    semantic: 人均日活广告收入;首日 ARPU 异动拆解 ARPU≈人均展示次数×eCPM/1000
+    status: confirmed
+    source: "da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md"
+
+  - name: ad_pv_per_user
+    display: 人均广告展示次数
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [ad_pv, dau]
+    formula: "SUM(ad_pv) / NULLIF(SUM(dau), 0)"
+    summary_rule: "SUM(ad_pv) / SUM(dau)"
+    semantic: 人均广告展示;首日 ARPU 拆解因子之一
+    status: confirmed
+
+  - name: rewarded_ecpm
+    display: 激励广告eCPM
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [rewarded_ad_revenue, rewarded_ad_pv]
+    formula: "SUM(rewarded_ad_revenue) / NULLIF(SUM(rewarded_ad_pv), 0) * 1000"
+    summary_rule: "SUM(rewarded_ad_revenue) / SUM(rewarded_ad_pv) * 1000"
+    semantic: 激励广告千次展示收入;首日 ARPU 异动诊断核心因子
+    status: confirmed
+    source: "da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md"
+
+  - name: inter_ecpm
+    display: 插屏广告eCPM
+    type: ratio
+    datasource: maxcompute
+    source_table: hungry_studio.ads_market_device_dau_behavior_di
+    base_columns: [inter_ad_revenue, inter_ad_pv]
+    formula: "SUM(inter_ad_revenue) / NULLIF(SUM(inter_ad_pv), 0) * 1000"
+    summary_rule: "SUM(inter_ad_revenue) / SUM(inter_ad_pv) * 1000"
+    semantic: 插屏广告千次展示收入
+    status: confirmed
+
+  # === MI campaign-govern 源派生补充(2026-07-21)===
+  # 来源:nexus backend/boards/internal/service/report/handler/roi/campaign_govern/
+
+  - name: target_roi_360
+    display: 目标ROI360
+    type: app_layer_config
+    source_system: MySQL package_configs.recovery_target_line
+    semantic: |
+      Campaign 目标 ROI360,来自 MI 后端 MySQL 配置表 package_configs.recovery_target_line。
+      nexus campaign_govern handler 在应用层通过 attachTargetRoi360AndGap 填充。
+      agent 侧无此表卡,不可直接 SQL 复现;需通过 MI 接口查询或补 MySQL 表卡。
+    status: confirmed
+    source: "nexus backend/boards/internal/service/report/handler/roi/campaign_govern/target_roi360.go"
+
+  - name: gap
+    display: GAP(roi_359 - target_roi_360)
+    type: app_layer_computed
+    formula: "roi_359 - target_roi_360"
+    semantic: |
+      GAP = roi_359 - target_roi_360,nexus 应用层计算。
+      依赖 target_roi_360(MySQL 配置表),agent 侧不可直接 SQL 复现。
+    status: confirmed
+    source: "nexus target_roi360.go: gap := roi - target"
+
+  - name: lifecycle
+    display: 生命周期阶段
+    type: app_layer_computed
+    source_system: MI 后端应用层
+    semantic: |
+      Campaign 生命周期阶段,nexus campaign_govern 应用层计算。
+      计算逻辑在 nexus campaign_govern handler,不是 CK 物理表列。
+      agent 侧不可直接 SQL 复现。
+    status: confirmed
+
+  - name: active_days
+    display: 投放天数
+    type: app_layer_computed
+    source_system: MI 后端应用层
+    semantic: |
+      Campaign 投放天数,nexus campaign_govern active_days.go 计算。
+      按 campaign × user 维度统计有消耗的天数。
+      agent 侧可用 CK spend 表 count(distinct active_date) 近似,但口径可能不完全一致。
+    status: confirmed
+    source: "nexus backend/boards/internal/service/report/handler/roi/campaign_govern/active_days.go"

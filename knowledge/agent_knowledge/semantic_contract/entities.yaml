@@ -1,0 +1,150 @@
+version: "0.1"
+updated: "2026-06-13"
+
+# 业务对象。primary_key 用于 join 与去重;mi_compatible_key 标注 MI filter 主字段。
+# alias 是自然语言到实体的映射(NL 命中用)；具体游戏名与 bundle_id 速查见
+# knowledge/agent_knowledge/report_knowledge/游戏名与bundle_id双向速查.md。
+
+entities:
+  - name: game_package
+    display: 包体
+    primary_key: bundle_id
+    alias: [包体, 包, 包名, app, 应用, bundle, store 包]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: bundle_id↔游戏中文名 / 平台映射已结构化到 report_knowledge/PACKAGE_BUNDLE_MAP.csv 和 游戏名与bundle_id双向速查.md；dau 表另有 project(游戏简称)
+    status: confirmed
+
+  - name: media_source
+    display: 媒体渠道
+    primary_key: media_source
+    alias: [媒体, 渠道, 媒体平台, media, channel, Facebook, Google, TikTok, AppLovin, Unity, ASA, Moloco]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: dau 表含 channel_category(一级)/channel_agent(二级)/media_source(三级)渠道分级
+    status: confirmed
+
+  - name: campaign
+    display: 广告计划
+    primary_key: campaign_name
+    mi_compatible_key: campaign_name      # MI filter 主字段,保留原始字符串不可 trim
+    stable_key: campaign_id               # 稳定备选,MI campaign_id filter 待实证
+    alias: [计划, campaign, 广告系列, 系列]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: ad_revenue 库两表系列名列为 campaign(非 campaign_name);跨表用 campaign_id 更稳定
+    status: confirmed
+
+  - name: adset
+    display: 广告组
+    primary_key: adset_name
+    stable_key: adset_id
+    alias: [广告组, adset, ad set, 组]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: bs 表广告组名列为 adset、ltv 表为 adset_name;跨表用 adset_id 更稳定
+    status: confirmed
+
+  - name: country
+    display: 国家
+    primary_key: country
+    alias: [国家, 地区, country, US, 美国]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: shucang_market 库内仅 spend 表有 country(sdk/af/cohort 无,跨表先在 spend 过滤);ad_revenue bs/ltv 与 MC dau 表自带 country
+    status: confirmed
+
+  - name: cohort
+    display: 激活同期群
+    primary_key: active_date
+    alias: [cohort, 同期群, 激活日, 安装日]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: cohort 日期列各库不同 — shucang:active_date;bs:install_date(起点)+event_date(变现);ltv:date(起点);dau:activity_date(活跃日)+age_bucket(日龄)
+    status: confirmed
+
+  - name: point
+    display: 点位
+    primary_key: s2s_event
+    alias: [点位, s2s, s2s_event, 回传事件, 转化事件]
+    appears_in:
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+    note: s2s_event 与 PGP 点位 event_name 非全局 1:1,按场景验证
+    status: confirmed
+
+  - name: material
+    display: 素材
+    primary_key: material
+    alias: [素材, 创意, creative, material, 素材名]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - hungry_studio.ads_market_material_metric_di
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: CK spend 表 / MC 素材前端表 / ad_revenue ltv 表均有 material 列;素材 ROI 需 join 回收表(阶段2);部分媒体 material 可能为空
+    status: confirmed
+
+  - name: ad
+    display: 广告
+    primary_key: ad_name
+    stable_key: ad_id
+    alias: [广告, ad, 广告创意, ad_name]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+      - hungry_studio.ads_market_material_metric_di
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: CK spend/ltv 表含 ad_id+ad_name;bs 表广告名列为 ad;跨表用 ad_id 更稳定
+    status: confirmed
+
+  - name: account
+    display: 投放账户
+    primary_key: advertiser_id
+    alias: [账户, 广告账户, 投放账号, advertiser, account, 代理, 代理商, 结算公司]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+    note: 含 advertiser_id/agent_name(代理)/company_name(结算公司)/user(投放人员)
+    status: confirmed
+
+  - name: device
+    display: 机型
+    primary_key: device_type
+    alias: [机型, 设备, 设备型号, device, device_type]
+    appears_in:
+      - shucang_market.tj_ad_spend_active_v2
+    note: CK spend 表 device_type 为机型;设备资产/eCPM 维度阶段2 再从 MC 设备表扩
+    status: confirmed

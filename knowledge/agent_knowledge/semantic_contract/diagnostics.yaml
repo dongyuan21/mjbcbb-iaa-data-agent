@@ -1,0 +1,53 @@
+version: "0.1"
+updated: "2026-06-16"
+
+# 异常诊断映射: 现象 -> 候选原因 -> 推荐 metric/join + verified SQL。
+# 来源: TODO/语义层待补清单.md 异常诊断表(confirmed)。
+# check_metrics / check_joins 由 build_model 校验必须存在于 model 中。
+
+diagnostics:
+  - symptom: 映射有点位但 MI 无数据
+    causes: [campaign_name 不匹配, MI 权限, 事实表无数据]
+    check_metrics: [mapped_campaigns]
+    check_joins: [mapping_x_spend]
+    recommend_sql: ai_ck/engineering_artifacts/queries/verified/point_campaign_coverage.sql
+
+  - symptom: 消耗有但回收无
+    causes: [回收链路延迟, revenue_source 选择错误, campaign 映射问题]
+    check_metrics: [total_cost_zhe, total_revenue]
+    recommend: 查 SDK/AF 两张回收表对照
+
+  - symptom: 回收有但留存无
+    causes: [cohort 表延迟, date_diff 过滤错误, event_name 口径差异]
+    check_metrics: [retention_n]
+    recommend: 查 af_cohort_user_acquisition_v2 的 date_diff 与 dt
+
+  - symptom: 达成率异常高
+    causes: [错用 wide_ha 作分母, 漏算零行为用户]
+    recommend: 回到 AF ODS install 分母(见 ai_hive/agent_knowledge/口径决策记录.md)
+
+  - symptom: campaign 命中低
+    causes: [campaign_id/name 混用, 前导空格, 历史映射陈旧]
+    check_metrics: [mapped_campaigns]
+    recommend: 查 mapping last_dt 与原始 campaign_name(保留前导空格)
+
+  - symptom: 首日 ARPU 下跌
+    causes: [展示次数下降, eCPM 下跌, 用户活跃下降, 媒体结构变化]
+    formula: "ARPU = 人均展示次数 × eCPM / 1000"
+    check_metrics: [arpdau, ad_pv_per_user, rewarded_ecpm, inter_ecpm]
+    recommend_sql: da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md
+
+  - symptom: UA DNU 下滑
+    causes: [头部 UA media_source 压量, 预算管控, 素材或渠道波动]
+    recommend_sql: da_assets/verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md
+
+  - symptom: 素材冷启动差
+    causes: [IPM 低, CPI 高, CTR/CVR 异常]
+    check_metrics: [material_ipm, material_cpi, material_ctr, material_cvr]
+    recommend_sql: da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md
+    note: 素材前端口径无回收;素材 ROI 需 join 回收表(D-2 待拍板取数源)
+
+  - symptom: 点位高渗透低价值
+    causes: [点位过浅, 学习信号弱, 与大盘行为重叠]
+    recommend_sql: da_assets/verified_sql/vsql_20260613_mj_dt_historical_point_review_small_window.md
+    note: 多产品事件/行为表路由待机制扩展

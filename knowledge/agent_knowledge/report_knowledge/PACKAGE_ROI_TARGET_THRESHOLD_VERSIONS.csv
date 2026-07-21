@@ -1,0 +1,5 @@
+version_date,event,row_count,status,source,effective_date,notes
+2026-04-01,首见于周报截图,unknown,historical_report_knowledge,2026-04 weekly report screenshot,2026-04-01,数值首见于 2026-04 周报截图；行数未结构化统计；仅作历史来源标注
+2026-06-16,发行红绿线执行说明（试运行）DA 最终确认,18,trial_active,da_assets/raw/2026-06-16_发行红绿线执行说明_docx.md,2026-06-16,《发行红绿线执行说明简化版（试运行）》确认 18 行；见 TODO/下周给DA的问题.md#DA-26
+2026-06-24,团队口径确认：只预警不自动投放,18,trial_active,用户口头确认（业务负责人）,2026-06-16,团队口径确认：Agent 只预警、不自动投放；trial_active 红绿线可用于预警；18 包外只标 missing_threshold
+2026-07-06,用户输入更新为 21 行当前阈值,21,trial_active,user_threshold_update_2026-07-06,2026-07-06,用户直接输入 21 行包体 × 平台阈值；覆盖 Block Blast/Mahjong Blast/Block Crush/Jade Mahjong/Sudoku Master/Double Tile/Solitaire Master/Tap Tile/Nut Sort GO/Word Solitaire Go/Arrows Blast；sample_status=not_provided

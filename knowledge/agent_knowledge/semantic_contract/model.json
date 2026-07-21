@@ -1,0 +1,2915 @@
+{
+  "version": "0.1",
+  "compiled_from": [
+    "knowledge/agent_knowledge/semantic_contract/entities.yaml",
+    "knowledge/agent_knowledge/semantic_contract/dimensions.yaml",
+    "knowledge/agent_knowledge/semantic_contract/metrics.yaml",
+    "knowledge/agent_knowledge/semantic_contract/joins.yaml"
+  ],
+  "source_tables": {
+    "shucang_market.ads_market_ad_material_sabcd_label_di": {
+      "datasource": "clickhouse",
+      "columns": [
+        "a_threshold",
+        "active_days",
+        "ad_name",
+        "arpu_1",
+        "arpu_7",
+        "b_threshold",
+        "bundle_id",
+        "ciliu_rate",
+        "cold_avg",
+        "cold_floor",
+        "cold_start_crossed",
+        "cost_last30d",
+        "cost_last7d",
+        "cpi",
+        "ctr",
+        "cur_month_cost",
+        "cvr",
+        "d3_cost",
+        "d7_cost",
+        "days_since_active",
+        "dt",
+        "first_cost_date",
+        "gap_to_s",
+        "idle_days_ratio",
+        "is_active_7d",
+        "is_active_cur_month",
+        "last_active_date",
+        "launch_date",
+        "launch_month",
+        "lifecycle_length",
+        "lifecycle_stage",
+        "liu_rate_7",
+        "material",
+        "material_category",
+        "media_source",
+        "online_period",
+        "peak_daily",
+        "platform",
+        "project",
+        "ramp_mult",
+        "roi_1",
+        "roi_3",
+        "roi_7",
+        "s_threshold",
+        "sabcd_level",
+        "total_ciliu",
+        "total_clicks",
+        "total_cost",
+        "total_installs",
+        "total_liu7",
+        "total_revenue_1",
+        "total_revenue_3",
+        "total_revenue_7",
+        "total_shows",
+        "update_at"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "单日分区；跨多日只能做趋势且必须明确快照重复风险"
+    },
+    "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ad",
+        "ad_id",
+        "adset",
+        "adset_id",
+        "bundle_id",
+        "campaign",
+        "campaign_id",
+        "country",
+        "device_counts",
+        "event_date",
+        "impressions",
+        "install_date",
+        "media_source",
+        "revenue",
+        "revenue_usd",
+        "user"
+      ],
+      "must_filter": [
+        "event_date"
+      ],
+      "max_scan": "31天；必须带 event_date，优先再加 bundle_id/media_source"
+    },
+    "shucang_market.ads_market_roi_cohort_sdk_multidim": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "actual_roi_days",
+        "advertiser_id",
+        "agent_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "clicks",
+        "company_name",
+        "convert_type",
+        "cost",
+        "cost_deduction_type",
+        "cost_model",
+        "cost_zhe",
+        "country_group",
+        "dim_level",
+        "media_installs",
+        "media_source",
+        "media_type",
+        "os_system",
+        "pag_name",
+        "project",
+        "registers",
+        "rt_campaign_flag",
+        "sdk_arpu_day1",
+        "sdk_arpu_day30",
+        "sdk_retain_users_day1",
+        "sdk_retain_users_day60",
+        "sdk_retention_day2",
+        "sdk_retention_day60",
+        "sdk_revenue_day1",
+        "sdk_revenue_day30",
+        "sdk_revenue_day360",
+        "sdk_revenue_day7",
+        "sdk_roi_day1",
+        "sdk_roi_day30",
+        "sdk_roi_day360",
+        "sdk_roi_day7",
+        "sdk_roi_ratio_30_14",
+        "sdk_roi_ratio_360_300",
+        "sdk_roi_ratio_7_1",
+        "shows",
+        "update_at",
+        "user"
+      ],
+      "must_filter": [
+        "active_date",
+        "dim_level"
+      ],
+      "max_scan": "31天；必须带 active_date，并限定单一 dim_level，避免多聚合层级重复计数"
+    },
+    "shucang_market.af_cohort_retargeting": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "dt",
+        "active_date",
+        "date_diff"
+      ],
+      "max_scan": null
+    },
+    "shucang_market.af_cohort_user_acquisition_v2": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "adset_id",
+        "adset_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "date_diff",
+        "dt",
+        "event_count",
+        "event_date",
+        "event_name",
+        "media_source",
+        "unique_users"
+      ],
+      "must_filter": [
+        "dt",
+        "active_date",
+        "date_diff"
+      ],
+      "max_scan": "31天"
+    },
+    "shucang_market.assets_mysql_snapshot_test": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ai_label_status",
+        "body_source_id",
+        "body_source_name",
+        "body_source_type",
+        "created_at",
+        "designer_id",
+        "file_ext",
+        "file_path",
+        "footer_source_id",
+        "footer_source_name",
+        "footer_source_type",
+        "header_source_id",
+        "header_source_name",
+        "header_source_type",
+        "playable_channel",
+        "playable_resolved_media_source",
+        "preview_image_path",
+        "project_codes",
+        "resource",
+        "snapshot_partition",
+        "source",
+        "tag_category_tree",
+        "tag_ids",
+        "updated_at",
+        "uploader_info",
+        "xmp_folder_id",
+        "xmp_material_id",
+        "xmp_sync_status"
+      ],
+      "must_filter": [],
+      "max_scan": "全表扫描(1669 行,可接受)"
+    },
+    "shucang_market.campaign_convert_type_config": {
+      "datasource": "clickhouse",
+      "columns": [
+        "alias",
+        "bundle_id",
+        "campaign",
+        "convert_type",
+        "created_at",
+        "id",
+        "key_action",
+        "media_source",
+        "part",
+        "updated_at"
+      ],
+      "must_filter": [
+        "bundle_id"
+      ],
+      "max_scan": "小配置表；按 bundle_id + convert_type/key_action 过滤"
+    },
+    "shucang_market.campaign_min_cost": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "cost",
+        "media_source"
+      ],
+      "must_filter": [],
+      "max_scan": null
+    },
+    "shucang_market.ck_market_plan_cohort_product_metric_30d_da": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "ad_id",
+        "ad_name",
+        "ad_pv",
+        "ad_revenue",
+        "adset_id",
+        "adset_name",
+        "app_name",
+        "attributed_device_cnt",
+        "banner_ad_pv",
+        "banner_ad_revenue",
+        "banner_ecpm",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "cohort_age_days",
+        "country",
+        "data_version",
+        "dau",
+        "dt",
+        "game_cnt",
+        "inter_ad_pv",
+        "inter_ad_revenue",
+        "inter_ecpm",
+        "media_source",
+        "observe_date",
+        "per_ad_pv",
+        "per_game_cnt",
+        "per_inter_ad_pv",
+        "per_usage_duration",
+        "product_group",
+        "rewarded_ad_pv",
+        "rewarded_ad_revenue",
+        "rewarded_ecpm",
+        "source_rows",
+        "total_ad_pv",
+        "total_ad_revenue",
+        "total_ecpm",
+        "updated_at",
+        "usage_duration"
+      ],
+      "must_filter": [
+        "dt",
+        "data_version"
+      ],
+      "max_scan": "31天；必须带 dt 和 latest data_version，优先再加 active_date/observe_date"
+    },
+    "shucang_market.dim_market_ad_status_info_da": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ad_id",
+        "ad_name",
+        "ad_status",
+        "adset_id",
+        "adset_name",
+        "adset_status",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "campaign_status",
+        "dt",
+        "is_serving",
+        "media_source",
+        "update_at"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "单日分区；跨多日只能做状态变化趋势"
+    },
+    "shucang_market.dim_market_campaign_s2s_event_map_da": {
+      "datasource": "clickhouse",
+      "columns": [
+        "account_id",
+        "adset_id",
+        "adset_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "last_dt",
+        "media_source",
+        "s2s_event"
+      ],
+      "must_filter": [],
+      "max_scan": "mapping table is small; prefer s2s_event/bundle_id/media_source filters"
+    },
+    "shucang_market.market_api_spend_ad_pinned": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ad_id",
+        "ad_name",
+        "adset_id",
+        "adset_name",
+        "advertiser_id",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "clicks",
+        "cost",
+        "currency",
+        "dt",
+        "impressions",
+        "installs",
+        "media_source",
+        "report_date",
+        "updated_at",
+        "version"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "7 天；本表很小，但 pinned 子集口径未确认，长周期趋势只能做线索。"
+    },
+    "shucang_market.market_roi_obs_correction_coef_media": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "coef_dt",
+        "correction_rate",
+        "disable_reason",
+        "media_source",
+        "state",
+        "table_source",
+        "target_day"
+      ],
+      "must_filter": [
+        "table_source"
+      ],
+      "max_scan": "小维度表；按 table_source + state + (bundle_id,media_source,active_date) 过滤"
+    },
+    "shucang_market.market_roi_prediction_360_v6_da": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "cost",
+        "country",
+        "created_time",
+        "dt",
+        "media_source",
+        "pre_roi_list",
+        "roi_360_list",
+        "roi_list",
+        "start_dt",
+        "total_revenue"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "按 dt + bundle_id 过滤"
+    },
+    "shucang_market.market_roi_prediction_sdk_360_da": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "cost",
+        "country",
+        "created_time",
+        "dt",
+        "media_source",
+        "pre_roi_list",
+        "roi_360_list",
+        "roi_list",
+        "start_dt",
+        "total_revenue"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "按 dt + bundle_id 过滤"
+    },
+    "shucang_market.material_af_mapping": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ad_id",
+        "ad_name",
+        "bundle_id",
+        "image_cost_date",
+        "image_material",
+        "image_orgin",
+        "image_path",
+        "image_preview_url",
+        "image_upload_at",
+        "image_user",
+        "material_type",
+        "media_source",
+        "playable_cost_date",
+        "playable_material",
+        "playable_orgin",
+        "playable_path",
+        "playable_preview_url",
+        "playable_upload_at",
+        "playable_user",
+        "video_cost_date",
+        "video_duration",
+        "video_material",
+        "video_orgin",
+        "video_path",
+        "video_preview_url",
+        "video_upload_at",
+        "video_user"
+      ],
+      "must_filter": [],
+      "max_scan": "全表扫描(748k 行,无分区,可接受)"
+    },
+    "shucang_market.material_media_test": {
+      "datasource": "clickhouse",
+      "columns": [
+        "blank_src",
+        "boom_flag",
+        "boom_src",
+        "bundle_id",
+        "bundle_name",
+        "cost_3d_usd",
+        "designer",
+        "designer_asset",
+        "designer_lib",
+        "file_name",
+        "file_type",
+        "first_spend_dt_dim",
+        "first_spend_dt_material",
+        "is_jijian",
+        "launch_date",
+        "lifecycle_length",
+        "mat_type",
+        "material",
+        "media_source",
+        "meet_flag",
+        "out_flag",
+        "path",
+        "prod_key",
+        "product",
+        "revenue_d0_3d",
+        "revenue_row_count",
+        "roi_d0_3d_pct",
+        "roi_d0_threshold_pct",
+        "row_kind",
+        "sabcd_level_latest",
+        "sabcd_roi0",
+        "sabcd_total_cost_usd",
+        "spend_row_count",
+        "test_cost_t0_t2_usd",
+        "test_src",
+        "tested_flag",
+        "update_at",
+        "updated_at",
+        "upload_dt"
+      ],
+      "must_filter": [
+        "update_at"
+      ],
+      "max_scan": "全量快照聚合查询；明细 path/file_name/designer 字段输出需人工确认用途"
+    },
+    "shucang_market.material_production": {
+      "datasource": "clickhouse",
+      "columns": [
+        "asset_tag_category_tree",
+        "asset_tag_ids_str",
+        "body_source_advertiser_id",
+        "body_source_advertiser_name",
+        "body_source_id",
+        "body_source_md5",
+        "body_source_name",
+        "body_source_type",
+        "boom_flag_material",
+        "cost_3d_total_usd",
+        "designer",
+        "designer_asset",
+        "designer_lib",
+        "file_name",
+        "file_type",
+        "first_bundle_id",
+        "first_media_source",
+        "first_spend_dt_material",
+        "footer_source_advertiser_id",
+        "footer_source_advertiser_name",
+        "footer_source_id",
+        "footer_source_md5",
+        "footer_source_name",
+        "footer_source_type",
+        "header_source_advertiser_id",
+        "header_source_advertiser_name",
+        "header_source_id",
+        "header_source_md5",
+        "header_source_name",
+        "header_source_type",
+        "is_jijian",
+        "mat_type",
+        "material",
+        "observable_flag",
+        "out_flag_material",
+        "path",
+        "product",
+        "revenue_d0_3d_total",
+        "roi_d0_3d_total_pct",
+        "sabcd_level_latest",
+        "test_cost_t0_t2_usd",
+        "tested_flag",
+        "untested_reason",
+        "update_at",
+        "updated_at",
+        "upload_dt"
+      ],
+      "must_filter": [
+        "update_at"
+      ],
+      "max_scan": "全量快照聚合查询；明细 path/file_name/designer/source 字段输出需人工确认用途"
+    },
+    "shucang_market.material_spend_effect": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "spend_date"
+      ],
+      "max_scan": "7 个 spend_date 分区；明细 path/designer/user_name 字段输出需人工确认用途"
+    },
+    "shucang_market.media_country_roi_v2": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "cost",
+        "country",
+        "dt",
+        "flag",
+        "media_source",
+        "project",
+        "retention_day",
+        "revenue",
+        "roi",
+        "roi_list",
+        "start_dt",
+        "total_revenue"
+      ],
+      "must_filter": [
+        "dt",
+        "flag"
+      ],
+      "max_scan": "按 dt + flag + bundle_id 过滤"
+    },
+    "shucang_market.media_country_roi_v3": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "cost",
+        "country",
+        "dt",
+        "flag",
+        "media_source",
+        "project",
+        "retention_day",
+        "revenue",
+        "roi",
+        "roi_list",
+        "start_dt",
+        "total_revenue"
+      ],
+      "must_filter": [
+        "dt",
+        "flag"
+      ],
+      "max_scan": "按 dt + flag + bundle_id 过滤"
+    },
+    "shucang_market.mg_material_library": {
+      "datasource": "clickhouse",
+      "columns": [
+        "cost_date",
+        "created_at",
+        "duration",
+        "file_id",
+        "file_name",
+        "file_size",
+        "file_type",
+        "folder_id",
+        "folder_name",
+        "height",
+        "id",
+        "label",
+        "material",
+        "old_path",
+        "old_preview_url",
+        "part",
+        "path",
+        "preview_url",
+        "project",
+        "remark",
+        "sign",
+        "source",
+        "tag",
+        "updated_at",
+        "updated_time",
+        "upload_at",
+        "user",
+        "width"
+      ],
+      "must_filter": [],
+      "max_scan": "默认聚合查询；明细 URL/path 输出需人工确认用途"
+    },
+    "shucang_market.prodcut_launch_revenue_predict": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "cost_zhe_usd",
+        "country",
+        "dt",
+        "media_source",
+        "predict",
+        "version_v"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "按 dt + bundle_id 过滤"
+    },
+    "shucang_market.tj_ad_af_revenue_asa": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": null
+    },
+    "ad_revenue.tj_ad_revenue_ltv_list_utc": {
+      "datasource": "clickhouse",
+      "columns": [
+        "ad_id",
+        "ad_name",
+        "ad_revenue_1",
+        "ad_revenue_14",
+        "ad_revenue_180",
+        "ad_revenue_3",
+        "ad_revenue_30",
+        "ad_revenue_60",
+        "ad_revenue_7",
+        "ad_revenue_90",
+        "adset_id",
+        "adset_name",
+        "advertiser_id",
+        "bundle_id",
+        "campaign",
+        "campaign_id",
+        "channel",
+        "clicks",
+        "cost",
+        "cost_zhe",
+        "country",
+        "created_at",
+        "currency",
+        "date",
+        "dau",
+        "first_pay_counts",
+        "first_pay_money",
+        "lei_money",
+        "lei_revenue",
+        "material",
+        "media_source",
+        "new_pay_counts",
+        "new_revenue_counts",
+        "new_revenue_money",
+        "registers",
+        "shows",
+        "system",
+        "updated_at",
+        "user"
+      ],
+      "must_filter": [
+        "date"
+      ],
+      "max_scan": "31天；必须带 date，优先再加 bundle_id/media_source"
+    },
+    "shucang_market.tj_ad_revenue_v2": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "adset_id",
+        "adset_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "date_diff",
+        "media_source",
+        "revenue",
+        "revenue_counts",
+        "revenue_date"
+      ],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": "31天"
+    },
+    "shucang_market.tj_ad_sdk_revenue": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "ad_id",
+        "ad_name",
+        "adset_id",
+        "adset_name",
+        "advertiser_id",
+        "agent_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "company_name",
+        "cost_model",
+        "country",
+        "currency",
+        "date_diff",
+        "device_type",
+        "media_source",
+        "media_type",
+        "os_system",
+        "pag_name",
+        "rebate",
+        "revenue",
+        "revenue_counts",
+        "revenue_date",
+        "revenue_type",
+        "user"
+      ],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": "31天"
+    },
+    "shucang_market.tj_ad_sdk_revenue_asa": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": null
+    },
+    "shucang_market.tj_ad_spend_active_asa_utc0": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": null
+    },
+    "shucang_market.tj_ad_spend_active_v2": {
+      "datasource": "clickhouse",
+      "columns": [
+        "active_date",
+        "ad_id",
+        "ad_name",
+        "adset_id",
+        "adset_name",
+        "advertiser_id",
+        "agent_name",
+        "bundle_id",
+        "campaign_id",
+        "campaign_name",
+        "clicks",
+        "company_name",
+        "convert_type",
+        "cost",
+        "cost_model",
+        "cost_zhe",
+        "country",
+        "currency",
+        "device_type",
+        "key_action",
+        "material",
+        "media_installs",
+        "media_source",
+        "media_type",
+        "os_system",
+        "pag_name",
+        "playable_material",
+        "prob_cost",
+        "rebate",
+        "registers",
+        "shows",
+        "user"
+      ],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": "31天"
+    },
+    "shucang_market.tj_ad_spend_retarget_active_v2": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": null
+    },
+    "shucang_market.tj_retarget_ad_revenue_v2": {
+      "datasource": "clickhouse",
+      "columns": [],
+      "must_filter": [
+        "active_date"
+      ],
+      "max_scan": null
+    },
+    "hungry_studio.ads_market_device_dau_behavior_di": {
+      "datasource": "maxcompute",
+      "columns": [
+        "activity_date",
+        "ad_pv",
+        "ad_revenue",
+        "age_bucket",
+        "banner_ad_pv",
+        "banner_ad_revenue",
+        "bundle_id",
+        "channel_agent",
+        "channel_category",
+        "continent_name",
+        "country",
+        "d1_retention_cnt",
+        "d30_retention_cnt",
+        "d3_retention_cnt",
+        "d7_retention_cnt",
+        "dau",
+        "dt",
+        "first_start_carrier",
+        "first_start_device_model",
+        "first_start_manufacturer",
+        "first_start_network_type",
+        "first_start_os_version",
+        "game_cnt",
+        "game_time",
+        "inter_ad_pv",
+        "inter_ad_ready_cnt",
+        "inter_ad_request_pv",
+        "inter_ad_revenue",
+        "is_install_return",
+        "is_return_device",
+        "media_source",
+        "os_system",
+        "project",
+        "return_age_bucket",
+        "revenue",
+        "rewarded_ad_pv",
+        "rewarded_ad_ready_cnt",
+        "rewarded_ad_request_pv",
+        "rewarded_ad_revenue",
+        "sdk_version",
+        "start_pv",
+        "usage_duration"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "31 days"
+    },
+    "hungry_studio.ads_market_material_metric_di": {
+      "datasource": "maxcompute",
+      "columns": [
+        "active_date",
+        "ad_name",
+        "bundle_id",
+        "campaign_name",
+        "channel_category",
+        "clicks",
+        "continent_name",
+        "cost_zhe",
+        "cost_zhe_usd",
+        "country",
+        "dt",
+        "material",
+        "material_size",
+        "material_type",
+        "media_source",
+        "region",
+        "registers",
+        "shows",
+        "user"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "31 days"
+    },
+    "hungry_studio.ads_market_roi_pred_accuracy_da": {
+      "datasource": "maxcompute",
+      "columns": [
+        "active_date",
+        "bundle_id",
+        "cost",
+        "country",
+        "cur_range",
+        "dt",
+        "media_source",
+        "model_version",
+        "pred_d15",
+        "pred_d180",
+        "pred_d30",
+        "pred_d360",
+        "pred_d60",
+        "pred_d7",
+        "pred_d90",
+        "real_d15",
+        "real_d180",
+        "real_d30",
+        "real_d360",
+        "real_d60",
+        "real_d7",
+        "real_d90",
+        "snapshot_date",
+        "time_range",
+        "total_revenue"
+      ],
+      "must_filter": [
+        "dt"
+      ],
+      "max_scan": "31 days"
+    }
+  },
+  "entities": [
+    {
+      "name": "game_package",
+      "display": "包体",
+      "primary_key": "bundle_id",
+      "alias": [
+        "包体",
+        "包",
+        "包名",
+        "app",
+        "应用",
+        "bundle",
+        "store 包"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "bundle_id↔游戏中文名 / 平台映射已结构化到 report_knowledge/PACKAGE_BUNDLE_MAP.csv 和 游戏名与bundle_id双向速查.md；dau 表另有 project(游戏简称)",
+      "status": "confirmed"
+    },
+    {
+      "name": "media_source",
+      "display": "媒体渠道",
+      "primary_key": "media_source",
+      "alias": [
+        "媒体",
+        "渠道",
+        "媒体平台",
+        "media",
+        "channel",
+        "Facebook",
+        "Google",
+        "TikTok",
+        "AppLovin",
+        "Unity",
+        "ASA",
+        "Moloco"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "dau 表含 channel_category(一级)/channel_agent(二级)/media_source(三级)渠道分级",
+      "status": "confirmed"
+    },
+    {
+      "name": "campaign",
+      "display": "广告计划",
+      "primary_key": "campaign_name",
+      "mi_compatible_key": "campaign_name",
+      "stable_key": "campaign_id",
+      "alias": [
+        "计划",
+        "campaign",
+        "广告系列",
+        "系列"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "ad_revenue 库两表系列名列为 campaign(非 campaign_name);跨表用 campaign_id 更稳定",
+      "status": "confirmed"
+    },
+    {
+      "name": "adset",
+      "display": "广告组",
+      "primary_key": "adset_name",
+      "stable_key": "adset_id",
+      "alias": [
+        "广告组",
+        "adset",
+        "ad set",
+        "组"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "bs 表广告组名列为 adset、ltv 表为 adset_name;跨表用 adset_id 更稳定",
+      "status": "confirmed"
+    },
+    {
+      "name": "country",
+      "display": "国家",
+      "primary_key": "country",
+      "alias": [
+        "国家",
+        "地区",
+        "country",
+        "US",
+        "美国"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "shucang_market 库内仅 spend 表有 country(sdk/af/cohort 无,跨表先在 spend 过滤);ad_revenue bs/ltv 与 MC dau 表自带 country",
+      "status": "confirmed"
+    },
+    {
+      "name": "cohort",
+      "display": "激活同期群",
+      "primary_key": "active_date",
+      "alias": [
+        "cohort",
+        "同期群",
+        "激活日",
+        "安装日"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "cohort 日期列各库不同 — shucang:active_date;bs:install_date(起点)+event_date(变现);ltv:date(起点);dau:activity_date(活跃日)+age_bucket(日龄)",
+      "status": "confirmed"
+    },
+    {
+      "name": "point",
+      "display": "点位",
+      "primary_key": "s2s_event",
+      "alias": [
+        "点位",
+        "s2s",
+        "s2s_event",
+        "回传事件",
+        "转化事件"
+      ],
+      "appears_in": [
+        "shucang_market.dim_market_campaign_s2s_event_map_da"
+      ],
+      "note": "s2s_event 与 PGP 点位 event_name 非全局 1:1,按场景验证",
+      "status": "confirmed"
+    },
+    {
+      "name": "material",
+      "display": "素材",
+      "primary_key": "material",
+      "alias": [
+        "素材",
+        "创意",
+        "creative",
+        "material",
+        "素材名"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "hungry_studio.ads_market_material_metric_di",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "CK spend 表 / MC 素材前端表 / ad_revenue ltv 表均有 material 列;素材 ROI 需 join 回收表(阶段2);部分媒体 material 可能为空",
+      "status": "confirmed"
+    },
+    {
+      "name": "ad",
+      "display": "广告",
+      "primary_key": "ad_name",
+      "stable_key": "ad_id",
+      "alias": [
+        "广告",
+        "ad",
+        "广告创意",
+        "ad_name"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "hungry_studio.ads_market_material_metric_di",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "CK spend/ltv 表含 ad_id+ad_name;bs 表广告名列为 ad;跨表用 ad_id 更稳定",
+      "status": "confirmed"
+    },
+    {
+      "name": "account",
+      "display": "投放账户",
+      "primary_key": "advertiser_id",
+      "alias": [
+        "账户",
+        "广告账户",
+        "投放账号",
+        "advertiser",
+        "account",
+        "代理",
+        "代理商",
+        "结算公司"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ],
+      "note": "含 advertiser_id/agent_name(代理)/company_name(结算公司)/user(投放人员)",
+      "status": "confirmed"
+    },
+    {
+      "name": "device",
+      "display": "机型",
+      "primary_key": "device_type",
+      "alias": [
+        "机型",
+        "设备",
+        "设备型号",
+        "device",
+        "device_type"
+      ],
+      "appears_in": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ],
+      "note": "CK spend 表 device_type 为机型;设备资产/eCPM 维度阶段2 再从 MC 设备表扩",
+      "status": "confirmed"
+    }
+  ],
+  "dimensions": [
+    {
+      "name": "media_source",
+      "entity": "media_source",
+      "column": "media_source",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ]
+    },
+    {
+      "name": "bundle_id",
+      "entity": "game_package",
+      "column": "bundle_id",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ]
+    },
+    {
+      "name": "country",
+      "entity": "country",
+      "column": "country",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "shucang_market 库内仅 spend 表;ad_revenue bs/ltv 与 MC dau 表自带 country;跨库/跨源不直接 SQL join"
+    },
+    {
+      "name": "campaign_name",
+      "entity": "campaign",
+      "column": "campaign_name",
+      "mi_compatible": true,
+      "preserve_raw": true,
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da"
+      ]
+    },
+    {
+      "name": "campaign_id",
+      "entity": "campaign",
+      "column": "campaign_id",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "shucang_market.dim_market_campaign_s2s_event_map_da",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ]
+    },
+    {
+      "name": "adset_name",
+      "entity": "adset",
+      "column": "adset_name",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc",
+        "shucang_market.dim_market_campaign_s2s_event_map_da"
+      ]
+    },
+    {
+      "name": "active_date",
+      "entity": "cohort",
+      "column": "active_date",
+      "is_date": true,
+      "is_partition": true,
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2"
+      ]
+    },
+    {
+      "name": "revenue_date",
+      "entity": "cohort",
+      "column": "revenue_date",
+      "is_date": true,
+      "source_tables": [
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2"
+      ]
+    },
+    {
+      "name": "event_date",
+      "entity": "cohort",
+      "column": "event_date",
+      "is_date": true,
+      "source_tables": [
+        "shucang_market.af_cohort_user_acquisition_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist"
+      ],
+      "note": "af_cohort 表为留存事件日;ad_revenue bs 表为变现日(分区键),列名同为 event_date"
+    },
+    {
+      "name": "date_diff",
+      "entity": "cohort",
+      "column": "date_diff",
+      "note": "active_date 到 revenue_date/event_date 的天数差;留存/收入按 date_diff 透视",
+      "source_tables": [
+        "shucang_market.tj_ad_sdk_revenue",
+        "shucang_market.tj_ad_revenue_v2",
+        "shucang_market.af_cohort_user_acquisition_v2"
+      ]
+    },
+    {
+      "name": "event_name",
+      "entity": "cohort",
+      "column": "event_name",
+      "source_tables": [
+        "shucang_market.af_cohort_user_acquisition_v2"
+      ]
+    },
+    {
+      "name": "s2s_event",
+      "entity": "point",
+      "column": "s2s_event",
+      "source_tables": [
+        "shucang_market.dim_market_campaign_s2s_event_map_da"
+      ]
+    },
+    {
+      "name": "material",
+      "entity": "material",
+      "column": "material",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "hungry_studio.ads_market_material_metric_di",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "部分媒体(Google/Aura)material 可能为空或聚合为\"其他\""
+    },
+    {
+      "name": "ad_name",
+      "entity": "ad",
+      "column": "ad_name",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "hungry_studio.ads_market_material_metric_di",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ]
+    },
+    {
+      "name": "material_type",
+      "entity": "material",
+      "column": "material_type",
+      "source_tables": [
+        "hungry_studio.ads_market_material_metric_di"
+      ]
+    },
+    {
+      "name": "media_type",
+      "entity": "media_source",
+      "column": "media_type",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "pag_name",
+      "entity": "game_package",
+      "column": "pag_name",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "os_system",
+      "entity": "game_package",
+      "column": "os_system",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ]
+    },
+    {
+      "name": "ad_id",
+      "entity": "ad",
+      "column": "ad_id",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ]
+    },
+    {
+      "name": "playable_material",
+      "entity": "ad",
+      "column": "playable_material",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "cost_model",
+      "entity": "campaign",
+      "column": "cost_model",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "convert_type",
+      "entity": "campaign",
+      "column": "convert_type",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ],
+      "note": "campaign 投放类型 CPI/CPP/CPE;已冗余在 spend 事实表,无需 join 配置表"
+    },
+    {
+      "name": "key_action",
+      "entity": "campaign",
+      "column": "key_action",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ],
+      "note": "CPE 关键行为;已冗余在 spend 事实表"
+    },
+    {
+      "name": "advertiser_id",
+      "entity": "account",
+      "column": "advertiser_id",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ]
+    },
+    {
+      "name": "agent_name",
+      "entity": "account",
+      "column": "agent_name",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "company_name",
+      "entity": "account",
+      "column": "company_name",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "user",
+      "entity": "account",
+      "column": "user",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ]
+    },
+    {
+      "name": "device_type",
+      "entity": "device",
+      "column": "device_type",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2"
+      ]
+    },
+    {
+      "name": "adset_id",
+      "entity": "adset",
+      "column": "adset_id",
+      "source_tables": [
+        "shucang_market.tj_ad_spend_active_v2",
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "跨表/跨库稳定 join 键,优于 adset_name"
+    },
+    {
+      "name": "install_date",
+      "entity": "cohort",
+      "column": "install_date",
+      "is_date": true,
+      "source_tables": [
+        "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist"
+      ],
+      "note": "ad_revenue bs 表 cohort 起点;分区键是 event_date"
+    },
+    {
+      "name": "ltv_cohort_date",
+      "entity": "cohort",
+      "column": "date",
+      "is_date": true,
+      "is_partition": true,
+      "source_tables": [
+        "ad_revenue.tj_ad_revenue_ltv_list_utc"
+      ],
+      "note": "ad_revenue ltv 宽表的安装/cohort 日(分区键),列名为 date"
+    },
+    {
+      "name": "channel_category",
+      "entity": "media_source",
+      "column": "channel_category",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "一级渠道,用于 DNU 拆 UA/预装/ASA/organic;organic 拆分口径见 organic_dnu(needs_decision)"
+    },
+    {
+      "name": "channel_agent",
+      "entity": "media_source",
+      "column": "channel_agent",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "二级渠道"
+    },
+    {
+      "name": "project",
+      "entity": "game_package",
+      "column": "project",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "游戏简称 BB/BC/Mahjong"
+    },
+    {
+      "name": "age_bucket",
+      "entity": "cohort",
+      "column": "age_bucket",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "新增日龄分桶 D0/D1/D2-D7/...;DNU=age_bucket D0;勿与 dnu 指标同时作 group by"
+    },
+    {
+      "name": "is_return_device",
+      "entity": "cohort",
+      "column": "is_return_device",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "0=新增设备 1=回流设备"
+    },
+    {
+      "name": "return_age_bucket",
+      "entity": "cohort",
+      "column": "return_age_bucket",
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "回流日龄分桶(仅 is_return_device=1 有值);DRU=is_return_device=1 且 return_age_bucket D0"
+    },
+    {
+      "name": "activity_date",
+      "entity": "cohort",
+      "column": "activity_date",
+      "is_date": true,
+      "source_tables": [
+        "hungry_studio.ads_market_device_dau_behavior_di"
+      ],
+      "note": "活跃日期,与分区 dt 同值"
+    },
+    {
+      "name": "forecast_version",
+      "entity": "roi360",
+      "column": "forecast_version",
+      "type": "string",
+      "source_tables": [
+        "shucang_market.market_roi_prediction_360_v6_da",
+        "shucang_market.market_roi_prediction_sdk_360_da",
+        "shucang_market.market_roi_obs_correction_coef_media"
+      ],
+      "source_system": "MI 后端 forecase_version_config 表(status=1 AND mode='roi')",
+      "note": "ROI360 预测模型版本。MI 后端通过 ForecastService.QueryForecastVersion(bundle_id) 查询可选版本。\n分流规则(nexus forecast.go):xy_ 前缀走 XY 批量,其它走 Base 单条,_纠偏 后缀剥离后传预测服务。\nBB 系列默认 v6;非 BB 小包默认 xy_v5(见 nexus docs/roi对外接口描述.md 附录 E,快照可能过期)。\n不是 CK 物理表的列,是 MI 后端 filter 参数;agent 派生时作为 filter 传入。\n"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "total_cost",
+      "display": "消耗",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost",
+        "currency"
+      ],
+      "formula": "SUM(cost / NULLIF(currency, 0))",
+      "semantic": "折前消耗",
+      "status": "confirmed",
+      "source": "nexus roi/ua/field.go"
+    },
+    {
+      "name": "total_cost_zhe",
+      "display": "折后消耗",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost_zhe",
+        "currency"
+      ],
+      "formula": "SUM(cost_zhe / NULLIF(currency, 0))",
+      "semantic": "折后消耗=消耗×返点比例;ROI360 默认核心成本",
+      "is_default_cost": true,
+      "status": "confirmed",
+      "source": "nexus roi/ua/field.go"
+    },
+    {
+      "name": "total_shows",
+      "display": "展示",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "shows"
+      ],
+      "formula": "SUM(shows)",
+      "status": "confirmed"
+    },
+    {
+      "name": "total_clicks",
+      "display": "点击",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "clicks"
+      ],
+      "formula": "SUM(clicks)",
+      "status": "confirmed"
+    },
+    {
+      "name": "total_registers",
+      "display": "注册设备(af)",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "registers"
+      ],
+      "formula": "SUM(registers)",
+      "semantic": "AF 侧注册设备;MI 默认 CPI/LTV 分母",
+      "is_default_install_denominator": true,
+      "status": "confirmed"
+    },
+    {
+      "name": "total_media_installs",
+      "display": "注册设备(media)",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "media_installs"
+      ],
+      "formula": "SUM(media_installs)",
+      "semantic": "媒体侧安装/激活对照",
+      "status": "confirmed"
+    },
+    {
+      "name": "ctr",
+      "display": "CTR",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "clicks",
+        "shows"
+      ],
+      "formula": "SUM(clicks) / SUM(shows)",
+      "summary_rule": "SUM(clicks) / SUM(shows)",
+      "status": "confirmed"
+    },
+    {
+      "name": "cpm",
+      "display": "CPM",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost_zhe",
+        "currency",
+        "shows"
+      ],
+      "formula": "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(shows) * 1000",
+      "summary_rule": "SUM(cost_zhe / NULLIF(currency,0)) / SUM(shows) * 1000",
+      "status": "confirmed"
+    },
+    {
+      "name": "af_cpi",
+      "display": "注册成本(af)",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost_zhe",
+        "currency",
+        "registers"
+      ],
+      "formula": "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(registers)",
+      "summary_rule": "SUM(cost_zhe / NULLIF(currency,0)) / SUM(registers)",
+      "semantic": "MI 默认 CPI=折后消耗/AF 注册设备",
+      "is_default_cpi": true,
+      "status": "confirmed"
+    },
+    {
+      "name": "media_cpi",
+      "display": "注册成本(media)",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost_zhe",
+        "currency",
+        "media_installs"
+      ],
+      "formula": "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(media_installs)",
+      "summary_rule": "SUM(cost_zhe / NULLIF(currency,0)) / SUM(media_installs)",
+      "status": "confirmed"
+    },
+    {
+      "name": "af_cvr",
+      "display": "CVR(af)",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "registers",
+        "clicks"
+      ],
+      "formula": "SUM(registers) / SUM(clicks)",
+      "summary_rule": "SUM(registers) / SUM(clicks)",
+      "status": "confirmed"
+    },
+    {
+      "name": "ipm",
+      "display": "IPM",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "registers",
+        "shows"
+      ],
+      "formula": "SUM(registers) / SUM(shows) * 1000",
+      "summary_rule": "SUM(registers) / SUM(shows) * 1000",
+      "status": "confirmed"
+    },
+    {
+      "name": "cpc",
+      "display": "CPC",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost_zhe",
+        "currency",
+        "clicks"
+      ],
+      "formula": "SUM(cost_zhe / NULLIF(currency, 0)) / SUM(clicks)",
+      "summary_rule": "SUM(cost_zhe / NULLIF(currency,0)) / SUM(clicks)",
+      "semantic": "折后消耗/点击",
+      "status": "confirmed",
+      "source": "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+    },
+    {
+      "name": "original_cpi",
+      "display": "折前注册成本",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "cost",
+        "currency",
+        "registers"
+      ],
+      "formula": "SUM(cost / NULLIF(currency, 0)) / SUM(registers)",
+      "summary_rule": "SUM(cost / NULLIF(currency,0)) / SUM(registers)",
+      "semantic": "折前消耗/AF 注册设备;对照 af_cpi(折后)",
+      "status": "confirmed",
+      "source": "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+    },
+    {
+      "name": "media_cvr",
+      "display": "CVR(media)",
+      "type": "ratio",
+      "source_table": "shucang_market.tj_ad_spend_active_v2",
+      "base_columns": [
+        "media_installs",
+        "clicks"
+      ],
+      "formula": "SUM(media_installs) / SUM(clicks)",
+      "summary_rule": "SUM(media_installs) / SUM(clicks)",
+      "semantic": "媒体安装/点击;对照 af_cvr",
+      "status": "confirmed",
+      "source": "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+    },
+    {
+      "name": "total_revenue",
+      "display": "累计变现收入",
+      "type": "simple_aggregate",
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ],
+          "source_table": {
+            "sdk": "shucang_market.tj_ad_sdk_revenue",
+            "af": "shucang_market.tj_ad_revenue_v2"
+          }
+        }
+      },
+      "base_columns": [
+        "revenue"
+      ],
+      "formula": "SUM(revenue)",
+      "semantic": "MI 默认 revenue_source=sdk;af 为对照口径,不可混用",
+      "status": "confirmed"
+    },
+    {
+      "name": "revenue_n",
+      "display": "N日累计收入",
+      "type": "app_layer_pivot",
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ],
+          "source_table": {
+            "sdk": "shucang_market.tj_ad_sdk_revenue",
+            "af": "shucang_market.tj_ad_revenue_v2"
+          }
+        }
+      },
+      "base_columns": [
+        "revenue",
+        "date_diff"
+      ],
+      "formula": "arrayCumSum(groupArray(SUM(revenue)) ORDER BY date_diff) 取 date_diff<=N-1, 前向填充",
+      "semantic": "应用层按 date_diff 透视+前向填充,非物理列;业务展示 ROI_N/LTV_N 查询需取 date_diff=0..N-1,如 ROI7 取 0..6",
+      "pitfalls": [
+        "date-diff-pivot"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "roi_n",
+      "display": "ROI_N",
+      "type": "cross_table",
+      "requires_join": "spend_x_revenue",
+      "formula": {
+        "numerator": {
+          "metric": "revenue_n"
+        },
+        "denominator": {
+          "metric": "total_cost_zhe"
+        },
+        "scale": 100
+      },
+      "summary_rule": "SUM(revenue_n) / SUM(cost_zhe where revenue_n is not null) * 100",
+      "roi_source": "actual",
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ]
+        }
+      },
+      "semantic": "真实段 roi_N = revenue_N / cost_zhe × 100;N 是业务展示天数,底层最大 date_diff=N-1",
+      "pitfalls": [
+        "view-vs-table",
+        "cost-zhe-default"
+      ],
+      "status": "confirmed",
+      "source": "nexus roi/ua + ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+    },
+    {
+      "name": "ltv_n",
+      "display": "LTV_N",
+      "type": "cross_table",
+      "requires_join": "spend_x_revenue",
+      "formula": {
+        "numerator": {
+          "metric": "revenue_n"
+        },
+        "denominator": {
+          "metric": "total_registers"
+        }
+      },
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ]
+        }
+      },
+      "semantic": "MI 默认 ltv_N = revenue_(N-1) / total_registers,分母为 AF install",
+      "status": "confirmed"
+    },
+    {
+      "name": "ltv_ratio_x_2",
+      "display": "LTV倍率(X/2)",
+      "type": "derived",
+      "formula": {
+        "expression": "roi_x / roi_2"
+      },
+      "semantic": "治理用倍率,如 ltv_7_2=ROI7/ROI2, ltv_30_2=ROI30/ROI2, ltv_360_2=ROI360/ROI2",
+      "used_by": "投放ROI治理政策.md",
+      "status": "confirmed"
+    },
+    {
+      "name": "af_arpu",
+      "display": "ARPU(af)",
+      "type": "cross_table",
+      "requires_join": "spend_x_revenue",
+      "formula": {
+        "numerator": {
+          "expr": "SUM(revenue) WHERE date_diff=0",
+          "semantic": "首日收入"
+        },
+        "denominator": {
+          "metric": "total_registers"
+        }
+      },
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ]
+        }
+      },
+      "semantic": "ROI360 af_arpu=首日收入/AF注册设备(total_registers);分子跟随 revenue_source",
+      "pitfalls": [
+        "first-day-date-diff-0"
+      ],
+      "status": "confirmed",
+      "source": "ai_ck/agent_knowledge/metrics/ROI360指标语义.md(af_arpu=首日收入/注册设备)"
+    },
+    {
+      "name": "media_arpu",
+      "display": "ARPU(media)",
+      "type": "cross_table",
+      "requires_join": "spend_x_revenue",
+      "formula": {
+        "numerator": {
+          "expr": "SUM(revenue) WHERE date_diff=0",
+          "semantic": "首日收入"
+        },
+        "denominator": {
+          "metric": "total_media_installs"
+        }
+      },
+      "variants": {
+        "revenue_source": {
+          "default": "sdk",
+          "options": [
+            "sdk",
+            "af"
+          ]
+        }
+      },
+      "semantic": "ROI360 media_arpu=首日收入/媒体安装(total_media_installs);ROI360 默认展示指标",
+      "pitfalls": [
+        "first-day-date-diff-0"
+      ],
+      "status": "confirmed",
+      "source": "ai_ck/agent_knowledge/metrics/ROI360指标语义.md"
+    },
+    {
+      "name": "unique_users",
+      "display": "唯一用户数",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.af_cohort_user_acquisition_v2",
+      "base_columns": [
+        "unique_users"
+      ],
+      "formula": "SUM(unique_users)",
+      "status": "confirmed"
+    },
+    {
+      "name": "retention_n",
+      "display": "N日留存",
+      "type": "ratio",
+      "source_table": "shucang_market.af_cohort_user_acquisition_v2",
+      "base_columns": [
+        "unique_users",
+        "date_diff"
+      ],
+      "formula": "sumIf(unique_users, date_diff = N) / sumIf(unique_users, date_diff = 0)",
+      "summary_rule": "SUM(retention_n × installs) / SUM(installs), 仅统计成熟且 retention_n>0 的行",
+      "semantic": "分母来自 date_diff=0;查询必须同时取 0 和 N;且需 dt>=start_date",
+      "pitfalls": [
+        "need-date-diff-zero",
+        "active-date-required"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "mapped_campaigns",
+      "display": "映射命中 campaign 数",
+      "type": "simple_aggregate",
+      "source_table": "shucang_market.dim_market_campaign_s2s_event_map_da",
+      "base_columns": [
+        "campaign_name"
+      ],
+      "formula": "uniqExact(campaign_name)",
+      "semantic": "某点位/包体/媒体下映射到的 campaign 去重数,用于点位覆盖诊断",
+      "status": "confirmed"
+    },
+    {
+      "name": "material_shows",
+      "display": "素材曝光",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "shows"
+      ],
+      "formula": "SUM(shows)",
+      "status": "confirmed",
+      "source": "da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md"
+    },
+    {
+      "name": "material_cost_usd",
+      "display": "素材消耗(折后美元)",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "cost_zhe_usd"
+      ],
+      "formula": "SUM(cost_zhe_usd)",
+      "semantic": "素材表 cost_zhe_usd 已是折后美元,不再除 currency(区别于 CK spend 表 cost_zhe/currency)",
+      "status": "confirmed"
+    },
+    {
+      "name": "material_ctr",
+      "display": "素材CTR",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "clicks",
+        "shows"
+      ],
+      "formula": "SUM(clicks) / NULLIF(SUM(shows), 0)",
+      "summary_rule": "SUM(clicks) / SUM(shows)",
+      "status": "confirmed"
+    },
+    {
+      "name": "material_cvr",
+      "display": "素材CVR",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "registers",
+        "clicks"
+      ],
+      "formula": "SUM(registers) / NULLIF(SUM(clicks), 0)",
+      "summary_rule": "SUM(registers) / SUM(clicks)",
+      "status": "confirmed"
+    },
+    {
+      "name": "material_ipm",
+      "display": "素材IPM",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "registers",
+        "shows"
+      ],
+      "formula": "SUM(registers) / NULLIF(SUM(shows), 0) * 1000",
+      "summary_rule": "SUM(registers) / SUM(shows) * 1000",
+      "semantic": "每千次曝光带来的注册;素材冷启动初筛核心前端指标",
+      "status": "confirmed"
+    },
+    {
+      "name": "material_cpi",
+      "display": "素材CPI(美元)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_material_metric_di",
+      "base_columns": [
+        "cost_zhe_usd",
+        "registers"
+      ],
+      "formula": "SUM(cost_zhe_usd) / NULLIF(SUM(registers), 0)",
+      "summary_rule": "SUM(cost_zhe_usd) / SUM(registers)",
+      "semantic": "素材前端 CPI=折后美元消耗/注册;前端口径无回收,不能据此算 ROI",
+      "pitfalls": [
+        "front-end-only-no-revenue"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "ad_revenue_usd",
+      "display": "广告变现(美元)",
+      "type": "simple_aggregate",
+      "source_table": "ad_revenue.ads_market_bs_ad_revenue_v2_di_dist",
+      "base_columns": [
+        "revenue_usd"
+      ],
+      "formula": "SUM(revenue_usd)",
+      "semantic": "ad 级 cohort 广告变现美元口径;ad_revenue 库 BS 回收只有 v2_di 活(v1/v3 已停更)",
+      "pitfalls": [
+        "v2-is-canonical",
+        "cross-db"
+      ],
+      "status": "confirmed",
+      "source": "ad_revenue.ads_market_bs_ad_revenue_v2_di DESCRIBE"
+    },
+    {
+      "name": "ad_revenue_dn",
+      "display": "D_N 累计广告变现",
+      "type": "simple_aggregate",
+      "source_table": "ad_revenue.tj_ad_revenue_ltv_list_utc",
+      "base_columns": [
+        "ad_revenue_N"
+      ],
+      "formula": "SUM(ad_revenue_N)",
+      "available_n": [
+        1,
+        3,
+        7,
+        14,
+        30,
+        60,
+        90,
+        180
+      ],
+      "semantic": "安装日后第 N 日累计广告变现(LTV 曲线);ad_revenue_N 为累计值,差分得单日",
+      "pitfalls": [
+        "ltv-cumulative",
+        "cross-db"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "ad_ltv_dn",
+      "display": "D_N 广告 LTV",
+      "type": "ratio",
+      "source_table": "ad_revenue.tj_ad_revenue_ltv_list_utc",
+      "base_columns": [
+        "ad_revenue_N",
+        "registers"
+      ],
+      "formula": "SUM(ad_revenue_N) / SUM(registers)",
+      "summary_rule": "SUM(ad_revenue_N) / SUM(registers)",
+      "available_n": [
+        1,
+        3,
+        7,
+        14,
+        30,
+        60,
+        90,
+        180
+      ],
+      "semantic": "第 N 日广告 LTV=累计广告变现/注册设备;与 shucang_market SDK/AF LTV 口径需对账后混用",
+      "pitfalls": [
+        "ltv-cumulative",
+        "cross-db"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "ad_roi_dn",
+      "display": "D_N 广告ROI(素材级可用)",
+      "type": "ratio",
+      "source_table": "ad_revenue.tj_ad_revenue_ltv_list_utc",
+      "base_columns": [
+        "ad_revenue_N",
+        "cost_zhe"
+      ],
+      "formula": "SUM(ad_revenue_N) / SUM(cost_zhe)",
+      "summary_rule": "SUM(ad_revenue_N) / SUM(cost_zhe)",
+      "available_n": [
+        1,
+        3,
+        7,
+        14,
+        30,
+        60,
+        90,
+        180
+      ],
+      "semantic": "第 N 日广告 ROI=累计广告变现/折后消耗;ltv 表含 material 列可下钻素材级;广告变现 IAA 口径,与 MI ROI360 sdk/af 需对账,不可冒充 MI 口径",
+      "pitfalls": [
+        "ltv-cumulative",
+        "cross-db",
+        "iaa-vs-mi"
+      ],
+      "status": "confirmed",
+      "source": "D-2 拍板=a;ad_revenue.tj_ad_revenue_ltv_list_utc 表卡 metric_fields"
+    },
+    {
+      "name": "roi_pred_dn",
+      "display": "D_N 预估ROI(成本加权)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_roi_pred_accuracy_da",
+      "base_columns": [
+        "pred_dN",
+        "cost"
+      ],
+      "formula": "SUM(pred_dN * cost) / SUM(cost)",
+      "available_n": [
+        7,
+        15,
+        30,
+        60,
+        90,
+        180,
+        360
+      ],
+      "semantic": "各包/媒体/国家成本加权预估 ROI;蓝底为预估,非真实回收",
+      "pitfalls": [
+        "no-d3-column"
+      ],
+      "status": "confirmed",
+      "source": "ai_hive/agent_knowledge/tables/ads_market_roi_pred_accuracy_da.yaml"
+    },
+    {
+      "name": "roi_real_dn",
+      "display": "D_N 真实ROI(成本加权)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_roi_pred_accuracy_da",
+      "base_columns": [
+        "real_dN",
+        "cost"
+      ],
+      "formula": "SUM(real_dN * cost) / SUM(cost)",
+      "available_n": [
+        7,
+        15,
+        30,
+        60,
+        90,
+        180,
+        360
+      ],
+      "semantic": "各包/媒体/国家成本加权真实 ROI;cur_range >= N 才有效",
+      "status": "confirmed"
+    },
+    {
+      "name": "roi_forecast_error_dn",
+      "display": "D_N 预测偏差(真实-预估)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_roi_pred_accuracy_da",
+      "base_columns": [
+        "real_dN",
+        "pred_dN",
+        "cost"
+      ],
+      "formula": "SUM((real_dN - pred_dN) * cost) / SUM(cost)",
+      "available_n": [
+        7,
+        15,
+        30,
+        60,
+        90,
+        180,
+        360
+      ],
+      "semantic": "正=真实高于预估(上修),负=真实低于预估(下修);用于 ROI 修正方向判断",
+      "pitfalls": [
+        "no-d3-column"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "dau",
+      "display": "活跃设备数",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "dau"
+      ],
+      "formula": "SUM(dau)",
+      "semantic": "设备口径日活",
+      "status": "confirmed",
+      "source": "ai_hive/agent_knowledge/tables/ads_market_device_dau_behavior_di.yaml(口径已 confirmed)"
+    },
+    {
+      "name": "dnu",
+      "display": "新增设备数",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "dau",
+        "age_bucket"
+      ],
+      "formula": "SUM(CASE WHEN age_bucket = 'D0' THEN dau ELSE 0 END)",
+      "semantic": "新增=日龄 D0 的活跃设备(设备口径)",
+      "pitfalls": [
+        "dnu-bucket-not-groupby"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "dru",
+      "display": "回流设备数",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "dau",
+        "is_return_device",
+        "return_age_bucket"
+      ],
+      "formula": "SUM(CASE WHEN is_return_device = 1 AND return_age_bucket = 'D0' THEN dau ELSE 0 END)",
+      "semantic": "回流=回流设备且回流日龄 D0",
+      "status": "confirmed"
+    },
+    {
+      "name": "dau_d1_retention_rate",
+      "display": "大盘次日留存率(前向)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "d1_retention_cnt",
+        "dau"
+      ],
+      "formula": "SUM(d1_retention_cnt) / NULLIF(SUM(dau), 0)",
+      "summary_rule": "SUM(d1_retention_cnt) / SUM(dau)",
+      "semantic": "前向留存=当日活跃设备 dt+1 仍活跃;与 cohort 回看留存口径不同",
+      "status": "confirmed"
+    },
+    {
+      "name": "dau_d7_retention_rate",
+      "display": "大盘7日留存率(前向)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "d7_retention_cnt",
+        "dau"
+      ],
+      "formula": "SUM(d7_retention_cnt) / NULLIF(SUM(dau), 0)",
+      "summary_rule": "SUM(d7_retention_cnt) / SUM(dau)",
+      "status": "confirmed"
+    },
+    {
+      "name": "organic_dnu",
+      "display": "自然量新增",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "dau",
+        "age_bucket",
+        "channel_category"
+      ],
+      "formula": "SUM(CASE WHEN age_bucket = 'D0' AND channel_category = '自然' THEN dau ELSE 0 END)",
+      "semantic": "D-3 拍板=B(channel_category 直接分类);organic=channel_category='自然' 的 D0 设备;狭义口径(不含'其他'未归因),排预装后约占大盘 DNU 30%,接近周报 32-37%",
+      "pitfalls": [
+        "dnu-bucket-not-groupby"
+      ],
+      "status": "confirmed",
+      "source": "D-3 拍板=b_narrow;dim_market_channel_mapping_da channel_category 枚举;2026-06-15 实证(自然 DNU 514617)"
+    },
+    {
+      "name": "organic_dnu_broad",
+      "display": "自然量新增(广义,待业务确认)",
+      "type": "needs_decision",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "dau",
+        "age_bucket",
+        "channel_category"
+      ],
+      "formula": "SUM(CASE WHEN age_bucket = 'D0' AND channel_category IN ('自然','其他') THEN dau ELSE 0 END)",
+      "semantic": "广义 organic='自然'+'其他'(含未明确归类渠道);用户已选狭义(b_narrow),是否额外采用广义待业务确认;'其他'占比大(排预装约36%),composer 暂返回 unsupported",
+      "status": "needs_decision"
+    },
+    {
+      "name": "dau_ad_revenue",
+      "display": "大盘广告收入",
+      "type": "simple_aggregate",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "ad_revenue"
+      ],
+      "formula": "SUM(ad_revenue)",
+      "semantic": "设备口径大盘广告变现总额",
+      "status": "confirmed"
+    },
+    {
+      "name": "arpdau",
+      "display": "ARPDAU(大盘)",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "ad_revenue",
+        "dau"
+      ],
+      "formula": "SUM(ad_revenue) / NULLIF(SUM(dau), 0)",
+      "summary_rule": "SUM(ad_revenue) / SUM(dau)",
+      "semantic": "人均日活广告收入;首日 ARPU 异动拆解 ARPU≈人均展示次数×eCPM/1000",
+      "status": "confirmed",
+      "source": "da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md"
+    },
+    {
+      "name": "ad_pv_per_user",
+      "display": "人均广告展示次数",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "ad_pv",
+        "dau"
+      ],
+      "formula": "SUM(ad_pv) / NULLIF(SUM(dau), 0)",
+      "summary_rule": "SUM(ad_pv) / SUM(dau)",
+      "semantic": "人均广告展示;首日 ARPU 拆解因子之一",
+      "status": "confirmed"
+    },
+    {
+      "name": "rewarded_ecpm",
+      "display": "激励广告eCPM",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "rewarded_ad_revenue",
+        "rewarded_ad_pv"
+      ],
+      "formula": "SUM(rewarded_ad_revenue) / NULLIF(SUM(rewarded_ad_pv), 0) * 1000",
+      "summary_rule": "SUM(rewarded_ad_revenue) / SUM(rewarded_ad_pv) * 1000",
+      "semantic": "激励广告千次展示收入;首日 ARPU 异动诊断核心因子",
+      "status": "confirmed",
+      "source": "da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md"
+    },
+    {
+      "name": "inter_ecpm",
+      "display": "插屏广告eCPM",
+      "type": "ratio",
+      "datasource": "maxcompute",
+      "source_table": "hungry_studio.ads_market_device_dau_behavior_di",
+      "base_columns": [
+        "inter_ad_revenue",
+        "inter_ad_pv"
+      ],
+      "formula": "SUM(inter_ad_revenue) / NULLIF(SUM(inter_ad_pv), 0) * 1000",
+      "summary_rule": "SUM(inter_ad_revenue) / SUM(inter_ad_pv) * 1000",
+      "semantic": "插屏广告千次展示收入",
+      "status": "confirmed"
+    },
+    {
+      "name": "target_roi_360",
+      "display": "目标ROI360",
+      "type": "app_layer_config",
+      "source_system": "MySQL package_configs.recovery_target_line",
+      "semantic": "Campaign 目标 ROI360,来自 MI 后端 MySQL 配置表 package_configs.recovery_target_line。\nnexus campaign_govern handler 在应用层通过 attachTargetRoi360AndGap 填充。\nagent 侧无此表卡,不可直接 SQL 复现;需通过 MI 接口查询或补 MySQL 表卡。\n",
+      "status": "confirmed",
+      "source": "nexus backend/boards/internal/service/report/handler/roi/campaign_govern/target_roi360.go"
+    },
+    {
+      "name": "gap",
+      "display": "GAP(roi_359 - target_roi_360)",
+      "type": "app_layer_computed",
+      "formula": "roi_359 - target_roi_360",
+      "semantic": "GAP = roi_359 - target_roi_360,nexus 应用层计算。\n依赖 target_roi_360(MySQL 配置表),agent 侧不可直接 SQL 复现。\n",
+      "status": "confirmed",
+      "source": "nexus target_roi360.go: gap := roi - target"
+    },
+    {
+      "name": "lifecycle",
+      "display": "生命周期阶段",
+      "type": "app_layer_computed",
+      "source_system": "MI 后端应用层",
+      "semantic": "Campaign 生命周期阶段,nexus campaign_govern 应用层计算。\n计算逻辑在 nexus campaign_govern handler,不是 CK 物理表列。\nagent 侧不可直接 SQL 复现。\n",
+      "status": "confirmed"
+    },
+    {
+      "name": "active_days",
+      "display": "投放天数",
+      "type": "app_layer_computed",
+      "source_system": "MI 后端应用层",
+      "semantic": "Campaign 投放天数,nexus campaign_govern active_days.go 计算。\n按 campaign × user 维度统计有消耗的天数。\nagent 侧可用 CK spend 表 count(distinct active_date) 近似,但口径可能不完全一致。\n",
+      "status": "confirmed",
+      "source": "nexus backend/boards/internal/service/report/handler/roi/campaign_govern/active_days.go"
+    }
+  ],
+  "joins": [
+    {
+      "name": "spend_x_revenue",
+      "description": "以消耗表为左表关联回收表，计算 ROI_N / LTV_N",
+      "left": "shucang_market.tj_ad_spend_active_v2",
+      "right": {
+        "sdk": "shucang_market.tj_ad_sdk_revenue",
+        "af": "shucang_market.tj_ad_revenue_v2"
+      },
+      "type": "left",
+      "on_keys": [
+        "active_date",
+        "campaign_name",
+        "bundle_id",
+        "media_source"
+      ],
+      "keys_compat": {
+        "mi_compatible": "campaign_name",
+        "stable_fallback": "campaign_id"
+      },
+      "notes": [
+        "收益表无 country 列；按 country 分桶时请先在 spend 侧做过滤，再执行 join。",
+        "revenue_n 由应用层按 date_diff 透视，join 后再做 N 日累计与前向填充。"
+      ],
+      "status": "confirmed",
+      "source": "nexus roi/ua GetRows 多表拼装"
+    },
+    {
+      "name": "spend_x_cohort",
+      "description": "以消耗表关联 cohort（队列） 留存表，计算 retention_N",
+      "left": "shucang_market.tj_ad_spend_active_v2",
+      "right": "shucang_market.af_cohort_user_acquisition_v2",
+      "type": "left",
+      "on_keys": [
+        "active_date",
+        "campaign_name",
+        "bundle_id",
+        "media_source"
+      ],
+      "keys_compat": {
+        "mi_compatible": "campaign_name",
+        "stable_fallback": "campaign_id"
+      },
+      "notes": [
+        "cohort 表查询额外要求 dt >= start_date 且 date_diff 同时包含 0 和 N。",
+        "cohort 表无 country 列，处理方式与 spend_x_revenue 一致。"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "name": "mapping_x_spend",
+      "description": "点位映射表关联消耗表，用于做点位到 campaign（广告系列） 的覆盖率与“有映射但无事实”诊断",
+      "left": "shucang_market.dim_market_campaign_s2s_event_map_da",
+      "right": "shucang_market.tj_ad_spend_active_v2",
+      "type": "left",
+      "on_keys": [
+        "campaign_name",
+        "bundle_id",
+        "media_source"
+      ],
+      "keys_compat": {
+        "mi_compatible": "campaign_name",
+        "stable_fallback": "campaign_id"
+      },
+      "notes": [
+        "mapping 表无日期分区键，last_dt 仅代表最新出现日期；spend 侧需额外加 active_date 过滤。",
+        "s2s_event 与 PGP 点位的 event_name 不是全局 1:1 对应关系。"
+      ],
+      "status": "confirmed"
+    }
+  ],
+  "governance": {
+    "version": "0.1",
+    "updated": "2026-07-06",
+    "status_fields": [
+      {
+        "name": "object_grain",
+        "options": [
+          "package",
+          "package_channel",
+          "campaign"
+        ],
+        "required": true
+      },
+      {
+        "name": "lifecycle_stage",
+        "options": [
+          "cold_start",
+          "ramp_candidate",
+          "ramping",
+          "head_campaign",
+          "small_sample",
+          "unknown"
+        ],
+        "required": true
+      },
+      {
+        "name": "data_scope",
+        "options": [
+          "all",
+          "paid_only",
+          "both"
+        ],
+        "default": "both",
+        "note": "organic 固定输出 all 与 paid_only 两版,不给单版"
+      },
+      {
+        "name": "roi_source",
+        "options": [
+          "actual",
+          "forecast_blue",
+          "mixed",
+          "unknown"
+        ],
+        "required": true,
+        "note": "蓝底=预估(MI 应用层外部服务,不在 CK);非蓝底=真实;语义层只产真实段"
+      },
+      {
+        "name": "threshold_status",
+        "options": [
+          "above_target",
+          "between_redline_target",
+          "below_redline",
+          "missing_threshold"
+        ],
+        "note": "当前缺 trial_active/confirmed 红线/达标线覆盖时取 missing_threshold"
+      },
+      {
+        "name": "decision_status",
+        "options": [
+          "actionable_candidate",
+          "observe_only",
+          "needs_decision",
+          "meeting_required",
+          "algorithm_pending"
+        ]
+      }
+    ],
+    "lifecycle_rules": [
+      {
+        "stage": "cold_start",
+        "when": {
+          "cum_cost_usd": "<7000",
+          "period_days": "<=14"
+        },
+        "guidance": {
+          "daily_cost_usd_lt_300": "observe_only",
+          "min_observe_days": 7
+        },
+        "status": "confirmed"
+      },
+      {
+        "stage": "ramp_candidate",
+        "when_any": [
+          {
+            "cum_cost_usd": ">=4000",
+            "observe_days": ">=7",
+            "roi": ">target_line"
+          },
+          {
+            "cum_cost_usd": ">=4000",
+            "observe_days": ">=14",
+            "roi": ">redline",
+            "quality": "留存/倍率/CPI 较强优势"
+          }
+        ],
+        "status": "confirmed"
+      },
+      {
+        "stage": "ramping",
+        "rule": {
+          "single_budget_increase_pct": "<=100",
+          "hold_days_after": ">=4"
+        },
+        "status": "confirmed"
+      },
+      {
+        "stage": "head_campaign",
+        "when": {
+          "daily_cost_usd": ">=10000"
+        },
+        "policy": "强管控 ROI 红线/达标线/上下修趋势;接近红线时输出 needs_decision 交给人",
+        "status": "confirmed"
+      },
+      {
+        "stage": "small_sample",
+        "when": "样本不足 或 试运行阈值表标注 sample_status=small_sample",
+        "policy": "只观察,不触发红线强动作",
+        "status": "confirmed_direction"
+      }
+    ],
+    "thresholds": {
+      "source": "发行红绿线执行说明简化版(试运行) + 2026-07-06 用户阈值更新",
+      "confirmed_date": "2026-06-16",
+      "updated_at": "2026-07-06",
+      "table_ref": "knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv",
+      "archived_source": "da_assets/raw/2026-06-16_发行红绿线执行说明_docx.md",
+      "status": "trial_active",
+      "caliber": {
+        "roi_metric": "ROI360",
+        "roi_segment": "含预估段(forecast); 真实段优先, 蓝底为预估不当真实回收",
+        "revenue_source": "sdk",
+        "cost": "cost_zhe",
+        "organic": "包维度标准=all(含自然量); 回收红线/投放达标线=paid_only(扣自然量逆推)",
+        "unit": "percent"
+      },
+      "redline_roi": {
+        "status": "trial_active",
+        "definition": "公司无法接受的 ROI 下限;跌破立即缩预算恢复到红线以上",
+        "values_ref": "PACKAGE_ROI_TARGET_THRESHOLDS.csv 的 recovery_redline_pct",
+        "note": "包维度=包×渠道=日均>=1w campaign 同一套(docx 明确不另加渠道修正系数)"
+      },
+      "target_line_roi": {
+        "status": "trial_active",
+        "definition": "投放回收达标线;包维度 ROI 扣自然量逆向推算目标,计划优化以此为目标",
+        "values_ref": "PACKAGE_ROI_TARGET_THRESHOLDS.csv 的 delivery_recovery_target_pct"
+      },
+      "known_partial": [
+        {
+          "rule": "日均消耗 3w-10w USD 产品: 360 ROI > 75%",
+          "status": "confirmed"
+        }
+      ],
+      "package_2026_04": {
+        "status": "superseded_by_trial_2026_06",
+        "ref": "knowledge/agent_knowledge/report_knowledge/PACKAGE_ROI_TARGET_THRESHOLDS.csv",
+        "note": "2026-06-16 试运行文档保留作历史沿革; 当前阈值以 2026-07-06 用户更新后的 PACKAGE_ROI_TARGET_THRESHOLDS.csv 为准"
+      },
+      "risk_yellow_line": {
+        "status": "needs_risk_owner",
+        "note": "campaign/渠道风控分黄灯阈值仍无数值(docx 说 MI 功能就绪前手动);见 TODO/下周给风控与算法owner的问题.md Q1"
+      },
+      "roi_downward_buffer": {
+        "status": "algorithm_pending",
+        "note": "docx 要求留 ROI 下修 buffer 但未给数值;见 TODO/下周给风控与算法owner的问题.md Q2"
+      }
+    },
+    "quality_metrics_for_ramp": {
+      "af_cpi": "total_cost_zhe / total_registers",
+      "ltv_7_2": "roi_7 / roi_2",
+      "ltv_30_2": "roi_30 / roi_2",
+      "ltv_360_2": "roi_360 / roi_2",
+      "retention_summary": "sum(retention_N × installs) / sum(installs),仅成熟且 retention_N>0",
+      "advantage_threshold_status": "needs_decision",
+      "status": "confirmed"
+    },
+    "guardrails": [
+      "不输出\"必须停投/必须放量\",除非阈值已结构化且用户明确授权",
+      "不在阈值表之外写死 ROI 红线/达标线; 不写死风控黄线/下修 buffer 数值",
+      "organic 固定输出 all 与 paid_only 两版,不给单版",
+      "蓝底预估段不得当真实回收;真实回收只用非蓝底段",
+      "数据量小对象或日均消耗<300 USD 的 campaign 默认只观察,不触发红线强动作",
+      "素材 IPM 高但 ROI 差时只输出事实和拆解,动作交给人判断"
+    ],
+    "output_template_ref": "knowledge/agent_knowledge/policies/投放ROI治理政策.md"
+  },
+  "diagnostics": [
+    {
+      "symptom": "映射有点位但 MI 无数据",
+      "causes": [
+        "campaign_name 不匹配",
+        "MI 权限",
+        "事实表无数据"
+      ],
+      "check_metrics": [
+        "mapped_campaigns"
+      ],
+      "check_joins": [
+        "mapping_x_spend"
+      ],
+      "recommend_sql": "ai_ck/engineering_artifacts/queries/verified/point_campaign_coverage.sql"
+    },
+    {
+      "symptom": "消耗有但回收无",
+      "causes": [
+        "回收链路延迟",
+        "revenue_source 选择错误",
+        "campaign 映射问题"
+      ],
+      "check_metrics": [
+        "total_cost_zhe",
+        "total_revenue"
+      ],
+      "recommend": "查 SDK/AF 两张回收表对照"
+    },
+    {
+      "symptom": "回收有但留存无",
+      "causes": [
+        "cohort 表延迟",
+        "date_diff 过滤错误",
+        "event_name 口径差异"
+      ],
+      "check_metrics": [
+        "retention_n"
+      ],
+      "recommend": "查 af_cohort_user_acquisition_v2 的 date_diff 与 dt"
+    },
+    {
+      "symptom": "达成率异常高",
+      "causes": [
+        "错用 wide_ha 作分母",
+        "漏算零行为用户"
+      ],
+      "recommend": "回到 AF ODS install 分母(见 ai_hive/agent_knowledge/口径决策记录.md)"
+    },
+    {
+      "symptom": "campaign 命中低",
+      "causes": [
+        "campaign_id/name 混用",
+        "前导空格",
+        "历史映射陈旧"
+      ],
+      "check_metrics": [
+        "mapped_campaigns"
+      ],
+      "recommend": "查 mapping last_dt 与原始 campaign_name(保留前导空格)"
+    },
+    {
+      "symptom": "首日 ARPU 下跌",
+      "causes": [
+        "展示次数下降",
+        "eCPM 下跌",
+        "用户活跃下降",
+        "媒体结构变化"
+      ],
+      "formula": "ARPU = 人均展示次数 × eCPM / 1000",
+      "check_metrics": [
+        "arpdau",
+        "ad_pv_per_user",
+        "rewarded_ecpm",
+        "inter_ecpm"
+      ],
+      "recommend_sql": "da_assets/verified_sql/vsql_20260613_day0_arpu_anomaly_attribution.md"
+    },
+    {
+      "symptom": "UA DNU 下滑",
+      "causes": [
+        "头部 UA media_source 压量",
+        "预算管控",
+        "素材或渠道波动"
+      ],
+      "recommend_sql": "da_assets/verified_sql/vsql_20260613_bb_us_ua_media_source_dnu_delta.md"
+    },
+    {
+      "symptom": "素材冷启动差",
+      "causes": [
+        "IPM 低",
+        "CPI 高",
+        "CTR/CVR 异常"
+      ],
+      "check_metrics": [
+        "material_ipm",
+        "material_cpi",
+        "material_ctr",
+        "material_cvr"
+      ],
+      "recommend_sql": "da_assets/verified_sql/vsql_20260613_material_ipm_cpi_snapshot.md",
+      "note": "素材前端口径无回收;素材 ROI 需 join 回收表(D-2 待拍板取数源)"
+    },
+    {
+      "symptom": "点位高渗透低价值",
+      "causes": [
+        "点位过浅",
+        "学习信号弱",
+        "与大盘行为重叠"
+      ],
+      "recommend_sql": "da_assets/verified_sql/vsql_20260613_mj_dt_historical_point_review_small_window.md",
+      "note": "多产品事件/行为表路由待机制扩展"
+    }
+  ],
+  "validation": {
+    "tables_indexed": 35,
+    "metrics": 54,
+    "dimensions": 39,
+    "entities": 11,
+    "joins": 3,
+    "diagnostics": 9,
+    "errors": [
+      "[dimension:forecast_version] 表 shucang_market.market_roi_prediction_360_v6_da 缺列: ['forecast_version']",
+      "[dimension:forecast_version] 表 shucang_market.market_roi_prediction_sdk_360_da 缺列: ['forecast_version']",
+      "[dimension:forecast_version] 表 shucang_market.market_roi_obs_correction_coef_media 缺列: ['forecast_version']"
+    ],
+    "warnings": [
+      "[metric:target_roi_360] 无 source_table/variants,无法校验列",
+      "[metric:gap] 无 source_table/variants,无法校验列",
+      "[metric:lifecycle] 无 source_table/variants,无法校验列",
+      "[metric:active_days] 无 source_table/variants,无法校验列"
+    ]
+  }
+}

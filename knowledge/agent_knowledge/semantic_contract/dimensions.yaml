@@ -1,0 +1,327 @@
+version: "0.1"
+updated: "2026-06-13"
+
+# 可切分/过滤维度。column 是物理列名,source_tables 是出现该列的表(供校验)。
+# is_date / is_partition 帮助 agent 加日期/分区过滤。
+
+dimensions:
+  - name: media_source
+    entity: media_source
+    column: media_source
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+
+  - name: bundle_id
+    entity: game_package
+    column: bundle_id
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+
+  - name: country
+    entity: country
+    column: country
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: shucang_market 库内仅 spend 表;ad_revenue bs/ltv 与 MC dau 表自带 country;跨库/跨源不直接 SQL join
+
+  - name: campaign_name
+    entity: campaign
+    column: campaign_name
+    mi_compatible: true
+    preserve_raw: true        # 不可 trim 前导空格
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+
+  - name: campaign_id
+    entity: campaign
+    column: campaign_id
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+
+  - name: adset_name
+    entity: adset
+    column: adset_name
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+
+  - name: active_date
+    entity: cohort
+    column: active_date
+    is_date: true
+    is_partition: true
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+
+  - name: revenue_date
+    entity: cohort
+    column: revenue_date
+    is_date: true
+    source_tables:
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+
+  - name: event_date
+    entity: cohort
+    column: event_date
+    is_date: true
+    source_tables:
+      - shucang_market.af_cohort_user_acquisition_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+    note: af_cohort 表为留存事件日;ad_revenue bs 表为变现日(分区键),列名同为 event_date
+
+  - name: date_diff
+    entity: cohort
+    column: date_diff
+    note: active_date 到 revenue_date/event_date 的天数差;留存/收入按 date_diff 透视
+    source_tables:
+      - shucang_market.tj_ad_sdk_revenue
+      - shucang_market.tj_ad_revenue_v2
+      - shucang_market.af_cohort_user_acquisition_v2
+
+  - name: event_name
+    entity: cohort
+    column: event_name
+    source_tables:
+      - shucang_market.af_cohort_user_acquisition_v2
+
+  - name: s2s_event
+    entity: point
+    column: s2s_event
+    source_tables:
+      - shucang_market.dim_market_campaign_s2s_event_map_da
+
+  - name: material
+    entity: material
+    column: material
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - hungry_studio.ads_market_material_metric_di
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: 部分媒体(Google/Aura)material 可能为空或聚合为"其他"
+
+  - name: ad_name
+    entity: ad
+    column: ad_name
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - hungry_studio.ads_market_material_metric_di
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+
+  - name: material_type
+    entity: material
+    column: material_type
+    source_tables:
+      - hungry_studio.ads_market_material_metric_di
+
+  - name: media_type
+    entity: media_source
+    column: media_type
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: pag_name
+    entity: game_package
+    column: pag_name
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: os_system
+    entity: game_package
+    column: os_system
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - hungry_studio.ads_market_device_dau_behavior_di
+
+  - name: ad_id
+    entity: ad
+    column: ad_id
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+
+  - name: playable_material
+    entity: ad
+    column: playable_material
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: cost_model
+    entity: campaign
+    column: cost_model
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: convert_type
+    entity: campaign
+    column: convert_type
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+    note: campaign 投放类型 CPI/CPP/CPE;已冗余在 spend 事实表,无需 join 配置表
+
+  - name: key_action
+    entity: campaign
+    column: key_action
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+    note: CPE 关键行为;已冗余在 spend 事实表
+
+  - name: advertiser_id
+    entity: account
+    column: advertiser_id
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+
+  - name: agent_name
+    entity: account
+    column: agent_name
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: company_name
+    entity: account
+    column: company_name
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: user
+    entity: account
+    column: user
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+
+  - name: device_type
+    entity: device
+    column: device_type
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+
+  - name: adset_id
+    entity: adset
+    column: adset_id
+    source_tables:
+      - shucang_market.tj_ad_spend_active_v2
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: 跨表/跨库稳定 join 键,优于 adset_name
+
+  - name: install_date
+    entity: cohort
+    column: install_date
+    is_date: true
+    source_tables:
+      - ad_revenue.ads_market_bs_ad_revenue_v2_di_dist
+    note: ad_revenue bs 表 cohort 起点;分区键是 event_date
+
+  - name: ltv_cohort_date
+    entity: cohort
+    column: date
+    is_date: true
+    is_partition: true
+    source_tables:
+      - ad_revenue.tj_ad_revenue_ltv_list_utc
+    note: ad_revenue ltv 宽表的安装/cohort 日(分区键),列名为 date
+
+  # ---------- 大盘 dau 表特有维度(MaxCompute) ----------
+  - name: channel_category
+    entity: media_source
+    column: channel_category
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 一级渠道,用于 DNU 拆 UA/预装/ASA/organic;organic 拆分口径见 organic_dnu(needs_decision)
+
+  - name: channel_agent
+    entity: media_source
+    column: channel_agent
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 二级渠道
+
+  - name: project
+    entity: game_package
+    column: project
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 游戏简称 BB/BC/Mahjong
+
+  - name: age_bucket
+    entity: cohort
+    column: age_bucket
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 新增日龄分桶 D0/D1/D2-D7/...;DNU=age_bucket D0;勿与 dnu 指标同时作 group by
+
+  - name: is_return_device
+    entity: cohort
+    column: is_return_device
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 0=新增设备 1=回流设备
+
+  - name: return_age_bucket
+    entity: cohort
+    column: return_age_bucket
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 回流日龄分桶(仅 is_return_device=1 有值);DRU=is_return_device=1 且 return_age_bucket D0
+
+  - name: activity_date
+    entity: cohort
+    column: activity_date
+    is_date: true
+    source_tables:
+      - hungry_studio.ads_market_device_dau_behavior_di
+    note: 活跃日期,与分区 dt 同值
+
+  - name: forecast_version
+    entity: roi360
+    column: forecast_version
+    type: string
+    source_tables:
+      - shucang_market.market_roi_prediction_360_v6_da
+      - shucang_market.market_roi_prediction_sdk_360_da
+      - shucang_market.market_roi_obs_correction_coef_media
+    source_system: MI 后端 forecase_version_config 表(status=1 AND mode='roi')
+    note: |
+      ROI360 预测模型版本。MI 后端通过 ForecastService.QueryForecastVersion(bundle_id) 查询可选版本。
+      分流规则(nexus forecast.go):xy_ 前缀走 XY 批量,其它走 Base 单条,_纠偏 后缀剥离后传预测服务。
+      BB 系列默认 v6;非 BB 小包默认 xy_v5(见 nexus docs/roi对外接口描述.md 附录 E,快照可能过期)。
+      不是 CK 物理表的列,是 MI 后端 filter 参数;agent 派生时作为 filter 传入。
