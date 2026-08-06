@@ -1,0 +1,819 @@
+{
+  "data_summary": {
+    "total": 3347,
+    "operate": 2618,
+    "observe": 729,
+    "l0_dist": {
+      "operate": 2618,
+      "observe": 729
+    },
+    "l1_dist": {
+      "status": 556,
+      "bid": 474,
+      "budget": 558,
+      "geo_exclude": 757,
+      "creative": 273,
+      "observe": 729
+    },
+    "app_dist": {
+      "BlockBlast": 1061,
+      "Mahjong": 694,
+      "Other": 110,
+      "BlockCrush": 753
+    }
+  },
+  "l0_model": {
+    "task": "L0",
+    "n_total": 3347,
+    "classes": [
+      "observe",
+      "operate"
+    ],
+    "train_dist": {
+      "operate": 1570,
+      "observe": 437
+    },
+    "test_dist": {
+      "operate": 524,
+      "observe": 146
+    },
+    "models": {
+      "majority": {
+        "macro_f1": 0.4388609715242881,
+        "balanced_acc": 0.5
+      },
+      "LR_cw=balanced": {
+        "macro_f1": 1.0,
+        "balanced_acc": 1.0
+      },
+      "LR_cw=None": {
+        "macro_f1": 1.0,
+        "balanced_acc": 1.0
+      },
+      "RF_300_12": {
+        "macro_f1": 1.0,
+        "balanced_acc": 1.0,
+        "top_features": [
+          {
+            "feature": "cat_6",
+            "importance": 0.24775736340851504
+          },
+          {
+            "feature": "lifecycle_days",
+            "importance": 0.16763925789595496
+          },
+          {
+            "feature": "daily_budget",
+            "importance": 0.1602556174520792
+          },
+          {
+            "feature": "cat_3",
+            "importance": 0.11142934189919844
+          },
+          {
+            "feature": "cat_4",
+            "importance": 0.1065379397737927
+          },
+          {
+            "feature": "days_since_last_op",
+            "importance": 0.07125902033851195
+          },
+          {
+            "feature": "op_type_count_14d",
+            "importance": 0.05810781142042471
+          },
+          {
+            "feature": "cat_1",
+            "importance": 0.017804879693628928
+          },
+          {
+            "feature": "cat_9",
+            "importance": 0.01222954601518952
+          },
+          {
+            "feature": "roi_7d",
+            "importance": 0.008020689482943008
+          }
+        ]
+      }
+    },
+    "best_model": "LR_cw=balanced",
+    "baseline_macro_f1": 0.4388609715242881,
+    "beat_baseline": true
+  },
+  "l1_model": {
+    "task": "L1",
+    "n_total": 2618,
+    "classes": [
+      "bid",
+      "budget",
+      "creative",
+      "geo_exclude",
+      "status"
+    ],
+    "train_dist": {
+      "status": 333,
+      "bid": 284,
+      "budget": 334,
+      "geo_exclude": 454,
+      "creative": 163
+    },
+    "test_dist": {
+      "status": 112,
+      "bid": 95,
+      "budget": 112,
+      "geo_exclude": 152,
+      "creative": 55
+    },
+    "models": {
+      "majority": {
+        "macro_f1": 0.08967551622418878
+      },
+      "LR_cw=balanced": {
+        "macro_f1": 0.4008586981273218,
+        "balanced_acc": 0.4149043062200957
+      },
+      "LR_cw=None": {
+        "macro_f1": 0.37705522938907354,
+        "balanced_acc": 0.3975427204374573
+      },
+      "RF_300_12": {
+        "macro_f1": 0.6381648251957104,
+        "balanced_acc": 0.6361927546138072,
+        "top_features": [
+          {
+            "feature": "cost_change_pct",
+            "importance": 0.07483981602530827
+          },
+          {
+            "feature": "roi_7d",
+            "importance": 0.07039051341372513
+          },
+          {
+            "feature": "daily_budget",
+            "importance": 0.06952942564379315
+          },
+          {
+            "feature": "revenue_7d",
+            "importance": 0.068793978607496
+          },
+          {
+            "feature": "lifecycle_days",
+            "importance": 0.06808001030047155
+          },
+          {
+            "feature": "cpi_7d",
+            "importance": 0.06472813711662988
+          },
+          {
+            "feature": "cost_14d",
+            "importance": 0.060706297755836185
+          },
+          {
+            "feature": "cvr_7d",
+            "importance": 0.06015866815360096
+          },
+          {
+            "feature": "shows_7d",
+            "importance": 0.058236171838690926
+          },
+          {
+            "feature": "ctr_7d",
+            "importance": 0.05428251358953515
+          }
+        ]
+      }
+    },
+    "best_model": "RF_300_12",
+    "baseline_macro_f1": 0.08967551622418878,
+    "beat_baseline": true
+  },
+  "app_models": {
+    "L1_BlockBlast": {
+      "task": "L1",
+      "n_total": 1061,
+      "classes": [
+        "bid",
+        "budget",
+        "creative",
+        "geo_exclude",
+        "status"
+      ],
+      "train_dist": {
+        "status": 235,
+        "bid": 93,
+        "budget": 150,
+        "geo_exclude": 70,
+        "creative": 85
+      },
+      "test_dist": {
+        "status": 79,
+        "bid": 32,
+        "budget": 51,
+        "geo_exclude": 24,
+        "creative": 29
+      },
+      "models": {
+        "majority": {
+          "macro_f1": 0.1074829931972789
+        },
+        "LR_cw=balanced": {
+          "macro_f1": 0.4233942967473423,
+          "balanced_acc": 0.47699437697383634
+        },
+        "LR_cw=None": {
+          "macro_f1": 0.3957469040947302,
+          "balanced_acc": 0.4101721570339179
+        },
+        "RF_300_12": {
+          "macro_f1": 0.6034791041209069,
+          "balanced_acc": 0.619626565161202,
+          "top_features": [
+            {
+              "feature": "lifecycle_days",
+              "importance": 0.09549501674049025
+            },
+            {
+              "feature": "revenue_7d",
+              "importance": 0.07491345995733824
+            },
+            {
+              "feature": "cpi_7d",
+              "importance": 0.07484491127431307
+            },
+            {
+              "feature": "roi_7d",
+              "importance": 0.06882133185271774
+            },
+            {
+              "feature": "shows_7d",
+              "importance": 0.0686730849120365
+            },
+            {
+              "feature": "registers_7d",
+              "importance": 0.06773012149439696
+            },
+            {
+              "feature": "cost_14d",
+              "importance": 0.06482725256313022
+            },
+            {
+              "feature": "cost_7d",
+              "importance": 0.06281819255369663
+            },
+            {
+              "feature": "clicks_7d",
+              "importance": 0.06166241021745697
+            },
+            {
+              "feature": "cost_change_pct",
+              "importance": 0.061481320165550184
+            }
+          ]
+        }
+      },
+      "best_model": "RF_300_12",
+      "baseline_macro_f1": 0.1074829931972789,
+      "beat_baseline": true,
+      "app_group": "BlockBlast"
+    },
+    "L1_BlockCrush": {
+      "task": "L1",
+      "n_total": 753,
+      "classes": [
+        "bid",
+        "budget",
+        "creative",
+        "geo_exclude",
+        "status"
+      ],
+      "train_dist": {
+        "budget": 95,
+        "status": 37,
+        "bid": 78,
+        "geo_exclude": 195,
+        "creative": 45
+      },
+      "test_dist": {
+        "budget": 32,
+        "status": 13,
+        "bid": 26,
+        "geo_exclude": 66,
+        "creative": 15
+      },
+      "models": {
+        "majority": {
+          "macro_f1": 0.12110091743119267
+        },
+        "LR_cw=balanced": {
+          "macro_f1": 0.470226107459433,
+          "balanced_acc": 0.5008245920745921
+        },
+        "LR_cw=None": {
+          "macro_f1": 0.493407792665857,
+          "balanced_acc": 0.4862179487179487
+        },
+        "RF_300_12": {
+          "macro_f1": 0.6099909704841583,
+          "balanced_acc": 0.6110489510489511,
+          "top_features": [
+            {
+              "feature": "registers_7d",
+              "importance": 0.08312615945517138
+            },
+            {
+              "feature": "op_type_count_14d",
+              "importance": 0.08051255114827463
+            },
+            {
+              "feature": "lifecycle_days",
+              "importance": 0.07545257736073407
+            },
+            {
+              "feature": "revenue_7d",
+              "importance": 0.06807589221098743
+            },
+            {
+              "feature": "daily_budget",
+              "importance": 0.06686300825764513
+            },
+            {
+              "feature": "cvr_7d",
+              "importance": 0.06475184178300251
+            },
+            {
+              "feature": "roi_7d",
+              "importance": 0.06343640923352332
+            },
+            {
+              "feature": "clicks_7d",
+              "importance": 0.06176962849229111
+            },
+            {
+              "feature": "cost_change_pct",
+              "importance": 0.06150079130852304
+            },
+            {
+              "feature": "shows_7d",
+              "importance": 0.061094695875332984
+            }
+          ]
+        }
+      },
+      "best_model": "RF_300_12",
+      "baseline_macro_f1": 0.12110091743119267,
+      "beat_baseline": true,
+      "app_group": "BlockCrush"
+    },
+    "L1_Mahjong": {
+      "task": "L1",
+      "n_total": 694,
+      "classes": [
+        "bid",
+        "budget",
+        "creative",
+        "geo_exclude",
+        "status"
+      ],
+      "train_dist": {
+        "status": 39,
+        "bid": 96,
+        "budget": 76,
+        "creative": 24,
+        "geo_exclude": 180
+      },
+      "test_dist": {
+        "status": 13,
+        "bid": 32,
+        "budget": 26,
+        "creative": 9,
+        "geo_exclude": 60
+      },
+      "models": {
+        "majority": {
+          "macro_f1": 0.12
+        },
+        "LR_cw=balanced": {
+          "macro_f1": 0.6036285419797023,
+          "balanced_acc": 0.641207264957265
+        },
+        "LR_cw=None": {
+          "macro_f1": 0.5424531024531024,
+          "balanced_acc": 0.5541025641025641
+        },
+        "RF_300_12": {
+          "macro_f1": 0.7106803051799232,
+          "balanced_acc": 0.7095940170940171,
+          "top_features": [
+            {
+              "feature": "revenue_7d",
+              "importance": 0.08968378481886878
+            },
+            {
+              "feature": "lifecycle_days",
+              "importance": 0.0861462715390065
+            },
+            {
+              "feature": "cost_change_pct",
+              "importance": 0.08239623505155673
+            },
+            {
+              "feature": "roi_7d",
+              "importance": 0.0753229445667553
+            },
+            {
+              "feature": "cvr_7d",
+              "importance": 0.07375097558207494
+            },
+            {
+              "feature": "cost_14d",
+              "importance": 0.06520131570399382
+            },
+            {
+              "feature": "cost_7d",
+              "importance": 0.0639489285893372
+            },
+            {
+              "feature": "days_since_last_op",
+              "importance": 0.060131469759201694
+            },
+            {
+              "feature": "op_type_count_14d",
+              "importance": 0.056340319840474086
+            },
+            {
+              "feature": "shows_7d",
+              "importance": 0.05422462330772731
+            }
+          ]
+        }
+      },
+      "best_model": "RF_300_12",
+      "baseline_macro_f1": 0.12,
+      "beat_baseline": true,
+      "app_group": "Mahjong"
+    },
+    "L1_Other": {
+      "task": "L1",
+      "n_total": 110,
+      "classes": [
+        "bid",
+        "budget",
+        "creative",
+        "geo_exclude",
+        "status"
+      ],
+      "train_dist": {
+        "bid": 16,
+        "budget": 12,
+        "status": 21,
+        "creative": 8,
+        "geo_exclude": 7
+      },
+      "test_dist": {
+        "bid": 6,
+        "budget": 4,
+        "status": 7,
+        "creative": 3,
+        "geo_exclude": 3
+      },
+      "models": {
+        "majority": {
+          "macro_f1": 0.09333333333333334
+        },
+        "LR_cw=balanced": {
+          "macro_f1": 0.5871861471861471,
+          "balanced_acc": 0.6023809523809522
+        },
+        "LR_cw=None": {
+          "macro_f1": 0.6209523809523809,
+          "balanced_acc": 0.6309523809523808
+        },
+        "RF_300_12": {
+          "macro_f1": 0.6855011655011655,
+          "balanced_acc": 0.7023809523809523,
+          "top_features": [
+            {
+              "feature": "roi_7d",
+              "importance": 0.10391643923144407
+            },
+            {
+              "feature": "cvr_7d",
+              "importance": 0.09010277082402873
+            },
+            {
+              "feature": "lifecycle_days",
+              "importance": 0.08753898014429565
+            },
+            {
+              "feature": "ctr_7d",
+              "importance": 0.07752671562840699
+            },
+            {
+              "feature": "cost_7d",
+              "importance": 0.07352261353804483
+            },
+            {
+              "feature": "cpi_7d",
+              "importance": 0.06800420457023473
+            },
+            {
+              "feature": "clicks_7d",
+              "importance": 0.0650624973943227
+            },
+            {
+              "feature": "cost_14d",
+              "importance": 0.06115025129092938
+            },
+            {
+              "feature": "shows_7d",
+              "importance": 0.06069508197980933
+            },
+            {
+              "feature": "registers_7d",
+              "importance": 0.060447011481719555
+            }
+          ]
+        }
+      },
+      "best_model": "RF_300_12",
+      "baseline_macro_f1": 0.09333333333333334,
+      "beat_baseline": true,
+      "app_group": "Other"
+    }
+  },
+  "uplift": [
+    {
+      "treatment": "budget",
+      "outcome": "profit_7d",
+      "method": "AIPW",
+      "n_treated": 558,
+      "n_control": 2060,
+      "ate": -12127.96,
+      "ci_lo": -15041.17,
+      "ci_hi": -8766.95,
+      "placebo_ate": 44422.81
+    },
+    {
+      "treatment": "budget",
+      "outcome": "profit_14d",
+      "method": "AIPW",
+      "n_treated": 558,
+      "n_control": 2060,
+      "ate": -1316.81,
+      "ci_lo": -5552.63,
+      "ci_hi": 2704.44,
+      "placebo_ate": 17344.26
+    },
+    {
+      "treatment": "bid",
+      "outcome": "profit_7d",
+      "method": "AIPW",
+      "n_treated": 474,
+      "n_control": 2144,
+      "ate": -781.26,
+      "ci_lo": -3078.94,
+      "ci_hi": 1434.79,
+      "placebo_ate": -720.44
+    },
+    {
+      "treatment": "bid",
+      "outcome": "profit_14d",
+      "method": "AIPW",
+      "n_treated": 474,
+      "n_control": 2144,
+      "ate": 2511.44,
+      "ci_lo": -592.78,
+      "ci_hi": 5992.82,
+      "placebo_ate": 913.87
+    },
+    {
+      "treatment": "status",
+      "outcome": "profit_7d",
+      "method": "AIPW",
+      "n_treated": 556,
+      "n_control": 2062,
+      "ate": -361.15,
+      "ci_lo": -5188.48,
+      "ci_hi": 3813.8,
+      "placebo_ate": -1897.44
+    },
+    {
+      "treatment": "status",
+      "outcome": "profit_14d",
+      "method": "AIPW",
+      "n_treated": 556,
+      "n_control": 2062,
+      "ate": -5352.5,
+      "ci_lo": -10546.55,
+      "ci_hi": -841.0,
+      "placebo_ate": 9800.64
+    },
+    {
+      "treatment": "geo_exclude",
+      "outcome": "profit_7d",
+      "method": "AIPW",
+      "n_treated": 757,
+      "n_control": 1861,
+      "ate": 27273.43,
+      "ci_lo": 22619.92,
+      "ci_hi": 31762.38,
+      "placebo_ate": -211720.3
+    },
+    {
+      "treatment": "geo_exclude",
+      "outcome": "profit_14d",
+      "method": "AIPW",
+      "n_treated": 757,
+      "n_control": 1861,
+      "ate": 53758.5,
+      "ci_lo": 44916.31,
+      "ci_hi": 62010.07,
+      "placebo_ate": -433002.14
+    },
+    {
+      "treatment": "creative",
+      "outcome": "profit_7d",
+      "method": "AIPW",
+      "n_treated": 273,
+      "n_control": 2345,
+      "ate": -4215.72,
+      "ci_lo": -7283.25,
+      "ci_hi": -1046.82,
+      "placebo_ate": 49575.4
+    },
+    {
+      "treatment": "creative",
+      "outcome": "profit_14d",
+      "method": "AIPW",
+      "n_treated": 273,
+      "n_control": 2345,
+      "ate": -25426.47,
+      "ci_lo": -30921.07,
+      "ci_hi": -20154.8,
+      "placebo_ate": 187939.46
+    }
+  ],
+  "uplift_did": [
+    {
+      "treatment": "budget",
+      "outcome": "profit_7d",
+      "method": "DiD",
+      "n_treated": 558,
+      "n_control": 2060,
+      "did": -10557.49,
+      "ci_lo": -17577.3,
+      "ci_hi": -3967.87,
+      "placebo_did": 54.42,
+      "placebo_ci_lo": -5721.1,
+      "placebo_ci_hi": 5886.13,
+      "before_diff": 2587.24,
+      "t_change_mean": -10481.56,
+      "c_change_mean": 75.93
+    },
+    {
+      "treatment": "budget",
+      "outcome": "profit_14d",
+      "method": "DiD",
+      "n_treated": 558,
+      "n_control": 2060,
+      "did": -17653.54,
+      "ci_lo": -31576.94,
+      "ci_hi": -2512.67,
+      "placebo_did": -96.01,
+      "placebo_ci_lo": -14056.15,
+      "placebo_ci_hi": 15032.56,
+      "before_diff": 12398.13,
+      "t_change_mean": -15563.03,
+      "c_change_mean": 2090.51
+    },
+    {
+      "treatment": "bid",
+      "outcome": "profit_7d",
+      "method": "DiD",
+      "n_treated": 474,
+      "n_control": 2144,
+      "did": 665.45,
+      "ci_lo": -6115.78,
+      "ci_hi": 7169.33,
+      "placebo_did": -129.49,
+      "placebo_ci_lo": -5867.15,
+      "placebo_ci_hi": 6988.54,
+      "before_diff": -1042.86,
+      "t_change_mean": -1629.33,
+      "c_change_mean": -2294.78
+    },
+    {
+      "treatment": "bid",
+      "outcome": "profit_14d",
+      "method": "DiD",
+      "n_treated": 474,
+      "n_control": 2144,
+      "did": 5308.52,
+      "ci_lo": -10607.63,
+      "ci_hi": 21417.87,
+      "placebo_did": -220.41,
+      "placebo_ci_lo": -14914.1,
+      "placebo_ci_hi": 15347.36,
+      "before_diff": -4565.75,
+      "t_change_mean": 2675.23,
+      "c_change_mean": -2633.29
+    },
+    {
+      "treatment": "status",
+      "outcome": "profit_7d",
+      "method": "DiD",
+      "n_treated": 556,
+      "n_control": 2062,
+      "did": 10205.26,
+      "ci_lo": 1964.54,
+      "ci_hi": 20866.78,
+      "placebo_did": -141.45,
+      "placebo_ci_lo": -6651.75,
+      "placebo_ci_hi": 6592.24,
+      "before_diff": -47260.79,
+      "t_change_mean": 5863.61,
+      "c_change_mean": -4341.64
+    },
+    {
+      "treatment": "status",
+      "outcome": "profit_14d",
+      "method": "DiD",
+      "n_treated": 556,
+      "n_control": 2062,
+      "did": 28623.21,
+      "ci_lo": 10637.97,
+      "ci_hi": 51883.5,
+      "placebo_did": 7.8,
+      "placebo_ci_lo": -13636.99,
+      "placebo_ci_hi": 14893.75,
+      "before_diff": -106986.77,
+      "t_change_mean": 20872.17,
+      "c_change_mean": -7751.04
+    },
+    {
+      "treatment": "geo_exclude",
+      "outcome": "profit_7d",
+      "method": "DiD",
+      "n_treated": 757,
+      "n_control": 1861,
+      "did": 5174.66,
+      "ci_lo": 1029.54,
+      "ci_hi": 8549.39,
+      "placebo_did": -132.89,
+      "placebo_ci_lo": -6073.97,
+      "placebo_ci_hi": 6465.42,
+      "before_diff": 42860.56,
+      "t_change_mean": 1504.1,
+      "c_change_mean": -3670.56
+    },
+    {
+      "treatment": "geo_exclude",
+      "outcome": "profit_14d",
+      "method": "DiD",
+      "n_treated": 757,
+      "n_control": 1861,
+      "did": 7652.76,
+      "ci_lo": -807.36,
+      "ci_hi": 15037.39,
+      "placebo_did": 51.48,
+      "placebo_ci_lo": -12767.36,
+      "placebo_ci_hi": 13703.62,
+      "before_diff": 87628.07,
+      "t_change_mean": 3767.79,
+      "c_change_mean": -3884.97
+    },
+    {
+      "treatment": "creative",
+      "outcome": "profit_7d",
+      "method": "DiD",
+      "n_treated": 273,
+      "n_control": 2345,
+      "did": -11763.21,
+      "ci_lo": -19182.88,
+      "ci_hi": -5295.34,
+      "placebo_did": 310.38,
+      "placebo_ci_lo": -8268.69,
+      "placebo_ci_hi": 9962.77,
+      "before_diff": -12671.28,
+      "t_change_mean": -12710.86,
+      "c_change_mean": -947.65
+    },
+    {
+      "treatment": "creative",
+      "outcome": "profit_14d",
+      "method": "DiD",
+      "n_treated": 273,
+      "n_control": 2345,
+      "did": -44829.48,
+      "ci_lo": -67444.58,
+      "ci_hi": -25214.04,
+      "placebo_did": 626.24,
+      "placebo_ci_lo": -17499.91,
+      "placebo_ci_hi": 20712.02,
+      "before_diff": -16249.19,
+      "t_change_mean": -41826.91,
+      "c_change_mean": 3002.57
+    }
+  ]
+}

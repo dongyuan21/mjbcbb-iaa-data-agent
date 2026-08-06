@@ -59,14 +59,6 @@ YYYYMMDD_<主题>.md      # 例：20260615_ai_ck_结构治理问题.md
 | `20260615_ai_hive_PII护栏问题.md` | ai_hive PII 护栏：标注覆盖不足/真理源打架/语义二元化过粗；canonical 字典 + 自动盖章（已闭环） |
 | `20260620_知识层收敛与语义契约归并记录.md` | semantic_model 顶层归并到 knowledge/semantic_contract；明确跨表语义不按物理库归属（已闭环） |
 | `20260620_目录解散与门禁化治理记录.md` | 解散 case_studies/examples；manifest 命名统一；三层定义单源化；边界门禁化（已闭环） |
-| `20260621_DataAgent_Runtime框架误判纠错记录.md` | Agent 框架选型纠错：主线是 PI Framework，不是旧 Python Agent（已闭环） |
-| `20260623_PI路由误判与空结果掩盖重大问题.md` | 业务取数误路由 table_question + app_name 错套 + 0 行被掩盖；路由信号 + 0 行 smoke + 证据落库（已闭环） |
-| `20260624_PI日志复核关键问题.md` | D7 累计收入被误解为当天收入 + cohort 不稳定 + 可观测性缺口；确定性语义护栏（已闭环） |
-| `20260625_PI自动回归关键问题.md` | 自动回归暴露 5 类 runtime 稳定性问题；SQL 注释剥离 + smoke 归一化 + cohort 锚定（已闭环） |
 | `20260629_长SQL追问流式传输失败重大问题.md` | 长 SQL 追问 GET EventSource URL 超长；改 POST JSON 建流 + 手动解析 SSE（已闭环） |
-| `20260630_PI同题不同用户回答不一致重大问题.md` | 同题跨用户不一致：非歧视，PI 非确定性 + 熔断；verified SQL + 路由 guardrail + 回归（已闭环） |
-| `20260630_PI同题稳定性_D30渠道国家Top20集中度.md` | D30 Top20% 集中度口径定稿（解释 A + DA 行为收入 + 成熟 cohort 窗）+ 表路由 + 验收标准（已闭环） |
 | `20260712_latest报告与生成产物本地依赖问题.md` | latest 回归与评估产物被本地忽略、下游流程隐式依赖的问题，以及后续可复现性治理方向 |
 | `20260712_配置层与运行层割裂问题.md` | 路由配置已声明资产边界但运行时未完全强制执行的架构与安全边界问题 |
-| `20260715_PI_RPC桥接MC查询timeout错位与query_id缺失.md` | PI RPC 四层查询链超时阶梯错位、ODPS instance_id 丢失、logview token 脱敏与可观测性修复 |
-| `20260721_PI运行时表卡摘要瘦身.md` | `read_table_card_excerpts` 表卡摘要瘦身：修分区字段 fallback 与 known_pitfalls 展示 bug，加两级截断上限，实测无回退 |

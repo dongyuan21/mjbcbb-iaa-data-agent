@@ -1,0 +1,79 @@
+version: "0.1"
+updated: "2026-07-20"
+purpose: >
+  Bootstrap 常驻切片：只保留三个 agent_manifest.yaml 中需要每会话常驻的硬约束
+  (hard_rules / query_execution / priority_tables)，完整 manifest 已移到对应
+  task_routes 的 first_read 按需加载。详见 TODO/上下文工程与Runtime下一步规划.md
+  相位 B 的 manifest 拆分项。
+
+source_manifests:
+  - ai_hive/agent_manifest.yaml
+  - ai_ck/agent_manifest.yaml
+  - knowledge/agent_manifest.yaml
+
+# ============================================================
+# MaxCompute / Hive 硬规则（来自 ai_hive/agent_manifest.yaml）
+# ============================================================
+ai_hive:
+  query_execution:
+    datasource: MaxCompute
+    primary: maxcompute-dataworks
+    project: hungry_studio
+    endpoint: https://service.us-east-1.maxcompute.aliyun.com/api
+    quota: ua_event
+    helper: ~/.maxcompute-dataworks/bin/maxcompute_sql.py
+  priority_tables:
+    source_of_truth: ai_hive/agent_knowledge/catalog.yaml
+    # P0 表完整清单见 ai_hive/agent_manifest.yaml（已移到 task_routes first_read 按需加载）
+  hard_rules:
+    - 大表必须带 dt 或等价分区过滤。
+    - 安装/激活用户数分母、达成率和 campaign 映射口径以 agent_knowledge/口径决策记录.md 为准。
+    - 安装/激活用户数分母禁止用 wide_ha；wide_ha 只作 A 口径分子和归因。
+    - PII 以 agent_knowledge/PII_POLICY.yaml 为准；forbidden_output 禁止 SELECT、输出、日志和落盘。
+    - aggregation_only 字段只允许 JOIN 或 COUNT(DISTINCT) 等聚合，禁止输出明细。
+    - join_keys 必须有 lineage、verified SQL、smoke test 或 owner 确认证据；证据不足写 TODO/待确认。
+    - B 口径 s2s_ready 禁止用于跨渠道对比。
+    - engineering_artifacts/freshness_snapshot.json 是快照；评估当前数据状态前必须刷新。
+  pii_policy: ai_hive/agent_knowledge/PII_POLICY.yaml
+
+# ============================================================
+# ClickHouse / MI ROI360 硬规则（来自 ai_ck/agent_manifest.yaml）
+# ============================================================
+ai_ck:
+  query_execution:
+    datasource: ClickHouse
+    default_database: shucang_market
+    connection_source:
+      - env: CLICKHOUSE_*（本机 clickhouse-shucang skill / fill_clickhouse_env_here.zsh；部署侧 ConfigMap/Secret）
+      - structure_reference_only: pgp-platform server/configs/config.toml（仓内占位字段说明，无真实密码；部署挂载到 /app/configs/config.toml）
+    notes:
+      - 协议：native（clickhouse-go/v2 / PyClient），默认端口 9000。
+      - 真实 Host / Username / Password 只经环境变量或部署注入；不得在本文件或 git 中持久化。
+  priority_tables:
+    source_of_truth: ai_ck/agent_knowledge/catalog.yaml#tiers.tier0_production_mainline
+    # P0 表完整清单见 ai_ck/agent_manifest.yaml（已移到 task_routes first_read 按需加载）
+  hard_rules:
+    - 不得打印、输出或持久化 ClickHouse、MI、SSO、AK、SK、token 等敏感值。
+    - CK 是 OLAP/报表层；ODPS/MaxCompute 仍作为训练与标签事实源。
+    - Spend 与 revenue 查询必须按 active_date 或等价日期字段过滤。
+    - 留存查询必须过滤 dt/日期范围，并带 date_diff 校验。
+    - MI 过滤时保留 campaign_name/adset_name 原始字符串，禁止在精确匹配前做 trim。
+    - MI 可兼容 join 当前优先用 campaign_name；在 MI campaign_id 过滤确认前，以 campaign_id 作为稳定兜底键记录。
+    - 点位映射诊断流程先查映射表，再分别校验 spend、SDK revenue、AF revenue 与 retention 覆盖。
+
+# ============================================================
+# Knowledge 跨表语义契约硬规则（来自 knowledge/agent_manifest.yaml）
+# ============================================================
+knowledge:
+  query_execution:
+    datasource: none（knowledge 目录是规则/契约层，不直接执行查询；实际执行回到 ai_hive 或 ai_ck）
+  priority_tables:
+    source_of_truth: knowledge/agent_knowledge/catalog.yaml
+    runtime_entry: knowledge/agent_knowledge/semantic_contract/model.json
+  hard_rules:
+    - 修改 knowledge/ 下任意 .md/.csv/.json/.yaml 文件后，必须同步 agent_knowledge/catalog.yaml。
+    - default_recall=true 只能用于 active、active_backlog、confirmed_evidence、trial_active。
+    - draft_only、snapshot、snapshot_data、source_manifest、review_log 不得默认召回。
+    - trial_active 只能用于当前候选判断，不替业务 owner 下最终动作。
+    - audit_archive/ 只作追溯和线索，不作为当前事实。
+    - agent_knowledge/semantic_contract/model.json 是跨表语义契约运行时入口；源 YAML 只在维护时读取。

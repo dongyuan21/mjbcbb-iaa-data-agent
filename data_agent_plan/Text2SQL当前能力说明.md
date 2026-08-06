@@ -177,7 +177,7 @@ SQL表路由协议.md
 Agent 先把自然语言变成标准需求：
 
 ```yaml
-product: kcolb tsalb
+product: block blast
 platform: GP
 scenario: 商业化实验
 experiment_batch: "145期"
@@ -242,7 +242,7 @@ Agent 找候选表：
 field_evidence:
   - requirement_item: 插屏收入
     item_type: metric
-    source_table: h-s.xxx
+    source_table: hungry_studio.xxx
     source_field: inter_revenue
     evidence_source:
       type: table_card

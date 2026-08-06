@@ -1,7 +1,7 @@
 # 未来 DataAgent 工作流规划
 
 > 状态：future_architecture
-> 更新时间：2026-06-18
+> 更新时间：2026-07-26
 > 范围：自然语言问题进入自研开源 DataAgent runtime 后的任务路线、门禁、执行和回写机制。
 > 边界：本文件描述未来 Agent 工作方式，不定义新业务口径，不替 DA / UA / owner 拍板；路线不再评估外部代码型 Agent 作为承载框架。
 
@@ -34,10 +34,11 @@
 自研 runtime 的职责是：
 
 - 把 `AGENT_RETRIEVAL_MAP.yaml` 编译成任务路由和 first-read 计划。
-- 把 `knowledge/agent_knowledge/semantic_contract/model.json`、表卡、verified SQL 和 SOP 作为受控资产加载。
+- 把 `knowledge/agent_knowledge/semantic_contract/model.json`、表卡和 verified SQL 作为受控资产加载；`analysis_sop` / `decision_cases` 须单独准入和评测，第一期默认关闭。
 - 在执行前强制跑 freshness / PII / source / owner / raw-draft gate。
 - 优先复用 verified SQL；证据不足时只生成 candidate SQL 和验证计划。
 - 把 SQL 执行、sanity check、结论、风险和回写记录结构化保存。
+- 对覆盖完整的 typed execution plan 允许快路径；对低置信、跨域、覆盖不足或长开放题，使用 slim prior + 受治理知识工具继续取证，并保存 run/config/asset hash/SQL evidence 的 metadata-only 审计链。
 
 它暂不负责：
 
@@ -66,7 +67,7 @@ Agent 把自然语言转成任务对象。
 
 ```yaml
 task_type: roi_or_campaign_analysis
-product: kcolb tsalb
+product: Block Blast
 country: US
 time_window: current_window
 baseline_window: previous_window

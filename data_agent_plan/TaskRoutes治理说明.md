@@ -67,7 +67,7 @@
 1. 修改 `task_routes/INDEX.yaml`：补 `domain_category`、正负信号、disambiguation、trigger examples。
 2. 新建或更新 `task_routes/<id>.yaml`：补齐 route 契约、预算、生命周期和回归覆盖。
 3. 更新 `eval/agent_regression/regression_cases.yaml`：至少补一个静态 route case；容易混淆时补 route golden case。
-4. 如涉及 PI replay 或线上稳定性，更新 `eval/pi_replay_regression/cases.yaml`。
+4. 如涉及 Runtime replay 或线上稳定性，更新 `eval/runtime_replay_regression/cases.yaml`。
 5. 运行门禁和单测。
 
 ## 验证命令
@@ -75,7 +75,7 @@
 ```bash
 python3 tools/scripts/check_agent_retrieval_map.py
 PYTHONPATH=runtime/backend python3 -m pytest runtime/backend/tests/test_task_profiles.py -q
-PYTHONPATH=runtime/backend python3 tools/scripts/pi_replay_regression.py --validate-only
+PYTHONPATH=runtime/backend python3 tools/scripts/runtime_replay_regression.py --validate-only
 python3 eval/agent_regression/run_regression.py
 ```
 
@@ -83,12 +83,12 @@ python3 eval/agent_regression/run_regression.py
 
 ```bash
 PYTHONPATH=runtime/backend python3 tools/scripts/runtime_deploy_smoke.py \
-  --base-url https://pgp-v1-xgboost.example.com \
+  --base-url https://pgp-v1-xgboost.youxi123.com \
   --env-id 811 \
   --timeout 180 \
   --machine-id codex-route-smoke \
   --expect-answer-contains runtime-smoke-ok \
-  --expect-trace-provider pi \
+  --expect-trace-provider runtime \
   --expect-route-decision-reason
 ```
 
@@ -115,5 +115,5 @@ PYTHONPATH=runtime/backend python3 tools/scripts/audit_route_confusion.py --env-
 - 不因一个泛词把 route 合并回大包；优先用正负信号和 golden case 消除歧义。
 - `mandatory_protocols` 必须短，只放所有问题都要读的协议。
 - `conditional_protocols` 必须窄，只在专项信号明确时触发。
-- `route_decision_reason` 必须可落库，便于 PI trace 复核和误路由回放。
+- `route_decision_reason` 必须可落库，便于 Runtime trace 复核和误路由回放。
 - warning 也阻断 `check_agent_retrieval_map.py`，避免治理漂移。

@@ -78,21 +78,21 @@
 | 表 | 分类 | 表说明 | 字段数 | 分区 | 日期字段候选 |
 |---|---|---|---:|---|---|
 | `ads_market_device_dau_behavior_di` | 设备资产/用户资产 | 日活行为宽表，以活跃日期为主轴，支持日龄分桶和前向留存统计 | 42 | dt | activity_date, dt |
-| `dim_kcolb_tsalb_all_device_da` | 设备资产/用户资产 | 方块 双端 设备天级全量表 | 18 | dt, app_name | install_date, first_active_date, last_active_date, dt |
-| `dim_kcolb_tsalb_all_new_or_return_device_da` | 设备资产/用户资产 | 方块 双端 设备天级全量新设备和回流设备表 | 7 | dt, app_name | new_device_date, return_device_date, dt |
-| `dim_kcolb_collection_all_device_da` | 设备资产/用户资产 | 方块小包设备天级全量标签表 | 19 | dt, app_name | install_date, first_active_date, last_active_date, dt |
-| `dim_kcolb_collection_all_new_or_return_device_da` | 设备资产/用户资产 | 方块小包 双端 设备天级全量新设备和回流设备表 | 8 | dt, app_name | new_device_date, return_device_date, dt |
+| `dim_block_blast_all_device_da` | 设备资产/用户资产 | 方块 双端 设备天级全量表 | 18 | dt, app_name | install_date, first_active_date, last_active_date, dt |
+| `dim_block_blast_all_new_or_return_device_da` | 设备资产/用户资产 | 方块 双端 设备天级全量新设备和回流设备表 | 7 | dt, app_name | new_device_date, return_device_date, dt |
+| `dim_block_collection_all_device_da` | 设备资产/用户资产 | 方块小包设备天级全量标签表 | 19 | dt, app_name | install_date, first_active_date, last_active_date, dt |
+| `dim_block_collection_all_new_or_return_device_da` | 设备资产/用户资产 | 方块小包 双端 设备天级全量新设备和回流设备表 | 8 | dt, app_name | new_device_date, return_device_date, dt |
 | `dim_market_appsflyer_attribution_by_device_id_da` | 设备资产/用户资产 | 设备id-AF归因表 每天一个快照 | 18 | dt | dt |
 | `dim_nova_collection_all_device_da` | 设备资产/用户资产 | 星云设备天级全量标签表 | 19 | dt, app_name | install_date, first_active_date, last_active_date, dt |
 | `dim_nova_collection_all_new_or_return_device_da` | 设备资产/用户资产 | 星云 双端 设备天级全量新设备和回流设备表 | 8 | dt, app_name | new_device_date, return_device_date, dt |
 | `dwd_market_new_return_device_sdk_revenue_di` | 设备资产/用户资产 | 设备粒度SDK收入表(含AF归因) | 18 | dt | sdk_install_date, sdk_return_date, dt |
-| `dws_kcolb_tsalb_all_device_id_active_retention_da` | 产品设备/用户聚合 |  | 128 | dt, app_name | anchor_date, activity_date, dt |
-| `dws_kcolb_tsalb_all_device_install_retention_da_v2` | 产品设备/用户聚合 | 方块720 留存(按device_id重新归一) v2版本 | 31 | dt, app_name | install_date, active_date, dt |
-| `dws_kcolb_tsalb_all_device_multi_dim_di` | 产品设备/用户聚合 | 方块 双端 设备天级事件聚合表 | 154 | dt, app_name | new_device_date, return_device_date, dt |
-| `dws_kcolb_tsalb_all_user_multi_dim_hi` | 产品设备/用户聚合 | 方块 双端 用户天级事件聚合表 | 146 | dt, app_name | dt |
-| `dws_kcolb_collection_all_device_id_active_retention_da` | 产品设备/用户聚合 | 方块小包多应用设备级活跃留存 | 53 | dt, app_name | anchor_date, activity_date, dt |
-| `dws_kcolb_collection_all_device_install_retention_da_v2` | 产品设备/用户聚合 | 方块小包全量设备安装留存表V2版本 | 39 | dt, app_name | install_date, active_date, dt |
-| `dws_kcolb_collection_all_device_multi_dim_di` | 产品设备/用户聚合 | 方块小包多应用设备级事件聚合 | 63 | dt, app_name | new_device_date, return_device_date, dt |
+| `dws_block_blast_all_device_id_active_retention_da` | 产品设备/用户聚合 |  | 128 | dt, app_name | anchor_date, activity_date, dt |
+| `dws_block_blast_all_device_install_retention_da_v2` | 产品设备/用户聚合 | 方块720 留存(按device_id重新归一) v2版本 | 31 | dt, app_name | install_date, active_date, dt |
+| `dws_block_blast_all_device_multi_dim_di` | 产品设备/用户聚合 | 方块 双端 设备天级事件聚合表 | 154 | dt, app_name | new_device_date, return_device_date, dt |
+| `dws_block_blast_all_user_multi_dim_hi` | 产品设备/用户聚合 | 方块 双端 用户天级事件聚合表 | 146 | dt, app_name | dt |
+| `dws_block_collection_all_device_id_active_retention_da` | 产品设备/用户聚合 | 方块小包多应用设备级活跃留存 | 53 | dt, app_name | anchor_date, activity_date, dt |
+| `dws_block_collection_all_device_install_retention_da_v2` | 产品设备/用户聚合 | 方块小包全量设备安装留存表V2版本 | 39 | dt, app_name | install_date, active_date, dt |
+| `dws_block_collection_all_device_multi_dim_di` | 产品设备/用户聚合 | 方块小包多应用设备级事件聚合 | 63 | dt, app_name | new_device_date, return_device_date, dt |
 | `dws_nova_collection_all_device_id_active_retention_da` | 产品设备/用户聚合 | 星云双端多应用设备级活跃留存表 | 104 | dt, app_name | anchor_date, activity_date, dt |
 | `dws_nova_collection_all_device_install_retention_da_v2` | 产品设备/用户聚合 | 星云全量设备安装留存表v2版本 | 41 | dt, app_name | install_date, active_date, dt |
 | `dws_nova_collection_all_device_multi_dim_di` | 产品设备/用户聚合 | 星云双端多应用设备级事件聚合表 | 113 | dt, app_name | new_device_date, return_device_date, dt |

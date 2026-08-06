@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>运行时知识加载树 · Data Agent</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2029;
+      --panel-2: #222b38;
+      --border: #2d3748;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --accent: #60a5fa;
+      --accent-2: #34d399;
+      --warn: #fbbf24;
+      --danger: #f87171;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
+    .subtitle code {
+      background: var(--panel-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .stat .num { font-size: 20px; font-weight: 600; color: var(--accent-2); }
+    .stat .num.warn { color: var(--warn); }
+    .stat .num.danger { color: var(--danger); }
+    .stat .label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 2px;
+    }
+
+    .tree {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 13px;
+    }
+    .node {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      gap: 8px;
+      align-items: start;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: default;
+      transition: background 0.15s;
+    }
+    .node:hover { background: var(--panel-2); }
+    .node.expandable { cursor: pointer; }
+    .toggle {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim);
+      font-size: 12px;
+      user-select: none;
+      transition: transform 0.15s;
+    }
+    .node.expandable:not(.collapsed) > .toggle { transform: rotate(90deg); }
+    .toggle.placeholder { color: transparent; cursor: default; }
+    .node-content { min-width: 0; }
+    .node-title {
+      font-weight: 500;
+      color: var(--text);
+    }
+    .node-title .tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 8px;
+      font-weight: 400;
+      vertical-align: middle;
+    }
+    .tag-bootstrap { background: rgba(96,165,250,0.18); color: var(--accent); }
+    .tag-route { background: rgba(167,139,250,0.18); color: var(--purple); }
+    .tag-first-read { background: rgba(52,211,153,0.18); color: var(--accent-2); }
+    .tag-table-card { background: rgba(244,114,182,0.18); color: var(--pink); }
+    .tag-verified { background: rgba(251,191,36,0.18); color: var(--warn); }
+    .tag-never { background: rgba(248,113,113,0.18); color: var(--danger); }
+    .node-desc {
+      color: var(--text-dim);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .node-desc code {
+      background: var(--panel-2);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: var(--accent);
+    }
+    .node-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      text-align: right;
+    }
+    .node-meta .size {
+      font-weight: 600;
+      color: var(--accent-2);
+    }
+    .node-meta .size.warn { color: var(--warn); }
+    .children {
+      grid-column: 1 / -1;
+      margin-left: 16px;
+      padding-left: 16px;
+      border-left: 1px dashed var(--border);
+      margin-top: 4px;
+    }
+    .children.hidden { display: none; }
+    .why {
+      margin-top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 16px 20px;
+      font-size: 13px;
+    }
+    .why h3 { font-size: 14px; margin-bottom: 10px; color: var(--accent); }
+    .why ul { padding-left: 20px; color: var(--text-dim); }
+    .why li { margin-bottom: 6px; }
+    .why li strong { color: var(--text); }
+    .why code {
+      background: var(--panel-2);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+    .footer {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>运行时知识加载树</h1>
+  <div class="subtitle">
+    Data Agent 回答一个投放问题时，知识如何按路由逐层加载？<code>常驻资料</code>只保留导航和治理规则，重索引在任务命中后按需读取。<strong>本页为示意，非实时快照</strong>；具体大小、数量和门禁结果必须以当前运行时测量与权威索引为准。
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="num">按需</div>
+      <div class="label">常驻资料（default_bootstrap）<br/>只承载导航与治理规则</div>
+    </div>
+    <div class="stat">
+      <div class="num warn">受控</div>
+      <div class="label">重索引与表卡<br/>命中后才读取</div>
+    </div>
+    <div class="stat">
+      <div class="num">路由</div>
+      <div class="label">任务索引<br/>一任务一文件</div>
+    </div>
+    <div class="stat">
+      <div class="num">表卡</div>
+      <div class="label">具体表才读取<br/>不整包加载</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>常驻层（bootstrap，每次都带）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>路由层（INDEX，命中才读）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent-2)"></div>任务先读层（first_read，命中才读）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>表卡层（命中具体表才读）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>已验证 SQL（受路由与资产状态约束）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>永不默认召回（禁区）</div>
+  </div>
+
+  <div class="tree" id="tree">
+    <!-- L0: 常驻层 -->
+    <div class="node expandable" onclick="toggle(this, event)">
+      <div class="toggle">▶</div>
+      <div class="node-content">
+        <div class="node-title">L0 · 常驻资料（default_bootstrap）<span class="tag tag-bootstrap">每次都带</span></div>
+        <div class="node-desc">Agent 一上来携带的“地基”：导航、治理规则与路由入口。重索引不应被整体塞入上下文；具体体积由当前资产与实现测量决定。</div>
+      </div>
+          <div class="node-meta"><span class="size">轻量导航</span><br/>固定入口</div>
+      <div class="children">
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>README.md</code></div>
+            <div class="node-desc">工程入口说明</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>AGENTS.md</code></div>
+            <div class="node-desc">Agent 工作规则、强制技能、源优先级</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>AGENT_RETRIEVAL_MAP.yaml</code></div>
+            <div class="node-desc">检索路线图：canonical_owners / never_default_recall / reference_only_dirs</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+        <div class="node expandable" onclick="toggle(this, event)">
+          <div class="toggle">▶</div>
+          <div class="node-content">
+            <div class="node-title">L1 · 任务路由索引<span class="tag tag-route">命中才读</span></div>
+            <div class="node-desc"><code>task_routes/INDEX.yaml</code> — 轻量路由器，按触发词选一个任务文件</div>
+          </div>
+          <div class="node-meta"><span class="size">轻量索引</span></div>
+          <div class="children">
+            <div class="node">
+              <div class="toggle placeholder">·</div>
+              <div class="node-content">
+              <div class="node-title">业务域分组（domain_category）</div>
+                <div class="node-desc">data_sql_foundation / roi_campaign / iaa_product_and_monetization / point_material_special_topics / knowledge_governance / answer_service_quality</div>
+              </div>
+              <div class="node-meta">以 INDEX 为准</div>
+            </div>
+            <div class="node">
+              <div class="toggle placeholder">·</div>
+              <div class="node-content">
+              <div class="node-title">受众分层（audience_profile）</div>
+              <div class="node-desc"><code>external_user_query</code> 与 <code>internal_codex_ops</code> 分离：前者用于线上用户查询，后者仅用于本地工程治理。</div>
+              </div>
+              <div class="node-meta">受众隔离</div>
+            </div>
+            <div class="node">
+              <div class="toggle placeholder">·</div>
+              <div class="node-content">
+              <div class="node-title">执行画像（task_profile）</div>
+              <div class="node-desc"><code>live_sql</code> / <code>long_report</code> / <code>default</code>：各自的轮次和预算由当前 runtime 配置解析，不能用本图中的历史数字替代。</div>
+              </div>
+              <div class="node-meta">预算控制</div>
+            </div>
+
+            <!-- L2: 命中具体任务 -->
+            <div class="node expandable collapsed" onclick="toggle(this, event)">
+              <div class="toggle">▶</div>
+              <div class="node-content">
+                <div class="node-title">L2 · 命中任务：<code>roi_or_campaign_analysis</code><span class="tag tag-first-read">命中才读</span></div>
+                <div class="node-desc">用户问"分媒体 ROI360 和消耗占比"，触发词命中本任务。此时才读 <code>task_routes/roi_or_campaign_analysis.yaml</code></div>
+              </div>
+              <div class="node-meta"><span class="size">单任务文件</span><br/>命中后读取</div>
+              <div class="children hidden">
+                <div class="node">
+                  <div class="toggle placeholder">·</div>
+                  <div class="node-content">
+                    <div class="node-title">context_budget（上下文预算）</div>
+                    <div class="node-desc"><code>max_first_read_files: 12</code> / <code>max_first_read_chars: 30000</code> / <code>max_asset_chars: 40000</code></div>
+                  </div>
+                  <div class="node-meta">硬上限</div>
+                </div>
+                <div class="node">
+                  <div class="toggle placeholder">·</div>
+                  <div class="node-content">
+                    <div class="node-title">task_profile: <code>live_sql</code></div>
+                    <div class="node-desc">现场查数型；轮次、工具预算和核心查询时限由当前 runtime 配置与护栏解析。</div>
+                  </div>
+                  <div class="node-meta">行为护栏</div>
+                </div>
+
+                <!-- L3: first_read 清单 -->
+                <div class="node expandable collapsed" onclick="toggle(this, event)">
+                  <div class="toggle">▶</div>
+                  <div class="node-content">
+                    <div class="node-title">L3 · first_read（先读清单）<span class="tag tag-first-read">按需拉取</span></div>
+                    <div class="node-desc">任务命中后才拉取的重索引：协议、表卡、SOP、阈值、语义合同</div>
+                  </div>
+                  <div class="node-meta"><span class="size warn">≤ 30K chars</span></div>
+                  <div class="children hidden">
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">业务协议</div>
+                        <div class="node-desc"><code>第一层分析Agent协议.md</code> / <code>投放ROI治理政策.md</code> / <code>Campaign全览分析协议.md</code> / <code>花费同步与对账规则.md</code></div>
+                      </div>
+                      <div class="node-meta">口径规则</div>
+                    </div>
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">MI/CK 指标语义</div>
+                        <div class="node-desc"><code>ROI360指标语义.md</code> / <code>Campaign面板指标语义.md</code> / <code>ASA_ROI指标语义.md</code></div>
+                      </div>
+                      <div class="node-meta">页面口径</div>
+                    </div>
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">新鲜度 SLA</div>
+                        <div class="node-desc"><code>ROI360_AF回收表新鲜度SLA.md</code> / <code>ROI360_SDK回收表新鲜度SLA.md</code> / <code>ROI预测准确性表新鲜度SLA.md</code></div>
+                      </div>
+                      <div class="node-meta">时效护栏</div>
+                    </div>
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">分析 SOP（标准作业流程）</div>
+                        <div class="node-desc"><code>Runtime查询执行复核护栏.md</code> / <code>Campaign异动与UA操作联动SOP.md</code> / <code>投放看板模块知识沉淀SOP.md</code></div>
+                      </div>
+                      <div class="node-meta">复用方法</div>
+                    </div>
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">阈值数值事实</div>
+                        <div class="node-desc"><code>包体ROI目标阈值.md</code>（report_knowledge 层，owner 确认的数值）</div>
+                      </div>
+                      <div class="node-meta">红线数值</div>
+                    </div>
+
+                    <!-- L4: 命中具体表卡 -->
+                    <div class="node expandable collapsed" onclick="toggle(this, event)">
+                      <div class="toggle">▶</div>
+                      <div class="node-content">
+                        <div class="node-title">L4 · 命中表卡<span class="tag tag-table-card">命中才读单张</span></div>
+                        <div class="node-desc">永远命中哪张读哪张，不整包加载；总体体积以当前资产清单为准。</div>
+                      </div>
+                      <div class="node-meta"><span class="size">单张几 KB</span></div>
+                      <div class="children hidden">
+                        <div class="node">
+                          <div class="toggle placeholder">·</div>
+                          <div class="node-content">
+                            <div class="node-title"><code>ads_market_roi_cohort_sdk_multidim.yaml</code></div>
+                            <div class="node-desc">ROI360 宽表，grain: bundle_id × active_date × media_source × country</div>
+                          </div>
+                          <div class="node-meta">CK 表卡</div>
+                        </div>
+                        <div class="node">
+                          <div class="toggle placeholder">·</div>
+                          <div class="node-content">
+                            <div class="node-title"><code>tj_ad_spend_active_v2.yaml</code></div>
+                            <div class="node-desc">消耗表，must_filter: active_date 范围</div>
+                          </div>
+                          <div class="node-meta">CK 表卡</div>
+                        </div>
+                        <div class="node">
+                          <div class="toggle placeholder">·</div>
+                          <div class="node-content">
+                            <div class="node-title"><code>tj_ad_sdk_revenue.yaml</code></div>
+                            <div class="node-desc">SDK 回收表，ROI360 默认收入口径</div>
+                          </div>
+                          <div class="node-meta">CK 表卡</div>
+                        </div>
+
+                        <!-- L5: verified SQL -->
+                        <div class="node expandable collapsed" onclick="toggle(this, event)">
+                          <div class="toggle">▶</div>
+                          <div class="node-content">
+                            <div class="node-title">L5 · 已验证 SQL（受控 bootstrap）<span class="tag tag-verified">精确门禁</span></div>
+                            <div class="node-desc">运行时仅在路由、问题形态、资产 id / 路径 / verified 状态均满足时启用受控 bootstrap；SQL 片段与参数还会经过对应的结构校验。</div>
+                          </div>
+                          <div class="node-meta">精确资产门禁</div>
+                          <div class="children hidden">
+                            <div class="node">
+                              <div class="toggle placeholder">·</div>
+                              <div class="node-content">
+                                <div class="node-title"><code>vsql_20260630_d30_top20_user_concentration_channel_country</code></div>
+                                <div class="node-desc">D30 Top20 用户集中度的受控 verified SQL 示例；是否可用仍取决于当前路由和参数检查。</div>
+                              </div>
+                              <div class="node-meta">verified</div>
+                            </div>
+                            <div class="node">
+                              <div class="toggle placeholder">·</div>
+                              <div class="node-content">
+                                <div class="node-title"><code>vsql_20260613_bb_us_ua_media_source_dnu_delta</code></div>
+                                <div class="node-desc">BB 美国 DNU media_source delta，参数化占位符填充</div>
+                              </div>
+                              <div class="node-meta">verified</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 候选 SQL（不默认召回） -->
+                    <div class="node">
+                      <div class="toggle placeholder">·</div>
+                      <div class="node-content">
+                        <div class="node-title">候选 SQL（candidate_sql）<span class="tag tag-never">不默认召回</span></div>
+                        <div class="node-desc">候选 SQL 不参与广泛默认召回；只有被当前 route 的 <code>first_read</code> 精确授权时，才可作为带限制的线索读取。</div>
+                      </div>
+                      <div class="node-meta">线索</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title">三库 <code>agent_manifest.yaml</code></div>
+            <div class="node-desc">ai_hive / ai_ck / knowledge 的挂载清单（asset_layers / hard_rules / source_priority）</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>默认召回边界与晋升规则.md</code></div>
+            <div class="node-desc">什么能默认召回、什么不能</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>TODO/README.md</code></div>
+            <div class="node-desc">待办入口</div>
+          </div>
+          <div class="node-meta">轻量</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 永不默认召回 -->
+    <div class="node expandable collapsed" onclick="toggle(this, event)">
+      <div class="toggle">▶</div>
+      <div class="node-content">
+        <div class="node-title">永不默认召回（never_default_recall）<span class="tag tag-never">禁区</span></div>
+        <div class="node-desc">这些目录运行时绝不默认加载，只在维护/排障/追溯时读</div>
+      </div>
+      <div class="node-meta">运行时禁入</div>
+      <div class="children hidden">
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>raw_exports/</code></div>
+            <div class="node-desc">原始导出、截图，不进 git</div>
+          </div>
+          <div class="node-meta">本地归档</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>da_assets/raw/</code></div>
+            <div class="node-desc">原始 docx、图片抽取，未经晋升</div>
+          </div>
+          <div class="node-meta">草稿</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>knowledge/audit_archive/draft_knowledge/</code></div>
+            <div class="node-desc">草稿知识，未确认口径</div>
+          </div>
+          <div class="node-meta">草稿</div>
+        </div>
+        <div class="node">
+          <div class="toggle placeholder">·</div>
+          <div class="node-content">
+            <div class="node-title"><code>data_agent_plan/*.json</code></div>
+            <div class="node-desc">schema probe 产物，不是事实</div>
+          </div>
+          <div class="node-meta">探针产物</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="why">
+    <h3>为什么要这样分层加载？</h3>
+    <ul>
+      <li><strong>变贵</strong>：如果把所有知识一次性塞给模型，资料越多 token 越多，单次问答成本随知识库膨胀上涨。</li>
+      <li><strong>变慢且抓错重点</strong>：无关资料越多，AI 越容易被淹没，关键信息反而被稀释。</li>
+      <li><strong>不可扩展</strong>：每加一张表，每次问答都跟着变重，知识库越大越不可用。</li>
+      <li><strong>解决方案</strong>：常驻资料（<code>default_bootstrap</code>）只放导航和治理入口；表卡、语义合同、SOP、已验证 SQL 等重索引在任务命中后逐层拉取；表卡永远命中哪张读哪张，不整包加载。</li>
+      <li><strong>运行约束</strong>：上下文大小、资产数量和命中率是随资产与运行时版本变化的工程度量，应在需要时用当前 runtime 测量或 catalog 核验，不能把本图当作实时状态面板。</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    架构依据：AGENT_RETRIEVAL_MAP.yaml · task_routes/INDEX.yaml · 各任务 first_read · runtime/backend/app/services/knowledge.py。历史 snapshot 仅用于追溯，不构成当前状态依据。
+  </div>
+
+  <script>
+    function toggle(node, evt) {
+      if (evt) evt.stopPropagation();
+      const children = node.querySelector(':scope > .children');
+      if (!children) return;
+      const collapsed = node.classList.toggle('collapsed');
+      children.classList.toggle('hidden', collapsed);
+    }
+    // 默认展开 L0 和 L1
+    document.addEventListener('DOMContentLoaded', () => {
+      const nodes = document.querySelectorAll('.node.expandable');
+      // 第一个（L0）展开，第二个（L1）展开，其余折叠
+      if (nodes[0]) nodes[0].classList.remove('collapsed');
+      if (nodes[0]) {
+        const c = nodes[0].querySelector(':scope > .children');
+        if (c) c.classList.remove('hidden');
+      }
+      if (nodes[1]) nodes[1].classList.remove('collapsed');
+      if (nodes[1]) {
+        const c = nodes[1].querySelector(':scope > .children');
+        if (c) c.classList.remove('hidden');
+      }
+      // 其余默认折叠（已有 hidden class）
+    });
+  </script>
+</body>
+</html>
