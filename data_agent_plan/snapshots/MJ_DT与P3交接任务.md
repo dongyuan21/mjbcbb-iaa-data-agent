@@ -161,7 +161,7 @@ ods_market_api_creative_moloco_da
 
 ### 执行步骤
 
-1. 从 `data_agent_plan/schema_probe_snapshots/user_growth_topic_schema_probe.json` 读取 schema。
+1. 从 `raw_exports/schema_probe_snapshots/user_growth_topic_schema_probe.json` 读取 schema。
 2. 生成表卡：
    - `ai_hive/agent_knowledge/tables/ods_market_api_adset_facebook_da.yaml`
    - `ai_hive/agent_knowledge/tables/ods_market_api_creative_moloco_da.yaml`

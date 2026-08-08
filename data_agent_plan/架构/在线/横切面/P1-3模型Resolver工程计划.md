@@ -3,7 +3,7 @@
 > 状态：`draft_pending_review`
 > 创建日期：2026-07-18
 > 分支：待开（从 main 切）
-> 关联设计：`data_agent_plan/多轮对话与上下文压缩工程设计.md` §P1-2/P1-3
+> 关联设计：`data_agent_plan/架构/在线/横切面/多轮对话与上下文压缩工程设计.md` §P1-2/P1-3
 > 关联 TODO：`TODO/多轮对话建设.md` 第五节 P1-2/P1-3
 > 关联精度报告：`eval/multi_turn/resolver_precision_report.md`
 

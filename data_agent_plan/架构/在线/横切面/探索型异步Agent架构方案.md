@@ -3,8 +3,8 @@
 - 状态：`active_architecture / implementation_complete / real_ab_pending`
 - 更新：2026-08-02
 - 历史的外部执行器方案已移除；本文件是唯一保留的探索型异步架构设计。
-- 执行待办：[`../TODO/探索型异步Agent实施.md`](../TODO/探索型异步Agent实施.md)
-- 总体边界：[`Runtime 控制面架构`](Runtime控制面架构/README.md)
+- 执行待办：[`../../../TODO/探索型异步Agent实施.md`](../../../TODO/探索型异步Agent实施.md)
+- 总体边界：[`Runtime 控制面架构`](../在线/README.md)
 
 ## 目标
 

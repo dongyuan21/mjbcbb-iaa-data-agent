@@ -1392,7 +1392,7 @@ fallback_success_rate
 
 ## 12. 代码与服务架构
 
-以下为逻辑模块，不代表立即新增同名顶层目录。实际目录归属需遵守 `data_agent_plan/知识库三层结构规范.md`。
+以下为逻辑模块，不代表立即新增同名顶层目录。实际目录归属需遵守 `knowledge/agent_knowledge/governance/知识库三层结构规范.md`。
 
 ```text
 ua_decision/
@@ -2235,7 +2235,7 @@ UA 实际执行了什么
 - `ai_hive/agent_knowledge/tables/ads_market_tj_ad_revenue_v2.yaml`
 - `ai_hive/agent_knowledge/tables/ads_market_tj_ad_sdk_revenue_attributed_di.yaml`
 - `task_routes/roi_or_campaign_analysis.yaml`
-- `data_agent_plan/知识库三层结构规范.md`
+- `knowledge/agent_knowledge/governance/知识库三层结构规范.md`
 - `skills/table-intake/SKILL.md`
 
 ### PGP 静态代码证据

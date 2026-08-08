@@ -136,7 +136,7 @@ ai_ck/
 DataWorks 数据地图「用户增长Topic」共 55 张表，补表前 `ai_hive` 已收录 3 张，缺 52 张且均在线存在。当前已补 P0 的 11 张 MI/ROI 主链路与预估表、P1 的 19 张媒体 API / campaign / 素材 / Meta CAPI 表、P2 的 20 张设备/用户资产表、P3 的 2 张低频 adset / creative 元数据表。缺口报告见：
 
 ```text
-data_agent_plan/用户增长Topic表缺口报告.md
+data_agent_plan/snapshots/用户增长Topic表缺口报告.md
 ```
 
 用户增长 Topic 表卡已全部补齐；后续重点转为 MC/CK/MI 口径校准、DA SQL 验证和高频问题 verified SQL 沉淀。

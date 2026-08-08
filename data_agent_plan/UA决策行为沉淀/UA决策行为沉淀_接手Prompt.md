@@ -14,7 +14,7 @@ git pull origin main
 ## 第二步：读交接文档
 
 ```bash
-cat data_agent_plan/UA决策行为沉淀交接文档.md
+cat data_agent_plan/UA决策行为沉淀/UA决策行为沉淀交接文档.md
 ```
 
 这是项目的完整状态，包含：
