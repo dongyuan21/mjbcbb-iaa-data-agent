@@ -119,3 +119,15 @@ verified_sql / confirmed policy
 ```
 
 只有 `verified` / `confirmed` 可以作为默认事实；`reviewed` 和 `draft` 只能作为分析线索、候选判断或待验证项。
+
+## Cursor Cloud specific instructions
+
+面向后续 Cloud Agent 的持久化启动/运行说明（依赖已由 update script 装好，这里只记不显然的坑）：
+
+- 本仓是**知识库工作区**，不是可部署服务：无 web / server、无 lint 框架、无测试框架、无 build 步骤。可运行的“应用”就是几个 Python 维护脚本，运行时**唯一依赖是 PyYAML**（Python 3.12，基础镜像已自带）。
+- 语义契约回归是当前可跑通的核心验收，从仓库根目录跑：
+  `python3 knowledge/engineering_artifacts/semantic_contract/eval/compose_sql.py`（当前 16/16 PASS，会重写同目录 `回归验证报告.md`）。它只消费已提交的 `knowledge/agent_knowledge/semantic_contract/model.json`，证明 agent 仅凭 model.json 就能拼出带正确表/join/口径/过滤的 SQL。
+- **`knowledge/engineering_artifacts/semantic_contract/build_model.py` 在 `main` 上会失败并退出码 1**，这是仓库数据缺口、不是环境问题：它依赖 `ai_ck/agent_knowledge/tables/*.yaml` 与 `ai_hive/agent_knowledge/tables/*.yaml` 表卡，但 `ai_ck/`、`ai_hive/` 目录当前只提交了 `README.md` 和 `agent_manifest.yaml`，表卡未入仓，索引到 0 张表 → 约 197 个“表不在知识层”报错。已提交的 `model.json`（35 张表、3 个 error）是用更完整的数据集生成的。
+- **注意：跑 `build_model.py` 会覆盖已提交的 `model.json`**。若本地没有表卡（`main` 现状），运行后务必 `git checkout -- knowledge/agent_knowledge/semantic_contract/model.json` 还原，避免把损坏产物提交进去。
+- 上面 Always Applied Rules 里引用的门禁脚本（`tools/scripts/check_table_card_quality.py`、`check_knowledge_consistency.py`、`check_metric_layer_boundary.py`、`probe_freshness.py`、`eval/agent_regression/run_regression.py`）**当前均未入仓**，在本环境无法执行；`tools/scripts/` 实际只有 `clone_directory_tree.py`。
+- MaxCompute（MC）/ ClickHouse（CK）连通性依赖外部 `maxcompute-dataworks` helper、AK/SK 凭证与外网，本 Cloud 环境不具备，因此 freshness probe、真实跑数、MC/CK 回归都跑不了；只能按规则标 `snapshot_only` / `connectivity_unverified`。
