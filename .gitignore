@@ -1,0 +1,14 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!/.env.example
+coverage/
+dist/
+
+# Local private working material; never add to the public repository.
+skill-ignore/
+术语解释/
+.local_sanitization/
+private_notes/

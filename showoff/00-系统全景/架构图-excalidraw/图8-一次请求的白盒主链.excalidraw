@@ -1,0 +1,281 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://example.invalid/已脱敏链接",
+  "elements": [
+    {
+      "type": "text", "id": "title", "x": 60, "y": 32, "wi示例产品h": 640, "height": 38,
+      "text": "一次请求的白盒主链", "originalText": "一次请求的白盒主链",
+      "fontSize": 30, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800001, "version": 1, "versionNonce": 800001, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "subtitle", "x": 60, "y": 78, "wi示例产品h": 1160, "height": 22,
+      "text": "模型提出调用；Runtime 保存状态、控制资产读取和 SQL 授权，并以证据决定终态。", "originalText": "模型提出调用；Runtime 保存状态、控制资产读取和 SQL 授权，并以证据决定终态。",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800002, "version": 1, "versionNonce": 800002, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "line", "id": "top_divider", "x": 60, "y": 122, "wi示例产品h": 1440, "height": 0,
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "dashed", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800003, "version": 1, "versionNonce": 800003, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "points": [[0, 0], [1440, 0]], "lastCommittedPoint": null, "startBinding": null, "endBinding": null, "startArrowhead": null, "endArrowhead": null
+    },
+    {
+      "type": "text", "id": "l1_label", "x": 60, "y": 152, "wi示例产品h": 300, "height": 22,
+      "text": "L1 接入与持久任务", "originalText": "L1 接入与持久任务",
+      "fontSize": 18, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800004, "version": 1, "versionNonce": 800004, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "ellipse", "id": "user_question", "x": 80, "y": 210, "wi示例产品h": 260, "height": 120,
+      "strokeColor": "#c2410c", "backgroundColor": "#fed7aa", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800010, "version": 1, "versionNonce": 800010, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "user_question_text", "x": 104, "y": 238, "wi示例产品h": 212, "height": 50,
+      "text": "用户问题\n“最近一周 分析平台 有何变化？”", "originalText": "用户问题\n“最近一周 分析平台 有何变化？”",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800011, "version": 1, "versionNonce": 800011, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "question_to_job", "x": 342, "y": 270, "wi示例产品h": 98, "height": 0,
+      "strokeColor": "#c2410c", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800012, "version": 1, "versionNonce": 800012, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [98, 0]], "lastCommittedPoint": null, "startBinding": {"elementId": "user_question", "focus": 0, "gap": 2}, "endBinding": {"elementId": "durable_job", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "rectangle", "id": "durable_job", "x": 442, "y": 205, "wi示例产品h": 330, "height": 130,
+      "strokeColor": "#1e3a5f", "backgroundColor": "#93c5fd", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800020, "version": 1, "versionNonce": 800020, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "durable_job_text", "x": 470, "y": 230, "wi示例产品h": 274, "height": 70,
+      "text": "鉴权与请求校验\n写入 DataAgentJob + request_payload\nMySQL 真相源；Redis 仅队列与唤醒", "originalText": "鉴权与请求校验\n写入 DataAgentJob + request_payload\nMySQL 真相源；Redis 仅队列与唤醒",
+      "fontSize": 15, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800021, "version": 1, "versionNonce": 800021, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "l23_label", "x": 60, "y": 400, "wi示例产品h": 540, "height": 22,
+      "text": "L2 问题控制与 L3 知识控制", "originalText": "L2 问题控制与 L3 知识控制",
+      "fontSize": 18, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800030, "version": 1, "versionNonce": 800030, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "job_to_turn", "x": 607, "y": 337, "wi示例产品h": 320, "height": 128,
+      "strokeColor": "#1e3a5f", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800031, "version": 1, "versionNonce": 800031, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [0, 50], [-320, 50], [-320, 128]], "lastCommittedPoint": null, "startBinding": {"elementId": "durable_job", "focus": 0, "gap": 2}, "endBinding": {"elementId": "turn_route", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "rectangle", "id": "turn_route", "x": 120, "y": 465, "wi示例产品h": 335, "height": 140,
+      "strokeColor": "#b45309", "backgroundColor": "#fef3c7", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800032, "version": 1, "versionNonce": 800032, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "turn_route_text", "x": 145, "y": 495, "wi示例产品h": 285, "height": 66,
+      "text": "问题解析与路由\nTurnResolution + RouteDecision\n追问、纠正、换题、澄清", "originalText": "问题解析与路由\nTurnResolution + RouteDecision\n追问、纠正、换题、澄清",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800033, "version": 1, "versionNonce": 800033, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "turn_to_knowledge", "x": 457, "y": 535, "wi示例产品h": 126, "height": 0,
+      "strokeColor": "#b45309", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800034, "version": 1, "versionNonce": 800034, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [126, 0]], "lastCommittedPoint": null, "startBinding": {"elementId": "turn_route", "focus": 0, "gap": 2}, "endBinding": {"elementId": "knowledge_control", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "rectangle", "id": "knowledge_control", "x": 585, "y": 465, "wi示例产品h": 365, "height": 140,
+      "strokeColor": "#047857", "backgroundColor": "#a7f3d0", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800035, "version": 1, "versionNonce": 800035, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "knowledge_control_text", "x": 615, "y": 494, "wi示例产品h": 305, "height": 66,
+      "text": "受治理知识先验\nroute prior + registry + allowed assets\n原始材料、草稿和 TODO 不默认进入", "originalText": "受治理知识先验\nroute prior + registry + allowed assets\n原始材料、草稿和 TODO 不默认进入",
+      "fontSize": 15, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800036, "version": 1, "versionNonce": 800036, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "route_note", "x": 122, "y": 628, "wi示例产品h": 530, "height": 20,
+      "text": "route 用于排序与读取范围，不构成资产或 SQL 授权。", "originalText": "route 用于排序与读取范围，不构成资产或 SQL 授权。",
+      "fontSize": 14, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800037, "version": 1, "versionNonce": 800037, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "l45_label", "x": 60, "y": 710, "wi示例产品h": 620, "height": 22,
+      "text": "L4 规划与推理，L5 执行与安全", "originalText": "L4 规划与推理，L5 执行与安全",
+      "fontSize": 18, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800040, "version": 1, "versionNonce": 800040, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "knowledge_to_loop", "x": 768, "y": 607, "wi示例产品h": 0, "height": 151,
+      "strokeColor": "#047857", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800041, "version": 1, "versionNonce": 800041, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [0, 151]], "lastCommittedPoint": null, "startBinding": {"elementId": "knowledge_control", "focus": 0, "gap": 2}, "endBinding": {"elementId": "tool_loop", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "ellipse", "id": "tool_loop", "x": 520, "y": 760, "wi示例产品h": 495, "height": 132,
+      "strokeColor": "#6d28d9", "backgroundColor": "#ddd6fe", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800042, "version": 1, "versionNonce": 800042, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "tool_loop_text", "x": 565, "y": 795, "wi示例产品h": 405, "height": 62,
+      "text": "MinimalToolLoop\nRegistry 10；通常可见 9；白名单 route 可 10\n不拥有 SQL 授权或回答终态", "originalText": "MinimalToolLoop\nRegistry 10；通常可见 9；白名单 route 可 10\n不拥有 SQL 授权或回答终态",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800043, "version": 1, "versionNonce": 800043, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "loop_to_sql_decision", "x": 1017, "y": 826, "wi示例产品h": 90, "height": 0,
+      "strokeColor": "#6d28d9", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800044, "version": 1, "versionNonce": 800044, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [90, 0]], "lastCommittedPoint": null, "startBinding": {"elementId": "tool_loop", "focus": 0, "gap": 2}, "endBinding": {"elementId": "sql_needed", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "diamond", "id": "sql_needed", "x": 1110, "y": 748, "wi示例产品h": 250, "height": 155,
+      "strokeColor": "#b45309", "backgroundColor": "#fef3c7", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800045, "version": 1, "versionNonce": 800045, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "sql_needed_text", "x": 1150, "y": 800, "wi示例产品h": 170, "height": 44,
+      "text": "需要查询\n物理表吗？", "originalText": "需要查询\n物理表吗？",
+      "fontSize": 18, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800046, "version": 1, "versionNonce": 800046, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "yes_label", "x": 1248, "y": 916, "wi示例产品h": 30, "height": 18,
+      "text": "是", "originalText": "是",
+      "fontSize": 14, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#b45309", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800047, "version": 1, "versionNonce": 800047, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "decision_to_contract", "x": 1235, "y": 905, "wi示例产品h": 0, "height": 53,
+      "strokeColor": "#b45309", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800048, "version": 1, "versionNonce": 800048, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [0, 53]], "lastCommittedPoint": null, "startBinding": {"elementId": "sql_needed", "focus": 0, "gap": 2}, "endBinding": {"elementId": "contract_binding", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "rectangle", "id": "contract_binding", "x": 1050, "y": 960, "wi示例产品h": 370, "height": 145,
+      "strokeColor": "#1e3a5f", "backgroundColor": "#93c5fd", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800049, "version": 1, "versionNonce": 800049, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "contract_binding_text", "x": 1080, "y": 990, "wi示例产品h": 310, "height": 74,
+      "text": "先读 DataContractView\nread receipt → 服务端 binding\n再做只读、AST、PII、分区与预算检查", "originalText": "先读 DataContractView\nread receipt → 服务端 binding\n再做只读、AST、PII、分区与预算检查",
+      "fontSize": 15, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800050, "version": 1, "versionNonce": 800050, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "contract_to_query", "x": 1235, "y": 1107, "wi示例产品h": 0, "height": 51,
+      "strokeColor": "#1e3a5f", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800051, "version": 1, "versionNonce": 800051, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [0, 51]], "lastCommittedPoint": null, "startBinding": {"elementId": "contract_binding", "focus": 0, "gap": 2}, "endBinding": {"elementId": "readonly_query", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "ellipse", "id": "readonly_query", "x": 1105, "y": 1160, "wi示例产品h": 260, "height": 94,
+      "strokeColor": "#047857", "backgroundColor": "#a7f3d0", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800052, "version": 1, "versionNonce": 800052, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "readonly_query_text", "x": 1130, "y": 1187, "wi示例产品h": 210, "height": 42,
+      "text": "MC / CK 只读查询\n生成 QueryRecord 摘要", "originalText": "MC / CK 只读查询\n生成 QueryRecord 摘要",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800053, "version": 1, "versionNonce": 800053, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "text", "id": "l6_label", "x": 60, "y": 1305, "wi示例产品h": 520, "height": 22,
+      "text": "L6 证据收口、终态与交付", "originalText": "L6 证据收口、终态与交付",
+      "fontSize": 18, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800060, "version": 1, "versionNonce": 800060, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "query_to_evidence", "x": 1235, "y": 1256, "wi示例产品h": 555, "height": 109,
+      "strokeColor": "#047857", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800061, "version": 1, "versionNonce": 800061, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [0, 70], [-555, 70], [-555, 109]], "lastCommittedPoint": null, "startBinding": {"elementId": "readonly_query", "focus": 0, "gap": 2}, "endBinding": {"elementId": "evidence_panel", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "arrow", "id": "no_sql_to_evidence", "x": 1108, "y": 826, "wi示例产品h": 610, "height": 539,
+      "strokeColor": "#b45309", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "dashed", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800062, "version": 1, "versionNonce": 800062, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [-80, 0], [-80, 490], [-610, 490], [-610, 539]], "lastCommittedPoint": null, "startBinding": {"elementId": "sql_needed", "focus": 0, "gap": 2}, "endBinding": {"elementId": "evidence_panel", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "text", "id": "no_label", "x": 1012, "y": 838, "wi示例产品h": 30, "height": 18,
+      "text": "否", "originalText": "否",
+      "fontSize": 14, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#b45309", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800063, "version": 1, "versionNonce": 800063, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "evidence_panel", "x": 90, "y": 1365, "wi示例产品h": 900, "height": 180,
+      "strokeColor": "#1e3a5f", "backgroundColor": "#dbeafe", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800064, "version": 1, "versionNonce": 800064, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "evidence_panel_label", "x": 120, "y": 1385, "wi示例产品h": 250, "height": 20,
+      "text": "持久化记录与终态判定", "originalText": "持久化记录与终态判定",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e40af", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800065, "version": 1, "versionNonce": 800065, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "trace_artifact", "x": 120, "y": 1415, "wi示例产品h": 430, "height": 100,
+      "strokeColor": "#1e293b", "backgroundColor": "#1e293b", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800066, "version": 1, "versionNonce": 800066, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "trace_artifact_text", "x": 144, "y": 1435, "wi示例产品h": 382, "height": 56,
+      "text": "job_id · turn · route\nDataContractView receipt · binding\nQueryRecord · freshness · answer trace", "originalText": "job_id · turn · route\nDataContractView receipt · binding\nQueryRecord · freshness · answer trace",
+      "fontSize": 15, "fontFamily": 3, "textAlign": "left", "verticalAlign": "middle",
+      "strokeColor": "#22c55e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800067, "version": 1, "versionNonce": 800067, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "rectangle", "id": "typed_outcome", "x": 585, "y": 1415, "wi示例产品h": 370, "height": 100,
+      "strokeColor": "#b91c1c", "backgroundColor": "#fecaca", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800068, "version": 1, "versionNonce": 800068, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "roundness": {"type": 3}
+    },
+    {
+      "type": "text", "id": "typed_outcome_text", "x": 610, "y": 1434, "wi示例产品h": 320, "height": 60,
+      "text": "证据不足或被安全拒绝\n保留 partial / incomplete / user_input_required\n不以生成文本替代完成", "originalText": "证据不足或被安全拒绝\n保留 partial / incomplete / user_input_required\n不以生成文本替代完成",
+      "fontSize": 14, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800069, "version": 1, "versionNonce": 800069, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    },
+    {
+      "type": "arrow", "id": "evidence_to_answer", "x": 992, "y": 1455, "wi示例产品h": 104, "height": 0,
+      "strokeColor": "#1e3a5f", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800070, "version": 1, "versionNonce": 800070, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false,
+      "points": [[0, 0], [104, 0]], "lastCommittedPoint": null, "startBinding": {"elementId": "evidence_panel", "focus": 0, "gap": 2}, "endBinding": {"elementId": "answer_delivery", "focus": 0, "gap": 2}, "startArrowhead": null, "endArrowhead": "arrow"
+    },
+    {
+      "type": "ellipse", "id": "answer_delivery", "x": 1100, "y": 1386, "wi示例产品h": 360, "height": 138,
+      "strokeColor": "#047857", "backgroundColor": "#a7f3d0", "fillStyle": "solid", "strokeWi示例产品h": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800071, "version": 1, "versionNonce": 800071, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false
+    },
+    {
+      "type": "text", "id": "answer_delivery_text", "x": 1140, "y": 1425, "wi示例产品h": 280, "height": 62,
+      "text": "answer + durable SSE\n事实 · 证据 · 限制 · 风险\n需要人工决策时明确交回", "originalText": "answer + durable SSE\n事实 · 证据 · 限制 · 风险\n需要人工决策时明确交回",
+      "fontSize": 16, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#374151", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWi示例产品h": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
+      "seed": 800072, "version": 1, "versionNonce": 800072, "isDeleted": false, "groupIds": [], "boundElements": null, "link": null, "locked": false, "containerId": null, "lineHeight": 1.25
+    }
+  ],
+  "appState": {"viewBackgroundColor": "#ffffff", "gridSize": 20},
+  "files": {}
+}

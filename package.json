@@ -1,0 +1,8 @@
+{
+  "name": "public-data-agent-materials",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.34.3"
+  }
+}
